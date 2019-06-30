@@ -1,0 +1,18 @@
+<div class="home-suggestions-c">
+    <div class="home-suggestions-c-h">
+        <span>Suggestions For You</span>
+    </div>
+    <div class="home-suggestions-lists">
+        <div class="home-suggestions-list" *ngFor="let homeSuggestion of homeSuggestions" href="#">
+            <div>
+                <div class="home-suggestions-profile-pic">
+                    <a [routerLink]="['/profile',homeSuggestion.username]"><img src="{{ homeSuggestion.profilePicture }}" alt="username"></a>
+                </div>
+                <div class="home-suggestions-time">
+                    <a [routerLink]="['/profile', homeSuggestion.username]">{{ homeSuggestion.username }}</a>
+                    <p>Based on suggestion</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

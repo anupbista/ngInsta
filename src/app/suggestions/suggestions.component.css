@@ -1,0 +1,95 @@
+.home-suggestions-c {
+    background: #fff;
+    border-radius: 4px;
+    border: 1px solid rgb(230, 230, 230);
+    padding: 16px;
+    margin-top: 12px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+.home-suggestions-c .home-suggestions-c-h{
+    display: flex;
+    justify-content: space-between;
+}
+.home-suggestions-c .home-suggestions-c-h a{
+    color: rgb(35, 35, 38);
+    font-weight: 600;
+    font-size: 13px;
+}
+.home-suggestions-c .home-suggestions-c-h span{
+    font-size: 14px;
+    color: rgb(135, 135, 135);
+}
+.home-suggestions-c .home-suggestions-list{
+    position: relative;
+    padding: 3px 2px;
+    margin-bottom: 4px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+.home-suggestions-c .home-suggestions-list > div {
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+    align-items: center;
+}
+.home-suggestions-c .home-suggestions-lists{
+    margin-top: 6px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+.home-suggestions-c .home-suggestions-list .home-suggestions-profile-pic{
+    height: 34px;
+    margin-right: 12px;
+    width: 34px;
+}
+.home-suggestions-c .home-suggestions-list .home-suggestions-profile-pic img{
+    border-radius: 50%;
+    max-width: 100%;    
+    height: 33px;
+    width: 33px;
+}
+.home-suggestions-c .home-suggestions-list .home-suggestions-time a{
+    margin: 0;
+    color: rgb(38, 38, 38);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 600;
+    font-size: 14px;
+    min-width: 0;
+    display: flex;
+    flex-direction: row;
+}
+.home-suggestions-c .home-suggestions-list .home-suggestions-time {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    padding-right: 45px;
+}
+.home-suggestions-c .home-suggestions-list .home-suggestions-time p{
+    margin: 0;
+    color: rgb(153,153,153);
+    font-size: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 170px;
+}
+.follow_btn{
+    background: transparent;
+    border: none;
+    font-size: 12px;
+    color: #3897f0;
+    align-items: center;
+    font-weight: 600;
+    cursor: pointer;
+    position: absolute;
+    right: -6px;
+    top: 16px;
+}
+.follow_btn:focus{outline: none;}

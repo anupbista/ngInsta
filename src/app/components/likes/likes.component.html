@@ -1,0 +1,27 @@
+<div class="followersoverlay">
+  <div class="followers">
+    <div class="ftitle">
+      <h2>Likes</h2>
+      <button type="button" (click)="closePostDetail()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="fcontent">
+      <app-insta-loading *ngIf="followerLoading"></app-insta-loading>
+      <ul *ngIf="followers">
+        <li *ngFor="let follower of followers">
+          <div class="user-image">
+            <a [routerLink]="['/profile', follower.user.username]">
+              <img [src]="follower.user.profilePicture" alt="">
+            </a>
+          </div>
+          <div class="user-info">
+            <strong><a [routerLink]="['/profile', follower.user.username]">{{ follower.user.username }}</a></strong>
+            <small>{{ follower.user.displayName }}</small>
+          </div>
+          <button type="button" *ngIf="!follower.follow && !follower.mineuid" (click)="follow(follower)" class="followBtn">Follow</button>
+          <button type="button" *ngIf="follower.follow && !follower.mineuid" class="followingBtn">Following</button>
+          <button *ngIf="folllowReq &&!follower" class="followingBtn" [disabled]="folllowloading">Requested</button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

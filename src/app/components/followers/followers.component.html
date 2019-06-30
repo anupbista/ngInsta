@@ -1,0 +1,35 @@
+<div class="followersoverlay">
+  <div class="followers">
+    <div class="ftitle">
+      <h2>Followers</h2>
+      <button type="button" (click)="closePostDetail()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="fcontent" infiniteScroll
+    [infiniteScrollDistance]="2"
+    [infiniteScrollThrottle]="50"
+    [scrollWindow]="false"
+    (scrolled)="loadInfiniteFollowers()">
+      <ul *ngIf="followers">
+        <li *ngFor="let follower of followers">
+          <div class="user-image">
+            <a [routerLink]="['/profile', follower.user.username]">
+              <img [src]="_userService.profileImageApi+follower.user.userImage" alt="">
+            </a>
+          </div>
+          <div class="user-info">
+            <strong><a [routerLink]="['/profile', follower.user.username]">{{ follower.user.username }}</a></strong>
+            <small>{{ follower.user.displayName }}</small>
+          </div>
+          <ng-container *ngIf="follower.user.id != accountUser.id">
+              <button type="button" *ngIf="!follower.user.status" (click)="follow(follower)" class="followBtn">Follow</button>
+              <ng-container *ngIf="follower.user.status">
+                <button type="button" *ngIf="follower.user.status.followRequested === 0" class="followingBtn">Following</button>
+                <button *ngIf="follower.user.status.followRequested === 1" class="followingBtn" disabled>Requested</button>
+              </ng-container>
+          </ng-container>
+        </li>
+      </ul>
+      <app-insta-loading *ngIf="followerLoading"></app-insta-loading>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,50 @@
+<div class="newpostoverlay">
+  <div class="newpost" *ngIf="user">
+    <div class="fnewposttitle">
+      <h2>Add New Post</h2>
+      <button (click)="dismissNewPost()" [disabled]="submitted"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="newpostcontent">
+      <form [formGroup]="newPostForm" (ngSubmit)="onSubmit()">
+      <div class="insta-post-card">
+          <div class="post-header clearfix">
+            <div class="user-post-profile-pic">
+              <img [src]="_userService.profileImageApi+user.userImage" alt="{{user.username}}">     
+            </div>
+            <div class="form-group post-header-desc">
+              <h4>{{ user.username }}</h4>
+              <p><input type="text" placeholder="Location here..."  formControlName="postLocation" ></p>
+            </div>
+            <div class="form-group post-header-locations">
+              <button><i class="far fa-location-arrow"></i></button>
+            </div>
+            <div class="form-group">
+              <label>Enter address</label>
+              <input type="text" class="form-control" (keydown.enter)="$event.preventDefault()" placeholder="Search Nearest Location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search>
+            </div>
+          </div>
+          <div class="form-group post-image">
+            <img class="card-img-top" [src]="url" alt="Image" *ngIf="url">
+            <input type='file' class="imageUpload" (change)="onSelectFile($event)" formControlName="postImage">
+            <div *ngIf="submitted && f.postImage.errors">
+              <div *ngIf="f.postImage.errors.required">
+                  <div *ngIf="!removeAlert"class="alert" role="alert">
+                    Image is required.
+                  </div>
+              </div>
+            </div>
+          </div>
+          <div class="post-footer">
+            <div class="form-group post-caption">
+                <p><strong>{{ user.username }}</strong><input type="text" placeholder="Caption here..." formControlName="postCaption"></p>
+            </div>
+          </div>
+        </div>
+        <div class="newpostfooter">
+          <button (click)="dismissNewPost()" class="newPostCancel" type="button" [disabled]="submitted">Cancel</button>
+          <button type="submit" class="newPostSubmit" [disabled]="!newPostForm.valid || submitted"><span *ngIf="!submitted">Post</span><i class="fa fa-spinner fa-spin" *ngIf="submitted"></i></button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

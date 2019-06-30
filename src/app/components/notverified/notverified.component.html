@@ -1,0 +1,21 @@
+<div class="container not-verified">
+    <section>
+        <h2>Please verify your email address.</h2>
+        <p>To be able to use to your account you must verify your email address.</p>
+        <h4>Go to <span>{{ emailAddress }}</span> and verify.</h4>
+        <h5>If you did not make this request please <a data-toggle="modal" data-target="#deleteAccount">Click Here</a> to delete your account.</h5>
+		<button type="button" (click)="logout()" class="logoutBtn">Logout</button>
+	</section>
+</div>
+
+<!-- Delete Account Modal -->
+<div class="modal" id="deleteAccount" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<p>Are you sure you want to delete your account?</p>
+			<button (click)="deleteAccount()" data-dismiss="modal" class="deleteBtn">Delete Account</button>
+			<button data-dismiss="modal">Cancel</button>
+		</div>
+	</div>
+</div>
+	  

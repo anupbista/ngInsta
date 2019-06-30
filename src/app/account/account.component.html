@@ -1,0 +1,26 @@
+<app-header></app-header>
+
+<div class="container">
+  <div class="row account">
+    <div class="col-md-3 sidebar">
+      <ul>
+        <li><a [routerLink]="['edit']"
+        routerLinkActive="active">Edit Profile</a></li>
+        <!-- <li><a [routerLink]="['passwordchange']"
+        routerLinkActive="active">Change Password</a></li>
+        <li><a [routerLink]="['manage_access']"
+        routerLinkActive="active">Authorized Applications</a></li>
+        <li><a [routerLink]="['emailsettings']"
+        routerLinkActive="active">Email and SMS</a></li>
+        <li><a [routerLink]="['contact_history']"
+        routerLinkActive="active">Manage Contacts</a></li>
+        <li><a [routerLink]="['privacy_and_security']"
+        routerLinkActive="active">Privacy and Security</a></li> -->
+      </ul>
+    </div>
+    <main class="col-md-9">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+  <app-footer></app-footer>
+</div>

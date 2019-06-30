@@ -1,0 +1,28 @@
+
+<app-insta-loading *ngIf="loading"></app-insta-loading>
+
+<div class="no-data" *ngIf="noData && !loading">
+  <div class="no-data-icon">
+    <i class="fa fa-camera"></i>
+  </div>
+  <h1>No Posts Yet</h1>
+</div>
+
+<div class="gallery" *ngIf="!noData">
+    <div class="gallery-item" *ngFor="let profilePost of profilePosts; let i = index;">
+        <div [routerLink]="['p/', profilePost.id, i]" routerLinkActive="router-link-active" >
+          <img src="{{ _postsService.postImageApi+profilePost.postImage }}" class="gallery-image" alt="">
+    
+          <div class="gallery-item-info">
+            <ul>
+              <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span> <i class="fas fa-heart" aria-hidden="true"></i> {{ profilePost.likesNo }}</li>
+              <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span> <i class="fas fa-comment" aria-hidden="true"></i> {{ profilePost.commentsNo }}</li>
+            </ul> 
+    
+          </div>
+        </div>
+      </div>
+</div>
+<!-- End of gallery -->
+<router-outlet></router-outlet>
+

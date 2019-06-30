@@ -1,0 +1,61 @@
+<!-- Post Detail Modal -->
+<div *ngIf="currentPost">
+    <div class="postDetail-modal" id="postDetail" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="insta-loading" *ngIf="loading">
+        <img src="assets/insta-loading.gif" alt="Loading">
+      </div>
+      <div class="post-detail-content">
+        <div class="post-detail-img">
+          <img src="{{ currentPost.src }}" alt="">
+        </div>
+        <div class="post-detail-details">
+          <div class="post-details-header clearfix">
+            <div class="user-post-profile-pic">
+              <a *ngIf="currentPost.user.uid === _authService.authState.uid" [routerLink]="['/myprofile/', currentPost.user.username]">
+                <img src="{{ currentPost.user.profilePicture }}" alt="Discover Nepal">
+              </a>
+              <a *ngIf="currentPost.user.uid !== _authService.authState.uid" [routerLink]="['/profile/', currentPost.user.username]">
+                <img src="{{ currentPost.user.profilePicture }}" alt="Discover Nepal">
+              </a>
+            </div>
+            <div class="post-header-desc">
+                <a *ngIf="currentPost.user.uid === _authService.authState.uid" [routerLink]="['/myprofile/', currentPost.user.username]">{{ currentPost.user.username }}</a>
+                <a *ngIf="currentPost.user.uid !== _authService.authState.uid" [routerLink]="['/profile/', currentPost.user.username]">{{ currentPost.user.username }}</a>
+            </div>
+          </div>
+          <!-- body -->
+          <div class="post-details-body">
+              <div class="body-scroll">
+                <div class="post-caption">
+                    <p *ngIf="currentPost.user.uid === _authService.authState.uid"><a [routerLink]="['/myprofile/', currentPost.user.username]"><strong>{{ currentPost.user.username }}</strong></a>{{ currentPost.postCaption }}</p>
+                    <p *ngIf="currentPost.user.uid !== _authService.authState.uid"><a [routerLink]="['/profile/', currentPost.user.username]"><strong>{{ currentPost.user.username }}</strong></a>{{ currentPost.postCaption }}</p>
+                </div>
+                <div class="post-comments">
+    
+                </div>
+              </div>
+              <div class="post-buttons">
+                <div class="left-buttons">
+                  <button id="like_btn" *ngIf="!currentPost.liked" (click)="likePost(currentPost)"><i class="far fa-heart"></i></button>
+                  <button id="like_btn" *ngIf="currentPost.liked" (click)="unLikePost(currentPost)"><i class="fas fa-heart" style="color: red"></i></button>              <!-- <button id="comment_btn"><i class="far fa-comment"></i></button> -->
+                </div>
+                <div class="right-buttons">
+                  <!-- display delete button on myprofile and bookmark button on other's profile -->
+                  <!-- <button id="save_btn"><i class="far fa-bookmark"></i></button> -->
+                  <button id="save_btn" *ngIf="!currentPost.saved"type="button" (click)="savePost(currentPost)"><i class="far fa-bookmark"></i></button>
+                  <button id="save_btn" *ngIf="currentPost.saved"type="button" (click)="deleteSavedPost(currentPost.postID)"><i class="fas fa-bookmark"></i></button>                </div>
+              </div>
+              <div class="post-status">
+                <a *ngIf="currentPost.likes > 0" [routerLink]="['likes']"><strong>{{ currentPost.likes }} likes</strong></a>
+                <a *ngIf="currentPost.likes === 0"><strong>{{ currentPost.likes }} likes</strong></a>
+                <small>{{ currentPost.createdAt.toDate() | moment }}</small>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="postDetail-close" (click)="closePostDetail()"><i class="fas fa-times"></i></button>
+    <div class="modal-backdrop show"></div>
+    </div>
+    
+    <router-outlet></router-outlet>

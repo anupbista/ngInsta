@@ -1,0 +1,105 @@
+<app-header></app-header>
+
+<div class="container" *ngIf="userProfile">
+
+		<div class="profile">
+
+			<div class="profile-image">
+
+				<img [src]="_userService.profileImageApi+userProfile.userImage" alt="{{userProfile.username}}">
+
+			</div>
+
+			<div class="profile-user-settings">
+
+				<h1 class="profile-user-name">{{ userProfile.username }}</h1>
+
+				<button *ngIf="!userProfile.status" class="btn profile-edit-btn" (click)="follow(userProfile)" [disabled]="folllowloading">Follow</button>
+				<ng-container *ngIf="userProfile.status">
+					<button *ngIf="userProfile.status.followRequested === 0" class="btn profile-edit-btn" data-target="#followsettings" data-toggle="modal" [disabled]="folllowloading">Following</button>
+					<button *ngIf="userProfile.status.followRequested === 1" class="btn profile-edit-btn" [disabled]="folllowloading" data-target="#unfollowsettings" data-toggle="modal">Requested</button>
+					<button *ngIf="userProfile.status.followRequested === 0" class="btn profile-settings-btn" (click)="toggleSuggestions()" aria-label="profile settings"><i class="fas fa-caret-down"></i></button>
+				</ng-container>
+				<button class="report-btn" data-target="#reportsettings" data-toggle="modal"><i class="fas fa-ellipsis-h"></i></button>
+
+			</div>
+
+			<div class="profile-stats">
+				<ul>
+					<li><span class="profile-stat-count">{{ userProfile.noOfPosts }}</span> posts</li>
+					<li *ngIf="userProfile.followers === 0" ><span class="profile-stat-count">{{ userProfile.followers }}</span> followers</li>
+					<li *ngIf="userProfile.followers > 0" [routerLink]="['followers']"><span class="profile-stat-count">{{ userProfile.followers }}</span> followers</li>
+					<li *ngIf="userProfile.following === 0" ><span class="profile-stat-count">{{ userProfile.following }}</span> following</li>
+					<li *ngIf="userProfile.following > 0" [routerLink]="['following']"><span class="profile-stat-count">{{ userProfile.following }}</span> following</li>
+				</ul>
+			</div>
+
+			<div class="profile-bio">
+				<h1 class="profile-real-name">{{ userProfile.displayName }}</h1>
+				<br>
+				<p>{{ userProfile.website }}</p>
+				<p>{{ userProfile.bio }}</p>
+			</div>
+
+		</div>
+		<!-- End of profile section -->
+		
+		<div class="private" *ngIf="userProfile.privateProfile && !userProfile.status">
+			<h2>This Account is Private</h2>
+			<p>Follow to see their photos and videos.</p>
+		</div>
+
+		<ng-container *ngIf="userProfile.status">
+			<div *ngIf="userProfile.status.followRequested === 0">
+				<app-profilesuggestions *ngIf="showProfileSuggestions"></app-profilesuggestions>
+				
+				<div class="user-profile-tab">
+					<a [routerLink]="['posts']" routerLinkActive="active-user-profile-tab" ><i class="fas fa-th"></i>Posts</a>
+					<!-- <a [routerLink]="['tagged']" routerLinkActive="active-user-profile-tab" ><i class="fas fa-tags"></i> Tagged</a> -->
+				</div>
+				<router-outlet></router-outlet>
+			</div>
+		</ng-container>
+		<app-footer></app-footer>
+	</div>
+	<!-- End of container -->
+<main>
+
+<!-- Settings Modal -->
+<div class="modal" id="reportsettings" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<button data-dismiss="modal" >Report User</button>
+			<!-- <button data-dismiss="modal" >Block this user</button> -->
+			<button data-dismiss="modal">Cancel</button>
+		</div>
+	</div>
+</div>
+		  
+<!-- Follow Modal -->
+<div class="modal" id="followsettings" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content" *ngIf="userProfile">
+			<div class="user-profile-img">
+				<img [src]="_userService.profileImageApi+userProfile.userImage" alt="">
+			</div>
+			<p>Unfollow {{ userProfile.username }}</p>
+			<button data-dismiss="modal" style="color: #ed4956;font-weight: 700;" (click)="unFollow(userProfile)">Unfollow</button>
+			<button data-dismiss="modal">Cancel</button>
+		</div>
+	</div>
+</div>
+
+<!-- unFollow Modal -->
+<div class="modal" id="unfollowsettings" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content" *ngIf="userProfile">
+				<div class="user-profile-img">
+					<img [src]="_userService.profileImageApi+userProfile.userImage" alt="">
+				</div>
+				<p>Cancel follow request</p>
+				<button data-dismiss="modal" style="color: #ed4956;font-weight: 700;" (click)="unFollow(userProfile)">Cancel request</button>
+				<button data-dismiss="modal">Cancel</button>
+			</div>
+		</div>
+	</div>

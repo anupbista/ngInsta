@@ -1,0 +1,18 @@
+<div class="home-stories-c">
+    <div class="home-stories-c-h">
+        <span>Stories</span>
+        <a href="#"><strong>Watch All</strong></a>
+    </div>
+    <div class="home-stories-lists">
+        <a class="home-stories-list clearfix" *ngFor="let homeStorie of homeStories" href="#">
+            <canvas class="stories-av" height="40" width="40"></canvas>
+            <div class="home-stories-profile-pic">
+                <img src="{{ homeStorie.profile_img }}" alt="username">
+            </div>
+            <div class="home-stories-time">
+                <h4 href="#">{{ homeStorie.profile_name }}</h4>
+                <p>{{ homeStorie.profile_id }} hour ago</p>
+            </div>
+        </a>
+    </div>
+</div>

@@ -1,0 +1,91 @@
+<div class="login-page"> 
+    <div class="container">
+      <main>
+        <div class="login-slider">
+            <owl-carousel [options]="loginCarouselOptions" [carouselClasses]="['owl-theme', 'sliding']" >
+              <div class="login-slider-item">
+                <a class="login-slider-item-img" href="#">
+                  <img src="assets/login-slider-1.jpg" alt="">
+                </a>
+              </div>
+              <div class="login-slider-item">
+                <a class="login-slider-item-img" href="#">
+                  <img src="assets/login-slider-2.jpg" alt="">
+                </a>
+              </div>
+              <div class="login-slider-item">
+                <a class="login-slider-item-img" href="#">
+                  <img src="assets/login-slider-3.jpg" alt="">
+                </a>
+              </div>
+              <div class="login-slider-item">
+                <a class="login-slider-item-img" href="#">
+                  <img src="assets/login-slider-4.jpg" alt="">
+                </a>
+              </div>
+              <div class="login-slider-item">
+                <a class="login-slider-item-img" href="#">
+                  <img src="assets/login-slider-5.jpg" alt="">
+                </a>
+              </div>
+            </owl-carousel>
+        </div>
+        <div class="login-form-right">
+          <div class="login-form-card">
+              
+              <form (ngSubmit)="onSignUp(f)" #f="ngForm">
+                <div class="insta-logo">
+                  <img src="assets/insta-text-logo-dark.png" alt="">
+                </div>
+                <!-- <button class="login_fb_btn"><img src="assets/facebook-logo-blue.jpg" alt=""> Login with Facebook</button>
+                <div>
+                  <span>OR</span>
+                </div> -->
+                <div class="form-group">
+                  <input type="email" email name="email" placeholder="Email" ngModel #email="ngModel" required>
+                  <div *ngIf="email.touched && !email.valid">
+                      <div *ngIf="email.errors.required" class="error-message">Email is required</div>
+                      <div *ngIf="email.errors.email" class="error-message">Email must be a valid email address</div>
+                  </div>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="displayName" placeholder="Full Name" ngModel #displayname="ngModel" required>
+                    <div *ngIf="displayname.touched && !displayname.valid">
+                        <div *ngIf="displayname.errors.required" class="error-message">Full Name is required</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                  <input type="text" name="username" placeholder="Username" ngModel #username="ngModel" required>
+                  <div *ngIf="username.touched && !username.valid">
+                      <div *ngIf="username.errors.required" class="error-message">Username is required</div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <input type="password" name="password" placeholder="Password" ngModel #password="ngModel" required minlength="8">
+                  <div *ngIf="email.touched && !password.valid">
+                      <div *ngIf="password.errors.required" class="error-message">Password is required</div>
+                      <div *ngIf="password.errors.minlength" class="error-message">Password must be greater than 8 characters</div>
+                  </div>
+                </div>
+                <button class="login_btn" type="submit" [disabled]="!f.valid || submitted"><span *ngIf="!submitted">Sign Up</span><i class="fa fa-spinner fa-spin" *ngIf="submitted"></i></button>
+                <div class="error-message">{{ signinError }}</div>
+              </form>
+              <div class="termsandc">
+                  <p>By signing up, you agree to our <a target="_blank" href="#">Terms</a>, <a target="_blank" href="#">Data Policy</a> and <a target="_blank" href="#">Cookies Policy</a>.</p>
+              </div>
+          </div>
+          <div class="login-form-card login-form-card-b">
+            <p>Have an account? <a href="#" [routerLink]="['/login']" routerLinkActive="router-link-active" >Login</a></p>
+          </div>
+          <div class="get-app">
+            <span>Get the app.</span>
+            <div>
+              <a href="#"><img src="assets/app-store.png" alt=""></a>
+              <a href="#"><img src="assets/google-play-store.png" alt=""></a>
+            </div>
+          </div>
+        </div>
+    </main>
+    <app-footer></app-footer>
+    </div>
+  </div>

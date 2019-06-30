@@ -1,0 +1,42 @@
+<app-header></app-header>
+
+<main>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8" #instapost>
+                <app-insta-post></app-insta-post>
+            </div>
+            <div class="col-md-4 fixed-rt-col" stickyThing [spacer]="instapost">
+                <div class="my-profile-link clearfix" *ngIf="user">
+                    <div class="profile-img">
+                        <a [routerLink]="['/myprofile']" >
+                            <img [src]="_userService.profileImageApi+user.userImage" alt="{{user.username}}">
+                        </a>
+                    </div>
+                    <div class="profile-detail">
+                        <a [routerLink]="['/myprofile', user.username]">{{ user.username }}</a>
+                        <p>{{ user.displayName }}</p>
+                    </div>
+                </div>
+                <!-- <app-stories></app-stories> -->
+                <app-suggestions></app-suggestions>
+                <div class="home-footer">
+                    <nav>
+                        <a href="#">About Us</a>
+                        <a href="#">Support</a>
+                        <a href="#">Press</a>
+                        <a href="#">API</a>
+                        <a href="#">Jobs</a>
+                        <a href="#">Privacy</a>
+                        <a href="#">Terms</a>
+                        <a href="#">Directory</a>
+                        <a href="#">Profiles</a>
+                        <a href="#">Hashtags</a>
+                        <a href="#">Laguage</a>
+                    </nav>
+                    <p>&copy; {{ date | date:'yyyy' }} instagram</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

@@ -1,0 +1,75 @@
+<div class="login-page"> 
+  <div class="container">
+    <main>
+      <div class="login-slider">
+          <owl-carousel [options]="loginCarouselOptions" [carouselClasses]="['owl-theme', 'sliding']" >
+            <div class="login-slider-item">
+              <a class="login-slider-item-img" href="#">
+                <img src="assets/login-slider-1.jpg" alt="">
+              </a>
+            </div>
+            <div class="login-slider-item">
+              <a class="login-slider-item-img" href="#">
+                <img src="assets/login-slider-2.jpg" alt="">
+              </a>
+            </div>
+            <div class="login-slider-item">
+              <a class="login-slider-item-img" href="#">
+                <img src="assets/login-slider-3.jpg" alt="">
+              </a>
+            </div>
+            <div class="login-slider-item">
+              <a class="login-slider-item-img" href="#">
+                <img src="assets/login-slider-4.jpg" alt="">
+              </a>
+            </div>
+            <div class="login-slider-item">
+              <a class="login-slider-item-img" href="#">
+                <img src="assets/login-slider-5.jpg" alt="">
+              </a>
+            </div>
+          </owl-carousel>
+      </div>
+      <div class="login-form-right">
+        <div class="login-form-card">
+            <form (ngSubmit)="onLogin(f)" #f="ngForm">
+              <div class="insta-logo">
+                <img src="assets/insta-text-logo-dark.png" alt="">
+              </div>
+              <div class="form-group">
+                <input type="email" email name="email" #email="ngModel" placeholder="Email" ngModel required>
+                <div *ngIf="email.touched && !email.valid">
+                    <div *ngIf="email.errors.required" class="error-message">Email is required</div>
+                    <div *ngIf="email.errors.email" class="error-message">Email must be a valid email address</div>
+                </div>
+              </div>
+              <div class="form-group">
+                <input type="password" name="password" #password="ngModel" placeholder="Password" ngModel required>
+                <div *ngIf="email.touched && !password.valid">
+                    <div *ngIf="password.errors.required" class="error-message">Password is required</div>
+                </div>
+              </div>
+              <button class="login_btn" type="submit" [disabled]="!f.valid || submitted"><span *ngIf="!submitted">Login</span><i class="fa fa-spinner fa-spin" *ngIf="submitted"></i></button>
+              <div class="error-message">{{ loginError }}</div>
+            </form>
+            <!-- <div>
+              <span>OR</span>
+            </div>
+            <button class="login_fb_btn"><img src="assets/facebook-icon.png" alt=""> Login with Facebook</button> -->
+            <a href="#" class="forgot-password-link">Forgot password?</a>
+        </div>
+        <div class="login-form-card login-form-card-b">
+          <p>Don't have an account? <a href="#" [routerLink]="['/signup']" routerLinkActive="router-link-active" >Sign up</a></p>
+        </div>
+        <div class="get-app">
+          <span>Get the app.</span>
+          <div>
+            <a href="#"><img src="assets/app-store.png" alt=""></a>
+            <a href="#"><img src="assets/google-play-store.png" alt=""></a>
+          </div>
+        </div>
+      </div>
+  </main>
+  <app-footer></app-footer>
+  </div>
+</div>

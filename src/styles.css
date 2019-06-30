@@ -1,0 +1,286 @@
+/* You can add global styles to this file, and also import other style files */
+@font-face {
+    font-family: 'Metropolis';
+    src: url('assets/fonts/Metropolis-Regular.ttf'),
+         url('assets/fonts/Metropolis-Black.ttf'),
+         url('assets/fonts/Metropolis-BlackItalic.ttf'),
+         url('assets/fonts/Metropolis-Bold.ttf'),
+         url('assets/fonts/Metropolis-ExtraLight.ttf')
+}
+*{
+    font-family: 'Metropolis';
+}
+ul{padding: 0;margin: 0;}
+li{list-style: none;}
+body{
+    background-color: #fafafa;
+}
+a{text-decoration: none;color:#000;}
+a:hover{text-decoration: none;}
+@media (min-width: 1200px) {
+    .container{
+        max-width: 935px;
+    }
+}
+button:focus{
+    outline: none;box-shadow: none;
+}
+.profile-suggested-cards .owl-carousel .owl-nav .owl-next,
+.profile-suggested-cards .owl-carousel .owl-nav .owl-prev{
+    position: relative;
+    background: #808080;
+    border: none;
+    outline: none;
+    height: 25px;
+    opacity: 0.8;
+    z-index: 999;
+    width: 25px;
+    font-size: 14px;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #fff;
+    border-radius: 50%;
+    padding-top: 2px !important;
+}
+.profile-suggested-cards .owl-carousel .owl-nav .owl-next{
+    left: 11%;
+}
+.profile-suggested-cards .owl-carousel .owl-nav .owl-next:before{
+    content: "\f054";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+}
+.profile-suggested-cards .owl-carousel .owl-nav .owl-prev{
+    left: 24px;
+}   
+.profile-suggested-cards .owl-carousel .owl-nav .owl-prev:before{
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    content: "\f053";
+}
+.profile-suggested-cards .owl-carousel .owl-nav{
+    position: relative;
+    top: -100px;
+}
+
+/* For Toast */
+
+/* based on angular-toastr css https://github.com/Foxandxss/angular-toastr/blob/cb508fe6801d6b288d3afc525bb40fee1b101650/dist/angular-toastr.css */
+
+/* position */
+.toast-center-center {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .toast-top-center {
+    top: 0;
+    right: 0;
+    width: 100%;
+  }
+  .toast-bottom-center {
+    bottom: 0;
+    right: 0;
+    width: 100%;
+  }
+  .toast-top-full-width {
+    top: 0;
+    right: 0;
+    width: 100%;
+  }
+  .toast-bottom-full-width {
+    bottom: 0;
+    right: 0;
+    width: 100%;
+  }
+  .toast-top-left {
+    top: 12px;
+    left: 12px;
+  }
+  .toast-top-right {
+    top: auto;
+    right: auto;
+    bottom: 0;
+    left: auto;
+    width: 100%;
+  }
+  .toast-bottom-right {
+    right: 12px;
+    bottom: 12px;
+  }
+  .toast-bottom-left {
+    bottom: 12px;
+    left: 12px;
+  }
+  
+  /* toast styles */
+  .toast-title {
+    font-weight: bold;
+  }
+  .toast-message {
+    word-wrap: break-word;
+  }
+  .toast-message a,
+  .toast-message label {
+    color: #FFFFFF;
+  }
+  .toast-message a:hover {
+    color: #CCCCCC;
+    text-decoration: none;
+  }
+  .toast-close-button {
+    position: relative;
+    right: -0.3em;
+    top: -0.3em;
+    float: right;
+    font-size: 14px;
+    color: #FFFFFF;
+    /* opacity: 0.8; */
+  }
+  .toast-close-button:hover,
+  .toast-close-button:focus {
+    color: #000000;
+    text-decoration: none;
+    cursor: pointer;
+    opacity: 0.4;
+  }
+  /*Additional properties for button version
+   iOS requires the button element instead of an anchor tag.
+   If you want the anchor version, it requires `href="#"`.*/
+  button.toast-close-button {
+    padding: 0;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+  }
+  .toast-container {
+    pointer-events: none;
+    position: fixed;
+    z-index: 999999;
+  }
+  .toast-container * {
+    box-sizing: border-box;
+  }
+  .toast-container .toast {
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+    padding: 15px ;
+    font-size: 14px;
+    background-position: 15px center;
+    background-repeat: no-repeat;
+    background-size: 24px;
+    color: #FFFFFF;
+    text-align: left;
+  }
+  .toast-container .toast:hover {
+    opacity: 1;
+    cursor: pointer;
+  }
+
+  .toast-container.toast-top-center .toast,
+  .toast-container.toast-bottom-center .toast {
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .toast-container.toast-top-full-width .toast,
+  .toast-container.toast-bottom-full-width .toast {
+    width: 96%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .toast {
+    background-color: #030303;
+    pointer-events: auto;
+  }
+  .toast-success {
+    background-color: #7ece7e;
+  }
+  .toast-error {
+    background-color: #da7d78;
+  }
+  .toast-info {
+    background-color: #3897f0;
+  }
+  .toast-warning {
+    background-color: #e2b87d;
+  }
+  .toast-progress {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 4px;
+    background-color: #000000;
+    opacity: 0.4;
+  }
+  /* Responsive Design */
+  @media all and (max-width: 240px) {
+    .toast-container .toast.div {
+      padding: 8px 8px 8px 50px;
+      width: 11em;
+    }
+    .toast-container .toast-close-button {
+      right: -0.2em;
+      top: -0.2em;
+    }
+  }
+  @media all and (min-width: 241px) and (max-width: 480px) {
+    .toast-container .toast.div {
+      padding: 8px 8px 8px 50px;
+      width: 18em;
+    }
+    .toast-container .toast-close-button {
+      right: -0.2em;
+      top: -0.2em;
+    }
+  }
+  @media all and (min-width: 481px) and (max-width: 768px) {
+    .toast-container .toast.div {
+      padding: 15px 15px 15px 50px;
+      width: 25em;
+    }
+  }
+
+  /* h-loader */
+  ._it4vx {
+    height: 3px;
+    background: #27c4f5 -webkit-gradient(linear, left top, right top, from(#27c4f5), color-stop(#a307ba), color-stop(#fd8d32), color-stop(#70c050), to(#27c4f5));
+    background: #27c4f5 -webkit-linear-gradient(left, #27c4f5, #a307ba, #fd8d32, #70c050, #27c4f5);
+    background: #27c4f5 linear-gradient(to right, #27c4f5, #a307ba, #fd8d32, #70c050, #27c4f5);
+    background-size: 500%;
+    -webkit-animation: 2s linear infinite LoadingBarProgress, .5s ease-out LoadingBarEnter;
+    animation: 2s linear infinite LoadingBarProgress, .5s ease-out LoadingBarEnter;
+    -webkit-transform-origin: left;
+    transform-origin: left;
+    width: 100%;
+  }
+  
+  ._72fik {
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 99;
+  }
+  
+  @keyframes LoadingBarProgress {
+    0% {
+      background-position: 0% 0;
+    }
+    to {
+      background-position: 125% 0;
+    }
+  }
+  @keyframes LoadingBarEnter {
+    0% {
+      -webkit-transform: scaleX(0);
+      transform: scaleX(0);
+    }
+    to {
+      -webkit-transform: scaleX(1);
+      transform: scaleX(1);
+    }
+  }
+  

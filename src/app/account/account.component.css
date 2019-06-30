@@ -1,0 +1,41 @@
+.account {
+    margin: 130px 0 0 0;
+    background-color: #fff;
+    border: 1px solid #dbdbdb;
+    border-radius: 3px;
+    overflow: hidden;
+    width: 100%;
+}
+.account .sidebar {
+    padding: 0;
+    border-right: 1px solid #dbdbdb;
+}
+.account .sidebar ul{
+    padding: 0;
+    margin: 0;
+}
+.account .sidebar ul li{
+    list-style: none;
+}
+.account .sidebar ul li > a{
+    border-left: 2px solid transparent;
+    display: block;
+    font-size: 15px;
+    height: 100%;
+    line-height: 20px;
+    padding: 16px 16px 16px 30px;
+}
+.account .sidebar ul li > a.active,
+.account .sidebar ul li > a.active:hover{
+    border-left-color: #262626;
+    color: #262626;
+    font-weight: 600;
+}
+.account .sidebar ul li > a:hover{
+    background-color: #fafafa;
+    color: inherit;
+    border-left-color: #dbdbdb;
+}
+main{
+    padding: 30px;
+}

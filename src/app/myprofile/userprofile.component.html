@@ -1,0 +1,81 @@
+<app-header></app-header>
+
+<div class="container" *ngIf="user">
+
+	<div class="profile">
+
+		<div class="profile-image">
+
+			<img [src]="_userService.profileImageApi+user.userImage" alt="">
+
+		</div>
+
+		<div class="profile-user-settings">
+
+			<h1 class="profile-user-name">{{ user.username }}</h1>
+
+			<button class="btn profile-edit-btn" [routerLink]="['/accounts']">Edit Profile</button>
+
+			<button class="settings-btn" data-toggle="modal" data-target="#settings"><i class="fas fa-cog"></i></button>
+
+		</div>
+
+		<div class="profile-stats">
+
+			<ul>
+				<li><span class="profile-stat-count">{{ user.noOfPosts }}</span> posts</li>
+				<li *ngIf="user.followers === 0" ><span class="profile-stat-count">{{ user.followers }}</span> followers</li>
+				<li *ngIf="user.followers > 0" [routerLink]="['followers']"><span class="profile-stat-count">{{ user.followers }}</span> followers</li>
+				<li *ngIf="user.following === 0" ><span class="profile-stat-count">{{ user.following }}</span> following</li>
+				<li *ngIf="user.following > 0" [routerLink]="['following']"><span class="profile-stat-count">{{ user.following }}</span> following</li>
+			</ul>
+
+		</div>
+
+		<div class="profile-bio">
+			<h1 class="profile-real-name">{{ user.displayName }}</h1>
+			<p>{{ user.website }}</p>
+			<p>{{ user.bio }}</p>
+
+		</div>
+
+	</div>
+	<!-- End of profile section -->
+
+	<app-profilesuggestions *ngIf="showProfileSuggestions"></app-profilesuggestions>
+	
+	<div class="user-profile-tab">
+		<a [routerLink]="['myposts']" routerLinkActive="active-user-profile-tab" > <i class="fas fa-th"></i>Posts</a>
+		<a [routerLink]="['mysaved']" routerLinkActive="active-user-profile-tab" ><i class="far fa-bookmark"></i> Saved</a>
+		<!-- <a [routerLink]="['mytagged']" routerLinkActive="active-user-profile-tab" ><i class="fas fa-tags"></i> Tagged</a> -->
+	</div>
+	<router-outlet></router-outlet>
+	<app-footer></app-footer>
+</div>
+
+<!-- End of container -->
+
+<!-- Settings Modal -->
+<div class="modal" id="settings" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<!-- <button [routerLink]="['/accounts/passwordchange']" data-dismiss="modal" >Change Password</button> -->
+			<button data-toggle="modal" data-target="#nametag">Nametag</button>
+			<!-- <button>Notifications</button> -->
+			<!-- <button>Privacy and Security</button> -->
+			<button (click)="logout()" data-dismiss="modal">Logout</button>
+			<button data-dismiss="modal">Cancel</button>
+		</div>
+	</div>
+</div>
+
+<div class="modal" id="nametag" tabindex="-1" role="dialog" aria-hidden="true" *ngIf="user" >
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<p>Scan this nametag</p>
+			<qrcode [qrdata]="'https://www.ngInsta.com/myprofile/'+user.username+'/myposts'" [size]="256" [level]="'M'"></qrcode>
+			<button data-dismiss="modal">Cancel</button>
+		</div>
+	</div>
+</div>
+	  

@@ -1,0 +1,20 @@
+<div class="profile-suggested">
+  <div class="row">
+    <div class="col-md-12">
+      <h4>Suggested</h4>
+      <div class="profile-suggested-cards" *ngIf="user">
+          <owl-carousel [options]="profileSuggestionsCarouselOptions" [items]="user" [carouselClasses]="['owl-theme', 'row', 'sliding']" >
+            <div class="profile-suggested-card item" *ngFor="let profileSuggestion of user;let i = index">
+              <div class="profile-suggested-img" [routerLink]="['/profile',profileSuggestion.username]">
+                <img src="{{ profileSuggestion.profilePicture }}" alt="">
+              </div>
+              <div [routerLink]="['/profile',profileSuggestion.username]" class="profile-suggested-name">{{ profileSuggestion.username }}</div>
+              <small class="full_name">{{ profileSuggestion.displayName }}</small>
+              <!-- <button class="follow_btn" (click)="follow(profileSuggestion)">Follow</button>
+              <button class="remove_btn"><i class="fas fa-times"></i></button> -->
+            </div>
+          </owl-carousel>
+        </div>
+    </div>
+  </div>
+</div>

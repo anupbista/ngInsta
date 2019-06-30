@@ -1,0 +1,67 @@
+main{
+    padding-top: 130px;
+}
+.my-profile-link .profile-img{
+    height: 50px;
+    width: 50px;
+    float: left;
+    margin-right: 12px;
+}
+.my-profile-link .profile-img img{
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+}
+.my-profile-link .profile-detail{
+    float: left;
+    margin-top: 5px;
+}
+.my-profile-link .profile-detail a{
+    display: block;
+    color: #262626;
+    font-weight: 600;
+    font-size: 14px;
+}
+.my-profile-link .profile-detail p{
+    font-size: 12px;
+    line-height: 14px;
+    margin: 0;
+    color: rgb(135, 135, 135);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.fixed-rt-col{
+    top: 0px !important;
+    position: relative;
+    transition: top 0.1s ease !important;
+}
+.fixed-rt-col.is-sticky{
+    top: 78px !important;
+}
+.home-footer nav a{
+    display: inline-block;
+    color: #c7c7c7;
+    font-size: 11px;
+    font-weight: 400;
+    text-transform: capitalize;
+    line-height: 13px;
+}
+.home-footer{margin-top: 12px;padding: 2px;padding-bottom: 38px;}
+.home-footer nav{line-height: 18px;margin-bottom: 16px;}
+.home-footer nav a:hover{
+    color: #c7c7c7;
+}
+.home-footer nav a:after{
+    content: '\00B7';
+    margin: 0 .25em;
+}
+.home-footer nav a:last-child:after{
+    display: none;
+}
+.home-footer p{
+    color: #c7c7c7;;;
+    font-size: 11px;
+    font-weight: 400;
+    text-transform: uppercase;
+}

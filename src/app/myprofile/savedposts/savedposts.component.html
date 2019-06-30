@@ -1,0 +1,34 @@
+
+<app-insta-loading *ngIf="loading"></app-insta-loading>
+<p class="message" *ngIf="!loading && !noData">Only you can see what you've saved</p>
+<div class="no-data" *ngIf="noData && !loading">
+    <div class="no-data-l">
+      <img src="assets/myposts.jpg" alt="">
+    </div>
+    <div class="no-data-r">
+      <strong>Start capturing and sharing your moments.</strong>
+      <small>Get the app to share your first photo or video.</small>
+      <p class="get-app">
+        <a href="#"><img src="assets/app-store.png" alt=""></a>
+        <a href="#"><img src="assets/google-play-store.png" alt=""></a>
+      </p>
+    </div>
+  </div>
+    
+    <div class="gallery" *ngIf="!noData || profilesavedPosts">
+  <div class="gallery-item" *ngFor="let profilesavedPost of profilesavedPosts; let i = index">
+      <div [routerLink]="['p/',profilesavedPost.postID,i]" routerLinkActive="router-link-active" >
+        <img src="{{ profilesavedPost.src }}" class="gallery-image" alt="">
+  
+        <div class="gallery-item-info">
+          <ul>
+            <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span> <i class="fas fa-heart" aria-hidden="true"></i> {{ profilesavedPost.likes }}</li>
+            <!-- <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span> <i class="fas fa-comment" aria-hidden="true"></i> {{ profilesavedPost.likes }}</li> -->
+          </ul>
+  
+        </div>
+      </div>
+    </div>
+</div>
+<!-- End of gallery -->
+<router-outlet></router-outlet>

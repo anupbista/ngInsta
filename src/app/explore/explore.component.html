@@ -1,0 +1,25 @@
+<app-header></app-header>
+
+<div class="container">
+  <div class="explore">
+      <h2>Explore</h2>
+      <app-insta-loading *ngIf="loading"></app-insta-loading>
+      <div class="gallery">
+          <div class="gallery-item" *ngFor="let explorePost of explorePosts">
+              <a [routerLink]="['p/',explorePost.postID]">
+                <img src="{{ explorePost.src }}" class="gallery-image" alt="">
+          
+                <div class="gallery-item-info">
+                  <ul>
+                    <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span> <i class="fas fa-heart" aria-hidden="true"></i> {{ explorePost.likes }}</li>
+                    <!-- <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span> <i class="fas fa-comment" aria-hidden="true"></i> {{ explorePost.likes }}</li> -->
+                  </ul>
+          
+                </div>
+              </a>
+            </div>
+      </div>
+  </div>
+  <app-footer></app-footer>
+</div>
+<router-outlet></router-outlet>

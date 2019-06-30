@@ -1,0 +1,95 @@
+<span *ngIf="progress" class="_it4vx _72fik"></span>
+<div class="edit">
+  <form *ngIf="user" [formGroup]="editForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+          <!-- Profile Image -->
+          <div class="profile-image">
+            <img class="card-img-top" [src]="_userService.profileImageApi+user.userImage" alt="Image">
+          </div>
+          <!-- / Profile Image -->
+          <div class="profile-detail">
+            <h1>{{ user.username }}</h1>
+            <button type="button" [disabled]="progress" *ngIf="!progress"><input type='file' accept="image/*" class="imageUpload" (change)="changeProfilePicture($event)"/>Change Profile Photo</button>
+          </div>
+      </div>
+      <div class="form-group">
+          <label for="name" class="col-sm-3 control-label">Name</label>
+          <div class="edit-input">
+              <input type="text" class="form-control" formControlName="displayName" >
+              <div *ngIf="f.displayName.touched && !f.displayName.valid" class="input-error">
+                <p *ngIf="f.displayName.errors.required" class="error-mesage">Name is required</p>
+              </div>
+          </div>
+      </div>
+      <div class="form-group">
+          <label for="username" class="col-sm-3 control-label">Username</label>
+          <div class="edit-input">
+              <input type="text" class="form-control" formControlName="username" >
+              <div *ngIf="f.username.touched && !f.username.valid" class="input-error">
+                <p *ngIf="f.username.errors.required" class="error-mesage">Username is required</p>
+              </div>
+          </div>
+      </div>
+      <div class="form-group">
+          <label for="website" class="col-sm-3 control-label">Website</label>
+          <div class="edit-input">
+              <input type="text" class="form-control" formControlName="website">
+          </div>
+      </div>
+      <div class="form-group">
+          <label for="bio" class="col-sm-3 control-label">Bio</label>
+          <div class="edit-input">
+              <textarea name="bio" formControlName="bio" ></textarea>
+          </div>
+      </div>
+      <div class="form-group">
+          <label class="col-sm-3 control-label"></label>
+          <div class="edit-input">
+              <span>Private Information</span>
+          </div>
+      </div>
+      <div class="form-group">
+          <label for="email" class="col-sm-3 control-label">Email</label>
+          <div class="edit-input">
+              <input type="email" email class="form-control" formControlName="email" readonly>
+          </div>
+      </div>
+      <div class="form-group">
+          <label for="phonenumber" class="col-sm-3 control-label">Phone Number</label>
+          <div class="edit-input">
+              <input type="text" class="form-control" formControlName="phoneNumber" >
+          </div>
+      </div>
+      <div class="form-group">
+        <label for="profileStatus" class="col-sm-3 control-label">Private Profile</label>
+        <div class="edit-input">
+            <label class="switch">
+                <input type="checkbox" formControlName="privateProfile">
+                <span class="slider round"></span>
+            </label>
+        </div>
+    </div>
+      <div class="form-group gender-select">
+          <label for="gender" class="col-sm-3 control-label">Gender</label>
+          <div class="edit-input">
+            <select class="form-control" formControlName="gender">
+              <option *ngFor="let gender of genders" [ngValue]="gender.value">{{ gender.name }}</option>
+            </select>
+          </div>
+      </div>
+      <!-- <div class="form-group sasuggestion">
+          <label for="sasuggestion" class="col-sm-3 control-label">Similar Account Suggestions</label>
+          <div class="edit-input">
+              <input name="sasuggestion" type="checkbox">
+              <p>Include your account when recommending similar accounts people might want to follow. <a href="#">[?]</a></p>
+          </div>
+      </div> -->
+      <div class="form-group">
+          <label class="col-sm-3 control-label"></label>
+          <div class="edit-input">
+              <button [disabled]="!editForm.dirty || !editForm.valid || submitted" type="submit"><span *ngIf="!submitted">Submit</span><i class="fa fa-spinner fa-spin" *ngIf="submitted"></i></button>
+              <!-- <button>Temporarily disable my account</button> -->
+          </div>
+      </div>
+  </form>
+</div>

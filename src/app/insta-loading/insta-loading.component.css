@@ -1,0 +1,14 @@
+.insta-loading{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    padding: 30px 0;
+    justify-content: center;
+    flex-direction: row;
+    margin: 30px 0;
+}
+.insta-loading img{
+    height: 30px;
+    width: 30px;
+}

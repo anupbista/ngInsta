@@ -1,0 +1,30 @@
+footer{
+    padding: 38px 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+footer .footer-left{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 0;
+}
+footer .footer-left li{
+    list-style: none;
+    display: inline-block;
+    margin-bottom: 7px;
+    margin-right: 16px;
+    text-transform: uppercase;
+}
+footer .footer-left li a{
+    color: #003569;
+    font-size: 12px;
+    font-weight: 600;
+}
+footer .footer-right span{
+    text-transform: uppercase;
+    color: #999;
+    font-size: 12px;
+    font-weight: 600;
+}

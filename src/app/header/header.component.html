@@ -1,0 +1,128 @@
+<header [ngClass]="{'header_nav--big':!isShrunk, 'header_nav--small':isShrunk}">
+<nav class="container navbar navbar-expand-lg navbar-light" id="navbar" >
+
+  <div class="brand-logo">
+    <a class="navbar-brand" routerLink=""><i class="fab fa-instagram"></i></a>
+    <span></span>
+    <a class="navbar-brand text-logo" routerLink=""><img src="assets/insta-text-logo.png" alt="Instagram"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  </div>
+
+  <div class="nav-search">
+    <form class="form-inline my-2 my-lg-0">
+      <div [class.animatePlaceholder]="animatePlaceholder" class="searchPlaceholder">
+          <i class="fas fa-search"></i>
+          <span>{{ searchInputText }}</span>
+          <i class="fas fa-times" *ngIf="!searchloading" (click)="noAnimatePlaceholder()"></i>
+          <div class="insta-loading" *ngIf="searchloading">
+            <img src="assets/insta-loading.gif" alt="Loading">
+          </div>
+      </div>
+      <input [formControl]="usersearch" #headersearch class="form-control mr-sm-2" type="search" placeholder="" aria-label="xs" (focus)="toAnimatePlaceholder()" (blur)="noAnimatePlaceholder()">
+    </form>
+
+    <div class="search-result-wrapper" *ngIf="!searchloading && showResults">
+      <span></span>
+      <div class="search-suggestions-lists">
+        <div class="not-found" *ngIf="searchResults.length == 0 && !searchloading && showResults">No results found.</div>
+        <div class="search-suggestions-list" *ngFor="let searchResult of searchResults">
+            <div [routerLink]="['/profile',searchResult.username]">
+                <div class="search-suggestions-profile-pic">
+                    <img [src]="_userService.profileImageApi+searchResult.userImage" alt="">
+                </div>
+                <div class="search-suggestions-time">
+                    <a>{{ searchResult.username }}</a>
+                    <p>{{ searchResult.displayName }}</p>
+                </div>
+              </div>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="collapse navbar-collapse navbar-right" id="navbarSupportedContent" *ngIf="user">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" [routerLink]="'/myprofile/'+user.username+'/myposts/newpost'"><i class="far fa-plus-square"></i></a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" routerLink="/explore"><i class="far fa-compass"></i></a>
+      </li>
+      <li class="nav-item dropdown notifications">
+        <i class="fas fa-circle notiDot" *ngIf="showNotiDot"></i>
+        <a class="nav-link dropdown-toggle" href="#" id="notifications" (click)="loadNotis()" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="far fa-heart"></i>
+            <input type="text" (blur)="dosetSeen()" style="position: absolute;height: 37px;width: 36px;left: 0;top: 6px;opacity:0;cursor: pointer;">
+        </a>
+        <!-- <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <span></span>
+          <app-insta-loading *ngIf="notiLoading"></app-insta-loading>
+          <div class="noti-contents" *ngIf="!notiLoading">
+              <div class="follow-req" *ngIf="showNotis" (click)="showFollowRequets($event)">
+                <div class="follow-req-no">
+                  {{ noFollowRequests }}
+                </div>
+                <div class="follow-req-desc">
+                    <a>Follow Requests</a>
+                    <p>Approve or ignore requests</p>
+                </div>
+                <i class="fas fa-chevron-right"></i>
+              </div>
+
+              <div class="follow-lists" *ngIf="showFollowReq">
+                <div class="follow-h" (click)="doshowNotis($event)">
+                  <i class="fas fa-chevron-left"></i>
+                  Follow Requests
+                </div>
+                <div *ngIf="followRequests">
+                  <div class="follow-r" *ngFor="let followRequest of followRequests">
+                    <div class="follow-r-pic">
+                        <img [src]="followRequest.user.profilePicture" alt="">
+                      </div>
+                    <div class="follow-r-desc">
+                        <a>{{ followRequest.user.username }}</a>
+                        <p>{{ followRequest.user.displayName }}</p>
+                    </div>
+                    <div class="buttons">
+                        <button class="approve_btn" (click)="approveFollowReq($event, followRequest.notiID, followRequest.user.uid)">Approve</button>
+                        <button class="hide_btn" (click)="hideFollowReq($event, followRequest.notiID, followRequest.user.uid)">Hide</button>
+                    </div>
+                  </div>
+                  <div *ngIf="!followRequests" style="text-align:center;">
+                    No follow Reuests
+                  </div>
+                </div>
+              </div>
+
+              <div class="notis" *ngIf="showNotis && otherNotis">
+                <div class="noti like-noti" *ngFor="let otherNoti of otherNotis">
+                  <div class="noti-pro-pic">
+                    <img [src]="otherNoti.user.profilePicture" alt="">
+                  </div>
+                  <div class="noti-desc" *ngIf="otherNoti.type === 'followaccepted'" style="padding-right:0;">
+                      <p><strong>{{ otherNoti.user.username }}</strong> accepted your follow request. <small>{{ otherNoti.time.toDate() | moment: 'MMMM Do YYYY, h:mm:ss a' }}</small></p>
+                  </div>
+                  <div class="noti-desc" [ngClass]="{'no-r-p': otherNoti.type === 'userfollowed'}" *ngIf="otherNoti.type === 'userfollowed'">
+                    <p><strong>{{ otherNoti.user.username }}</strong> started following you. <small>{{ otherNoti.time.toDate() | moment: 'MMMM Do YYYY, h:mm:ss a' }}</small></p>
+                  </div>
+                  <div class="noti-desc" [ngClass]="{'no-r-p': otherNoti.type === 'postliked'}" *ngIf="otherNoti.type === 'postliked'">
+                    <p><strong>{{ otherNoti.user.username }}</strong> likes your post. <small>{{ otherNoti.time.toDate() | moment: 'MMMM Do YYYY, h:mm:ss a' }}</small></p>
+                  </div>
+                  <div class="noti-pic" *ngIf="otherNoti.type === 'postliked'">
+                    <img [src]="otherNoti.src" alt="">
+                </div>
+              </div>
+              </div>
+          </div>
+        </div> -->
+      </li>
+      <li class="nav-item">
+          <a class="nav-link" *ngIf="user" [routerLink]="['/myprofile', user.username]"><i class="far fa-user"></i></a>
+        </li>
+    </ul>
+  </div>
+
+</nav>
+</header>
