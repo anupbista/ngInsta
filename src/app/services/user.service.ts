@@ -87,6 +87,10 @@ export class UserService {
     return this._apiserviceService.ngInstaPutImage(image, "user/profile/"+id+"/profileimage", localStorage.token);    
   }
 
+  getOtherNotifications(userId): Promise<any>{
+    return this._apiserviceService.ngInstaGet("user/othernotifications/"+userId, localStorage.token);
+  }
+
   getAllUser(){
   
   }

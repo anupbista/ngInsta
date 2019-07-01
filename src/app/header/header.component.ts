@@ -33,6 +33,7 @@ export class HeaderComponent implements OnInit {
   notiLoading:boolean = false;
   showNotiDot: boolean = false;
   setSeen: boolean = false;
+
   userSubscription: Subscription;
 
   constructor(zone: NgZone, private _userService: UserService, private _authService: AuthService) {
@@ -50,6 +51,7 @@ export class HeaderComponent implements OnInit {
     this.userSubscription = this._userService.user.subscribe(
       (user) => {
         this.user = user;
+        this.getOtherNotis();
         // console.log(this.user)
       }
     );
@@ -114,6 +116,21 @@ export class HeaderComponent implements OnInit {
     //   });
 
       
+  }
+
+  async getOtherNotis(){
+    this.notiLoading = true;
+    this.otherNotis  = await this._userService.getOtherNotifications('8d4fdc8f-d393-498b-a078-08fc304c6c9c');
+    this.notiLoading = false;
+    this.otherNotis.map(
+      (otherNoti: any) => {
+        if(otherNoti.status === false){
+          this.showNotiDot = true;
+        }
+        return otherNoti;
+      }
+    );
+    console.log(this.otherNotis);
   }
 
 

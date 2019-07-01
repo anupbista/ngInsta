@@ -118,6 +118,13 @@ export class InstaPostComponent implements OnInit, OnDestroy {
   async loadInfinitePosts(){
     this.page = this.page + 1;
     let posts = await this._postsService.getPosts(this.user.id, this.page);
+    posts.forEach(element => {
+      if(element.likes.find(o => o.userId === this.user.id)){
+        element.liked = true;
+      }else{
+        element.liked = false;
+      }
+    });
     this.posts = [...this.posts, ...posts];
     console.log(this.posts)
   }
