@@ -5,6 +5,7 @@ import { FormControl } from '@angular/forms';
 import { switchMap, debounceTime, distinctUntilChanged, mergeMap, flatMap } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
 import { Observable, Subscription } from 'rxjs';
+import { PostsService } from '../services/posts.service';
 
 @Component({
   selector: 'app-header',
@@ -27,16 +28,15 @@ export class HeaderComponent implements OnInit {
   showNotis: boolean = true;
   showFollowReq: boolean = false;
 
-  followRequests: [];
-  noFollowRequests: string = '0';
+  followRequests: any[] = [];
+  noFollowRequests: number = 0;
   otherNotis: [];
   notiLoading:boolean = false;
   showNotiDot: boolean = false;
-  setSeen: boolean = false;
 
   userSubscription: Subscription;
 
-  constructor(zone: NgZone, private _userService: UserService, private _authService: AuthService) {
+  constructor(zone: NgZone, private _userService: UserService, private _authService: AuthService, private _postService: PostsService) {
     window.onscroll = () => {
       zone.run(() => {
         if(window.pageYOffset > 100) {
@@ -52,6 +52,7 @@ export class HeaderComponent implements OnInit {
       (user) => {
         this.user = user;
         this.getOtherNotis();
+        this.getFollowNotis();
         // console.log(this.user)
       }
     );
@@ -76,45 +77,6 @@ export class HeaderComponent implements OnInit {
           this.searchResults = response;
         }
       })
-
-    //   this.notiLoading = true;
-    //   // get follow req notifications
-    //   this._userService.getFollowReqNotifications(this._authService.authState.uid).subscribe(
-    //     userNoti => {
-    //       console.log(userNoti);
-    //       this.notiLoading = false;
-    //       if(userNoti.length > 10){
-    //         this.noFollowRequests = '10+';
-    //       }else{
-    //         this.noFollowRequests = userNoti.length;
-    //       }
-    //       let f = userNoti.filter(
-    //         (otherNoti) => {
-    //           if(otherNoti.seen === false){
-    //             this.showNotiDot = true;
-    //           }
-    //           return otherNoti.type !== 'default'
-    //         }
-    //       );
-    //       this.followRequests = f;
-    //     }
-    //   )
-    
-    //   this._userService.getOtherNotis(this._authService.authState.uid).subscribe(
-    //   (otherNotis) => {
-    //     console.log(otherNotis);
-    //     this.notiLoading = false;
-    //     let f = otherNotis.filter(
-    //       (otherNoti) => {
-    //         if(otherNoti.seen === false){
-    //           this.showNotiDot = true;
-    //         }
-    //         return otherNoti.type !== 'default'
-    //       }
-    //     );
-    //     this.otherNotis = f;
-    //   });
-
       
   }
 
@@ -133,63 +95,30 @@ export class HeaderComponent implements OnInit {
     console.log(this.otherNotis);
   }
 
+  async getFollowNotis(){
+    this.notiLoading = true;
+    this.followRequests  = await this._userService.getFollowNotifications('7fb55c72-ff40-4492-974b-33e3309de25d');
+    this.notiLoading = false;
+    this.noFollowRequests = this.followRequests.length;
+    this.followRequests.map(
+      (followNoti: any) => {
+        if(followNoti.status === false){
+          this.showNotiDot = true;
+        }
+        return followNoti;
+      }
+    );
+    console.log(this.followRequests);
+  }
+
 
   loadNotis(){
-  //   this.setSeen = true;
-  //   this.notiLoading = true;
-  // // get follow req notifications
-  // this._userService.getFollowReqNotifications(this._authService.authState.uid).subscribe(
-  //   userNoti => {
-  //     console.log(userNoti);
-  //     this.notiLoading = false;
-  //     if(userNoti.length > 10){
-  //       this.noFollowRequests = '10+';
-  //     }else{
-  //       this.noFollowRequests = userNoti.length;
-  //     }
-  //     let f = userNoti.filter(
-  //       (otherNoti) => {
-  //         if(otherNoti.seen === false){
-  //           this.showNotiDot = true;
-  //         }
-  //         if(this.setSeen === true){
-  //           otherNoti.seen = true;
-  //           this._userService.setNotiSeen(otherNoti.notiID)
-  //           .then( () => {})
-  //           .catch( (err) => console.log(err))
-  //         }
-  //         return otherNoti.type !== 'default'
-  //       }
-  //     );
-  //     this.followRequests = f;
-  //   }
-  // )
-
-  // this._userService.getOtherNotis(this._authService.authState.uid).subscribe(
-  // (otherNotis) => {
-  //   this.notiLoading = false;
-  //   let f = otherNotis.filter(
-  //     (otherNoti) => {
-  //       if(otherNoti.seen === false){
-  //         this.showNotiDot = true;
-  //       }
-  //       if(this.setSeen === true){
-  //       otherNoti.seen = true;
-  //       this._userService.setNotiSeen(otherNoti.notiID)
-  //       .then( () => {})
-  //       .catch( (err) => console.log(err))
-  //       return otherNoti.type !== 'default'
-  //     }
-  //   }
-  //   );
-  //   this.otherNotis = f ;
-  //   console.log(this.otherNotis)
-  // });
+    this.getFollowNotis();
+    this.getOtherNotis();
   }
 
   dosetSeen(){
     setTimeout( () => {
-      this.setSeen = false;
       this.showNotiDot = false;
     }, 5000)
   }
@@ -222,66 +151,28 @@ export class HeaderComponent implements OnInit {
     this.showFollowReq = false;
   }
 
-  approveFollowReq($event, notiID: string, uid: string){
-    // $event.stopPropagation();
-    // this._userService.doFollowFromReq(uid).then(
-    //   () => {
-    //     console.log("user followed accepted");
-    //     this._userService.removeThisNoti(notiID, this._authService.authState.uid).then(
-    //       () => {
-    //         console.log("noti removed");
-    //       }
-    //     ).catch(
-    //       (err) => {
-    //         console.log(err)
-    //       }
-    //     )
-    //     this._userService.removeRequestFollowByOwner(this._authService.authState.uid, uid).then(
-    //       () => {
-    //         console.log("follow req removed");
-    //         this._userService.createNotifications(this._authService.authState.uid, uid).then(
-    //           () => {
-    //             console.log("noti send");
-    //           }
-    //         ).catch(
-    //           (err) => {
-    //             console.log(err)
-    //           }
-    //         )
-    //       }
-    //     ).catch(
-    //       (err) => {
-    //         console.log(err)
-    //       }
-    //     )
-    //   }
-    // ).catch(
-    //   (err) => {
-    //     console.log(err)
-    //   }
-    // )
+  async approveFollowReq($event, userId, aliasId, requestId){
+    $event.stopPropagation();
+    let data = {
+      userId: userId,
+      aliasId: aliasId
+    }
+    await this._userService.approveFollow(data);
+    this.followRequests = this.followRequests.filter( (request: any) => {
+      return request.id != requestId;
+    } )
   }
 
-  hideFollowReq($event, notiID: string, uid: string){
-    // $event.stopPropagation();
-    // this._userService.removeThisNoti(notiID, this._authService.authState.uid).then(
-    //   () => {
-    //     console.log("noti removed");
-    //   }
-    // ).catch(
-    //   (err) => {
-    //     console.log(err)
-    //   }
-    // )
-    // this._userService.removeRequestFollowByOwner(this._authService.authState.uid, uid).then(
-    //   () => {
-    //     console.log("follow req removed");
-    //   }
-    // ).catch(
-    //   (err) => {
-    //     console.log(err)
-    //   }
-    // )
+  async hideFollowReq($event, userId: string, aliasId: string, requestId:string){
+    $event.stopPropagation();
+    let data = {
+      userId: userId,
+      aliasId: aliasId
+    }
+    await this._userService.unFolllowUser(data);
+    this.followRequests = this.followRequests.filter( (request: any) => {
+      return request.id != requestId;
+    } )
   }
 
   ngOnDestroy(): void {

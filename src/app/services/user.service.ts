@@ -71,6 +71,10 @@ export class UserService {
     return this._apiserviceService.ngInstaPost(data, "alias/unfollow", localStorage.token);
   }
 
+  approveFollow(data): Promise<any>{
+    return this._apiserviceService.ngInstaPut(data, "alias/approvefollow", localStorage.token);
+  }
+
   getUserProfile(userId, id): Promise<any>{
     return this._apiserviceService.ngInstaGet("user/userprofile/"+userId+"?id="+id, localStorage.token);
   }
@@ -89,6 +93,10 @@ export class UserService {
 
   getOtherNotifications(userId): Promise<any>{
     return this._apiserviceService.ngInstaGet("user/othernotifications/"+userId, localStorage.token);
+  }
+
+  getFollowNotifications(userId): Promise<any>{
+    return this._apiserviceService.ngInstaGet("user/follownotifications/"+userId, localStorage.token);
   }
 
   getAllUser(){

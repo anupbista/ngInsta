@@ -6,6 +6,8 @@ import { AuthService } from 'src/app/services/auth.service';
 import { map, switchMap, take } from 'rxjs/operators';
 import { UserprofileComponent } from '../userprofile/userprofile.component';
 import { Post } from '../Models/Post';
+import { UserService } from '../services/user.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-post-detail',
@@ -31,7 +33,7 @@ export class PostDetailComponent implements OnInit, OnDestroy {
   postDetailActive: boolean = true;
   currentPostId: string;
   currentPostIndex: number;
-  currentPost: Post;
+  currentPost: any;
   nextPost: Post;
   prevPost: Post;
   posts:Post[];
@@ -39,13 +41,16 @@ export class PostDetailComponent implements OnInit, OnDestroy {
   firstPost:boolean = false;
   loading:boolean = true;
   urlUsername: string = "";
+  user;
   parentPath: string = "";
   submitted: boolean = false;
+  userSubsciption: Subscription;
+
   constructor(private _location: Location, 
     private route: ActivatedRoute, 
     private router: Router, 
     private _postService: PostsService,
-    private _authService: AuthService ) 
+    private _userService: UserService ) 
   {}
 
   ngOnInit() {
@@ -55,80 +60,33 @@ export class PostDetailComponent implements OnInit, OnDestroy {
     this.getPost();
     this.route.parent.parent.url.subscribe( (path) => this.urlUsername = path[path.length - 1].path );
   }
+
+  async getPostByPostId(){
+    this.currentPost = await this._postService.getPostByPostId(this.currentPostId);
+    console.log(this.currentPost);
+    if(this.currentPost.likes.find(o => o.userId === this.user.id)){
+      this.currentPost.liked = true;
+    }else{
+      this.currentPost.liked = false;
+    }
+    this.loading = false;
+  }
+
   getPost(){
-    // this.route.parent.url.pipe(take(1), switchMap( (urlPath)=> {
-    //   this.parentPath = urlPath[urlPath.length - 1].path;
-    //   return this.route.params;
-    // } )).pipe(
-    //   switchMap( (params: Params ) => {
-    //     this.currentPostId = params['id'];
-    //     this.currentPostIndex = +params['ids'];
-    //     if(this.parentPath === "myposts"){
-    //       return this._postService.getThisUsersPosts(this._authService.authState.uid);
-    //     }
-    //     if(this.parentPath === "mysaved"){
-    //       return this._postService.getThisUsersSavedPosts(this._authService.authState.uid);
-    //     }
-    //     if(this.parentPath === "mytagged"){
-    //       return this._postService.getThisUsersTaggedPosts(this._authService.authState.uid);
-    //     }
-    //     if(this.parentPath === "posts"){
-    //       return this._postService.getThisUsersPosts(UserprofileComponent.thisUserUID);
-    //     }
-    //     if(this.parentPath === "tagged"){
-    //       return this._postService.getThisUsersTaggedPosts(UserprofileComponent.thisUserUID);
-    //     }
-    //   }
-    // )).subscribe(
-    //   (data: InstaPost[]) => {
-    //         let unsortedPosts = data.filter(
-    //           (posts) => {
-    //             if(this.parentPath === "mysaved") return posts.postID !== "saved";
-    //             if(this.parentPath === "mytagged") return posts.postID !== "tagged";
-    //             if(this.parentPath === "myposts") return !posts.postID.startsWith('defaultpost-');
-    //             if(this.parentPath === "posts") return !posts.postID.startsWith('defaultpost-');
-    //             if(this.parentPath === "tagged") return posts.postID !== "tagged";
-    //           }
-    //         );
-    //         this.posts = unsortedPosts.sort(function(a, b){
-    //           var keyA = new Date(a.createdAt.toDate()),
-    //               keyB = new Date(b.createdAt.toDate());
-    //           // Compare the 2 dates
-    //           if(keyA < keyB) return -1;
-    //           if(keyA > keyB) return 1;
-    //           return 0;
-    //       }).reverse();
-    //         this.currentPost = this.posts.find(
-    //           (item) => {
-    //             this._postService.doLikedStatus(item.postID).subscribe(
-    //               (status) => {
-    //                 if( typeof status === 'undefined'){
-    //                   item.liked = false;
-    //                 }
-    //                 else{
-    //                   item.liked = true;
-    //                 }
-    //               }
-    //             );
-    //             return item.postID == this.currentPostId;
-    //           }
-    //         );
-    //         if((this.parentPath === "mysaved") && typeof this.currentPost !== 'undefined'){
-    //           this._postService.getThisPost(this.currentPost.postID)
-    //           .then(
-    //             (data) => {
-    //               console.log("post sync");
-    //               console.log(this.currentPost);
-    //               this.currentPost.likes = data.data().likes
-    //             }
-    //           )
-    //           .catch(
-    //             (err) => {
-    //               console.log(err);
-    //             }
-    //           )
-    //         }
-    //         this.loading = false;
+    this.userSubsciption = this.route.parent.url.pipe(take(1), switchMap( (urlPath)=> {
+        this.parentPath = urlPath[urlPath.length - 1].path;
+        return this.route.params;
+      } )).pipe(
+        switchMap( (params: Params) => {
+          this.currentPostId = params['id'];
+          this.currentPostIndex = +params['ids'];
+          return this._userService.user;
+        } )
+      ).subscribe(async (user: any ) => {
+        this.user = user;
+        await this.getPostByPostId();
+      })
+
     //         this.nextPost = this.posts[this.currentPostIndex + 1];
     //         this.prevPost = this.posts[this.currentPostIndex - 1];
             
@@ -150,15 +108,16 @@ export class PostDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.userSubsciption.unsubscribe();
     if(this.postDetailActive){
       document.getElementsByTagName("body")[0].style.overflow = "auto";
     }
   }
 
   closePostDetail(){
-    let routerLink = this.route.parent.snapshot.pathFromRoot
+    let routerLink:any = this.route.parent.snapshot.pathFromRoot
     .map(s => s.url).reduce((a, e) => a.concat(e)).map(s => s.path);
-    this.router.navigate(routerLink);
+    this.router.navigate([routerLink[0]+"/"+routerLink[1]+"/"+routerLink[2]]);
   }
 
   navNextPost(){
@@ -211,42 +170,36 @@ export class PostDetailComponent implements OnInit, OnDestroy {
 
   }
 
-  likePost(post): void{
-  // if(!post.liked){
-  //   this._postService.likePost(post.postID)
-  //   .then(
-  //     () => {
-  //       post.liked = true;
-  //       post.likes++;
-  //       console.log("Post Liked");
-  //     }
-  //   )
-  //   .catch(
-  //     (err) => {
-  //       post.liked = false;
-  //       console.log("Unable to like" +err);
-  //     }
-  //   )
-  // }
-    
+  async likePost(post){
+    try {
+      if(!post.liked){
+        await this._postService.likePost({
+          userId: this.user.id,
+          postId: post.id
+        });
+        post.liked = true;
+        post.likesNo++;
+        console.log("Post Liked");
+      }
+    } catch (error) {
+      post.liked = false;
+      console.log(error);
+    }
   }
 
-  unLikePost(post){
-  //  unlike post
-  // this._postService.unLikePost(post.postID)
-  // .then(
-  //   () => {
-  //     post.liked = false;
-  //     post.likes--;
-  //     console.log("Post unliked");
-  //   }
-  // )
-  // .catch(
-  //   (err) => {
-  //     post.liked = true;
-  //     console.log("Unable to unlike" +err);
-  //   }
-  // )
+ async unLikePost(post){
+  try {
+    await this._postService.unLikePost({
+      userId: this.user.id,
+      postId: post.id
+    });
+    post.liked = false;
+    post.likesNo--;
+    console.log("Post unliked");
+  } catch (error) {
+    post.liked = true;
+    console.log(error);
+  }
   }
 
   deleteSavedPost(postID: string){

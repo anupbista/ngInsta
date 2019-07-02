@@ -58,7 +58,11 @@ export class PostsService {
 
    async getPostByUserId(userId, page, profile):Promise<any>{
     return await this._apiService.ngInstaGet("posts/"+userId+"/page/"+page+"?profile="+profile, localStorage.token);
- }
+  }
+
+  async getPostByPostId(postId):Promise<any>{
+    return await this._apiService.ngInstaGet("posts/"+postId, localStorage.token);
+  }
 
 
    getThisPost(postID: string){

@@ -44,7 +44,7 @@
 		</div>
 		<!-- End of profile section -->
 		
-		<div class="private" *ngIf="userProfile.privateProfile && !userProfile.status">
+		<div class="private" *ngIf="userProfile.privateProfile && (userProfile?.status?.followRequested != 0) ">
 			<h2>This Account is Private</h2>
 			<p>Follow to see their photos and videos.</p>
 		</div>
