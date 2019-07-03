@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Post } from '../Models/Post';
 import { ApiserviceService } from '../services/apiservice.service';
 import { UserService } from '../services/user.service';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { User } from '../Models/User';
 import { AuthService } from '../services/auth.service';
 import { switchMap } from 'rxjs/operators';
@@ -15,16 +15,28 @@ import { switchMap } from 'rxjs/operators';
 export class SuggestionsComponent implements OnInit {
 
   homeSuggestions = [];
+  user;
+  userSubscription: Subscription;
 
   constructor(private _userService: UserService, private _authService: AuthService) { }
 
   ngOnInit() {
-    // this._userService.getSuggestedUser().subscribe(users => {
-    //   this.homeSuggestions = users.filter(
-    //     (user) => {
-    //       return user.uid !== this._authService.authState.uid
-    //     }
-    //   );
-    // });
+    this.userSubscription = this._userService.user.subscribe(
+      (user) => {
+        this.user = user;
+        this.getUserSuggestions();
+          },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.userSubscription.unsubscribe();
+  }
+
+  async getUserSuggestions(){
+    this.homeSuggestions = await this._userService.getUserSuggestions(this.user.id);
   }
 }

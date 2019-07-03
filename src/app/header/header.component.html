@@ -88,7 +88,7 @@
                         <button class="hide_btn" (click)="hideFollowReq($event, followRequest.userId, followRequest.aliasId, followRequest.id)">Hide</button>
                     </div>
                   </div>
-                  <div *ngIf="!followRequests" style="text-align:center;">
+                  <div *ngIf="followRequests.length == 0" style="text-align:center;">
                     No follow Reuests
                   </div>
                 </div>
@@ -100,19 +100,19 @@
                     <img [src]="_userService.profileImageApi+otherNoti.user.userImage" alt="">
                   </div>
                   <div class="noti-desc" *ngIf="otherNoti.type === 'other-followaccepted'" style="padding-right:0;">
-                      <p><strong>{{ otherNoti.user.username }}</strong> accepted your follow request. <small>{{ otherNoti.createdAt | moment: 'MMMM Do YYYY, h:mm:ss a' }}</small></p>
+                      <p [routerLink]="['/profile', otherNoti.user.username]"><strong>{{ otherNoti.user.username }}</strong> accepted your follow request. <small>{{ otherNoti.createdAt | moment: 'MMMM Do YYYY, h:mm:ss a' }}</small></p>
                   </div>
                   <div class="noti-desc" [ngClass]="{'no-r-p': otherNoti.type === 'other-userfollowed'}" *ngIf="otherNoti.type === 'other-userfollowed'">
-                    <p><strong>{{ otherNoti.user.username }}</strong> started following you. <small>{{ otherNoti.createdAt | moment: 'MMMM Do YYYY, h:mm:ss a' }}</small></p>
+                    <p [routerLink]="['/profile', otherNoti.user.username]"><strong>{{ otherNoti.user.username }}</strong> started following you. <small>{{ otherNoti.createdAt | moment: 'MMMM Do YYYY, h:mm:ss a' }}</small></p>
                   </div>
                   <div class="noti-desc" [ngClass]="{'no-r-p': otherNoti.type === 'other-like'}" *ngIf="otherNoti.type === 'other-like'">
-                    <p><strong>{{ otherNoti.user.username }}</strong> liked your post. <small>{{ otherNoti.createdAt | moment: 'MMMM Do YYYY, h:mm:ss a' }}</small></p>
+                    <p [routerLink]="['/post', otherNoti.post.id]"><strong>{{ otherNoti.user.username }}</strong> liked your post. <small>{{ otherNoti.createdAt | moment: 'MMMM Do YYYY, h:mm:ss a' }}</small></p>
                   </div>
                   <div class="noti-desc" [ngClass]="{'no-r-p': otherNoti.type === 'other-comment'}" *ngIf="otherNoti.type === 'other-comment'">
-                    <p><strong>{{ otherNoti.user.username }}</strong> commented on your post. <small>{{ otherNoti.createdAt | moment: 'MMMM Do YYYY, h:mm:ss a' }}</small></p>
+                    <p [routerLink]="['/post', otherNoti.post.id]"><strong>{{ otherNoti.user.username }}</strong> commented on your post. <small>{{ otherNoti.createdAt | moment: 'MMMM Do YYYY, h:mm:ss a' }}</small></p>
                   </div>
                   <div class="noti-pic" *ngIf="otherNoti.type === 'other-like' || otherNoti.type === 'other-comment'">
-                    <img [src]="_postService.postImageApi+otherNoti.post.postImage" alt="">
+                    <img  [routerLink]="['/post', otherNoti.post.id]" [src]="_postService.postImageApi+otherNoti.post.postImage" alt="">
                 </div>
               </div>
               </div>

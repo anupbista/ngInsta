@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import * as moment from 'moment';
 
@@ -54,11 +54,16 @@ export class AuthService {
       return moment(expiresAt);
   }
   
-  doLogout(): Promise<any>{
+  doLogout(key): Promise<any>{
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': "Bearer " + key});
+    let options = { headers: headers };
+
     let data = {
       token: localStorage.token
     }
-    return this.httpClient.post(environment.api+"auth/signout", data).toPromise();
+    return this.httpClient.post(environment.api+"auth/signout", data, options).toPromise();
   }
 
 }

@@ -54,65 +54,6 @@ export class InstaPostComponent implements OnInit, OnDestroy {
       }
     );
 
-    
-
-  // this._postsService.getFollowingUsers()
-  // .then(
-  //   (res) => {
-  //     res.forEach( (documentSnapshot) => {
-  //       let followingUID = documentSnapshot.data();
-  //       this._postsService.getThisUsersPosts(followingUID.followingUID).subscribe(
-  //         (post:InstaPost[]) => {
-  //           this.loading = false;
-  //           let posts:InstaPost[] = post.filter(
-  //             (post: InstaPost) => {
-  //               return !post.postID.startsWith('defaultpost-'); 
-  //             }
-  //           );
-  //           let unsortedposts = this.posts.concat(posts);
-            
-  //            this.posts = unsortedposts.sort(function(a, b){
-  //             var keyA = new Date(a.createdAt.toDate()),
-  //                 keyB = new Date(b.createdAt.toDate());
-  //             // Compare the 2 dates
-  //             if(keyA < keyB) return -1;
-  //             if(keyA > keyB) return 1;
-  //             return 0;
-  //         }).reverse();
-  //           this.posts.forEach( (post) => {
-  //             this._postsService.doSavedStatus(post.postID).subscribe(
-  //               (status) => {
-  //                 if( typeof status === 'undefined'){
-  //                   post.saved = false;
-  //                 }
-  //                 else{
-  //                   post.saved = true;
-  //                 }
-  //               }
-  //             );
-  //             this._postsService.doLikedStatus(post.postID).subscribe(
-  //               (status) => {
-  //                 if( typeof status === 'undefined'){
-  //                   post.liked = false;
-  //                 }
-  //                 else{
-  //                   post.liked = true;
-  //                 }
-  //               }
-  //             );
-  //           } )
-  //         }
-  //       )
-  //     } );
-  //   }
-  // )
-  
-  // .catch(
-  //   () => {
-  //     console.log("failed")
-          
-  //   }
-  // )
   }
   
   async loadInfinitePosts(){

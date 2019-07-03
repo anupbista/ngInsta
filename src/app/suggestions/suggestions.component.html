@@ -6,7 +6,7 @@
         <div class="home-suggestions-list" *ngFor="let homeSuggestion of homeSuggestions" href="#">
             <div>
                 <div class="home-suggestions-profile-pic">
-                    <a [routerLink]="['/profile',homeSuggestion.username]"><img src="{{ homeSuggestion.profilePicture }}" alt="username"></a>
+                    <a [routerLink]="['/profile',homeSuggestion.username]"><img src="{{ _userService.profileImageApi+homeSuggestion.userImage }}" alt="username"></a>
                 </div>
                 <div class="home-suggestions-time">
                     <a [routerLink]="['/profile', homeSuggestion.username]">{{ homeSuggestion.username }}</a>

@@ -29,8 +29,8 @@
 .post-detail-img img{
     max-height: 100%;
     max-width: 100%;
-    width: 100%;
     object-fit: contain;
+    width: 100%;
 }
 .post-detail-details{
     display: flex;
@@ -157,6 +157,94 @@
     top: 50%;
     transform: translateY(-50%);
     margin: 0;
+}
+.post-details-body .body-scroll{
+    border-bottom: 1px solid #efefef;
+}
+/* comment */
+.post-commment textarea{
+    resize: none;
+    background: 0 0;
+    float: left;
+    border: 0;
+    color: #262626;
+    font-size: 13px !important;
+    font-weight: 400;
+    font-size: inherit;
+    height: 18px;
+    max-height: 80px;
+    outline: 0;
+    padding: 0;
+    width: calc(100% - 50px);
+}
+.post-commment .form-group{margin: 0;}
+.post-commment button{
+    border: 0;
+    color: #3897f0;
+    font-size: 14px;
+    width: 35px;
+    float: right;
+    background: 0 0;
+    padding: 0;
+    cursor: pointer;
+    font-weight: 600;
+    text-align: center;
+    text-transform: inherit;
+    text-overflow: ellipsis;
+}
+.post-commment button:disabled{
+    opacity: 0.3;
+}
+.post-comments small{display: block;}
+.post-comments small{text-transform: uppercase;color: #999;margin-top: 6px;font-size: 10px;letter-spacing: .2px}
+.post-comments .user-post-profile-pic{
+    float: left;
+    height: 40px;
+    margin-right: 12px;
+    width: 40px;
+}
+.post-comments .user-post-profile-pic img{
+    border-radius: 50%;
+    max-width: 100%;
+    height: 40px;
+    width: 40px;
+}
+.post-comments li{
+    margin-top: 17px;
+}
+.post-comments .post-header-desc{
+    margin-top: 4px;
+}
+.post-comments .post-header-desc p{
+    margin: 0;
+    color: #262626;
+    overflow: hidden;
+    font-weight: 400;
+    font-size: 14px;
+}
+.post-comments .post-header-desc a{
+    margin: 0;
+    color: #262626;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 600;
+    font-size: 14px;
+}
+.post-caption .user-post-profile-pic{
+    float: left;
+    height: 40px;
+    margin-right: 12px;
+    width: 40px;
+}
+.post-caption .user-post-profile-pic img{
+    border-radius: 50%;
+    max-width: 100%;
+    height: 40px;
+    width: 40px;
+}
+.post-caption .caption-desc{
+    margin-top: 4px;
 }
 @media (min-width: 576px){
 .modal-dialog.postDetail-modal{    

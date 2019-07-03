@@ -52,14 +52,14 @@
 		<ng-container *ngIf="userProfile.status">
 			<div *ngIf="userProfile.status.followRequested === 0">
 				<app-profilesuggestions *ngIf="showProfileSuggestions"></app-profilesuggestions>
-				
-				<div class="user-profile-tab">
-					<a [routerLink]="['posts']" routerLinkActive="active-user-profile-tab" ><i class="fas fa-th"></i>Posts</a>
-					<!-- <a [routerLink]="['tagged']" routerLinkActive="active-user-profile-tab" ><i class="fas fa-tags"></i> Tagged</a> -->
-				</div>
-				<router-outlet></router-outlet>
 			</div>
 		</ng-container>
+		<div class="user-profile-tab">
+			<a [routerLink]="['posts']" routerLinkActive="active-user-profile-tab" ><i class="fas fa-th"></i>Posts</a>
+			<!-- <a [routerLink]="['tagged']" routerLinkActive="active-user-profile-tab" ><i class="fas fa-tags"></i> Tagged</a> -->
+		</div>
+		<router-outlet></router-outlet>
+			
 		<app-footer></app-footer>
 	</div>
 	<!-- End of container -->

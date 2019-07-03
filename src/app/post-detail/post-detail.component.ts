@@ -120,6 +120,26 @@ export class PostDetailComponent implements OnInit, OnDestroy {
     this.router.navigate([routerLink[0]+"/"+routerLink[1]+"/"+routerLink[2]]);
   }
 
+  async postComment(form){
+    let pushComment = {
+      commentText: form.value.commentText,
+      user: this.user,
+      createdAt: new Date()
+    }
+    this.currentPost.comments.push(pushComment);
+    try {
+      let data = {
+        commentText: form.value.commentText,
+        userId: this.user.id,
+        postId: this.currentPost.id
+      };
+      await this._postService.postComment(data);
+      form.reset();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   navNextPost(){
     // if(this.parentPath === "myposts"){
     // this.router.navigate(['/myprofile/'+this.urlUsername+'/myposts/p/',this.nextPost.postID,this.currentPostIndex+1]);

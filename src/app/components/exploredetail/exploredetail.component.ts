@@ -5,8 +5,10 @@ import { PostsService } from '../../services/posts.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { map, switchMap, take } from 'rxjs/operators';
 import { UserprofileComponent } from '../../userprofile/userprofile.component';
+import { Post } from '../../Models/Post';
 import { UserService } from '../../services/user.service';
-import { User } from 'src/app/Models/User';
+import { Subscription } from 'rxjs';
+
 
 @Component({
   selector: 'app-exploredetail',
@@ -18,19 +20,37 @@ export class ExploredetailComponent implements OnInit {
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     this.closePostDetail();
   }
+  @HostListener('document:keydown.arrowleft', ['$event']) onKeyleftHandler(event: KeyboardEvent) {
+    if(!this.firstPost){
+      this.navPrevPost();
+    }
+  }
+  @HostListener('document:keydown.arrowright', ['$event']) onKeyrightHandler(event: KeyboardEvent) {
+    if(!this.lastPost){
+    this.navNextPost();
+    }
+  }
 
   postDetailActive: boolean = true;
   currentPostId: string;
-  currentPost;
+  currentPostIndex: number;
+  currentPost: any;
+  nextPost: Post;
+  prevPost: Post;
+  posts:Post[];
+  lastPost: boolean = false;
+  firstPost:boolean = false;
   loading:boolean = true;
-  folllowloading: boolean = false;
-  folllowReq: boolean = false;
+  urlUsername: string = "";
+  user;
+  parentPath: string = "";
+  submitted: boolean = false;
+  userSubsciption: Subscription;
 
   constructor(private _location: Location, 
     private route: ActivatedRoute, 
     private router: Router, 
     private _postService: PostsService,
-    private _authService: AuthService,
     private _userService: UserService ) 
   {}
 
@@ -39,94 +59,175 @@ export class ExploredetailComponent implements OnInit {
       document.getElementsByTagName("body")[0].style.overflow = "hidden";
     }
     this.getPost();
+    this.route.parent.parent.url.subscribe( (path) => this.urlUsername = path[path.length - 1].path );
   }
+
+  async getPostByPostId(){
+    this.currentPost = await this._postService.getPostByPostId(this.currentPostId);
+    console.log(this.currentPost);
+    if(this.currentPost.likes.find(o => o.userId === this.user.id)){
+      this.currentPost.liked = true;
+    }else{
+      this.currentPost.liked = false;
+    }
+    this.loading = false;
+  }
+
   getPost(){
-    // this.route.params.pipe(switchMap((params:Params) => {
-    //   this.currentPostId = params['id'];
-    //   return this._postService.getThisOPost(this.currentPostId)
-    // })).subscribe(
-    //   (post) => {
-    //     this.loading = false;
-    //     this.currentPost = post[0];
-    //     this._postService.doSavedStatus(this.currentPost.postID).subscribe(
-    //       (status) => {
-    //         if( typeof status === 'undefined'){
-    //           this.currentPost.saved = false;
+    this.userSubsciption = this.route.parent.url.pipe(take(1), switchMap( (urlPath)=> {
+        this.parentPath = urlPath[urlPath.length - 1].path;
+        return this.route.params;
+      } )).pipe(
+        switchMap( (params: Params) => {
+          this.currentPostId = params['id'];
+          this.currentPostIndex = +params['ids'];
+          return this._userService.user;
+        } )
+      ).subscribe(async (user: any ) => {
+        this.user = user;
+        await this.getPostByPostId();
+      })
+
+    //         this.nextPost = this.posts[this.currentPostIndex + 1];
+    //         this.prevPost = this.posts[this.currentPostIndex - 1];
+            
+    //         if(this.nextPost === undefined){
+    //           // hide the next button
+    //           this.lastPost = true;
+    //         }else{
+    //           this.lastPost = false;
     //         }
-    //         else{
-    //           this.currentPost.saved = true;
+    //         if(this.prevPost === undefined){
+    //           // hide the prev button
+    //           this.firstPost = true;
+    //         }else{
+    //           this.firstPost = false;
     //         }
-    //       }
-    //     );
-    //     this._postService.doLikedStatus(this.currentPost.postID).subscribe(
-    //       (status) => {
-    //         if( typeof status === 'undefined'){
-    //           this.currentPost.liked = false;
-    //         }
-    //         else{
-    //           this.currentPost.liked = true;
-    //         }
-    //       }
-    //     );
-    //     console.log(this.currentPost);
     //   }
-    // )
-  }
-
-  ngOnDestroy(): void {
-  //   if(this.postDetailActive){
-  //     document.getElementsByTagName("body")[0].style.overflow = "auto";
-  //   }
-  }
-
-  closePostDetail(){
-    // let routerLink = this.route.parent.snapshot.pathFromRoot
-    // .map(s => s.url).reduce((a, e) => a.concat(e)).map(s => s.path);
-    // this.router.navigate(routerLink);
-  }
-
-  likePost(post): void{
-  // if(!post.liked){
-  //   this._postService.likePost(post.postID)
-  //   .then(
-  //     () => {
-  //       post.liked = true;
-  //       post.likes++;
-  //       console.log("Post Liked");
-  //     }
-  //   )
-  //   .catch(
-  //     (err) => {
-  //       post.liked = false;
-  //       console.log("Unable to like" +err);
-  //     }
-  //   )
-  // }
+    // );
     
   }
 
-  unLikePost(post){
-  //  unlike post
-  // this._postService.unLikePost(post.postID)
-  // .then(
-  //   () => {
-  //     post.liked = false;
-  //     post.likes--;
-  //     console.log("Post unliked");
-  //   }
-  // )
-  // .catch(
-  //   (err) => {
-  //     post.liked = true;
-  //     console.log("Unable to unlike" +err);
-  //   }
-  // )
+  ngOnDestroy(): void {
+    this.userSubsciption.unsubscribe();
+    if(this.postDetailActive){
+      document.getElementsByTagName("body")[0].style.overflow = "auto";
+    }
+  }
+
+  closePostDetail(){
+    let routerLink:any = this.route.parent.snapshot.pathFromRoot
+    .map(s => s.url).reduce((a, e) => a.concat(e)).map(s => s.path);
+    this.router.navigate([routerLink[0]+"/"+routerLink[1]+"/"+routerLink[2]]);
+  }
+
+  async postComment(form){
+    let pushComment = {
+      commentText: form.value.commentText,
+      user: this.user,
+      createdAt: new Date()
+    }
+    this.currentPost.comments.push(pushComment);
+    try {
+      let data = {
+        commentText: form.value.commentText,
+        userId: this.user.id,
+        postId: this.currentPost.id
+      };
+      await this._postService.postComment(data);
+      form.reset();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  navNextPost(){
+    // if(this.parentPath === "myposts"){
+    // this.router.navigate(['/myprofile/'+this.urlUsername+'/myposts/p/',this.nextPost.postID,this.currentPostIndex+1]);
+    // }
+    // else if(this.parentPath === "mysaved"){
+    //   this.router.navigate(['/myprofile/'+this.urlUsername+'/mysaved/p/',this.nextPost.postID,this.currentPostIndex+1]);
+    // }
+    // else if(this.parentPath === "mytagged"){
+    //   this.router.navigate(['/myprofile/'+this.urlUsername+'/mytagged/p/',this.nextPost.postID,this.currentPostIndex+1]);
+    // }
+    // else{
+    //   this.router.navigate(['/profile/'+this.urlUsername+'/posts/p/',this.nextPost.postID,this.currentPostIndex+1]);
+    // }
+  }
+
+  navPrevPost(){
+    // if(this.parentPath === "myposts"){
+    //   this.router.navigate(['/myprofile/'+this.urlUsername+'/myposts/p/',this.prevPost.postID,this.currentPostIndex-1]);
+    // }
+    // else if(this.parentPath === "mysaved"){
+    //   this.router.navigate(['/myprofile/'+this.urlUsername+'/mysaved/p/',this.prevPost.postID,this.currentPostIndex-1]);
+    // }
+    // else if(this.parentPath === "mytagged"){
+    //   this.router.navigate(['/myprofile/'+this.urlUsername+'/mytagged/p/',this.prevPost.postID,this.currentPostIndex-1]);
+    // }
+    // else{
+    //   this.router.navigate(['/profile/'+this.urlUsername+'/posts/p/',this.prevPost.postID,this.currentPostIndex-1]);
+    // }
+  }
+
+  deletePost(currentPostID: string){
+    // if(confirm('Are you sure?')){
+    //   this.submitted = true;
+    //   this._postService.deletePost(currentPostID).then(
+    //     (res) => {
+    //       console.log("Deleted");
+    //       this.submitted = false;
+    //       this.closePostDetail();
+    //     },
+    //     (err) => {
+    //       this.submitted = false;
+    //       console.log("Error. Try Again");
+    //     }
+    //   );
+    // }else{
+    //   console.log("Delete Cancelled")
+    // }
+
+  }
+
+  async likePost(post){
+    try {
+      if(!post.liked){
+        await this._postService.likePost({
+          userId: this.user.id,
+          postId: post.id
+        });
+        post.liked = true;
+        post.likesNo++;
+        console.log("Post Liked");
+      }
+    } catch (error) {
+      post.liked = false;
+      console.log(error);
+    }
+  }
+
+ async unLikePost(post){
+  try {
+    await this._postService.unLikePost({
+      userId: this.user.id,
+      postId: post.id
+    });
+    post.liked = false;
+    post.likesNo--;
+    console.log("Post unliked");
+  } catch (error) {
+    post.liked = true;
+    console.log(error);
+  }
   }
 
   deleteSavedPost(postID: string){
     // this._postService.doDeleteSavePost(postID).then(
     //   () => {
     //     console.log("Saved Post deleted");
+    //     this.closePostDetail();
     //   }
     // ).catch(
     //   (err) => {
@@ -134,19 +235,5 @@ export class ExploredetailComponent implements OnInit {
     //   }
     // );
   }
-
-  savePost(post){
-    // this._postService.doSavePost({}, post.postID).then(
-    //   () => {
-    //     post.saved = true;
-    //     console.log("Post saved");
-    //   }
-    // ).catch(
-    //   (err) => {
-    //     console.log("Cannot save post! "+ err);
-    //   }
-    // );
-  }
-
 
 }

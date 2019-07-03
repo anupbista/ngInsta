@@ -39,7 +39,7 @@ export class MyprofileComponent implements OnInit {
   
   async logout(){
     try {
-      await this._authService.doLogout();
+      await this._authService.doLogout(localStorage.token);
       localStorage.removeItem("token");
       localStorage.removeItem("expiresIn");
       localStorage.removeItem("userId");

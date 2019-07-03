@@ -77,7 +77,7 @@
  .view_comment{
     margin: 4px 0;
 }
-.view_comment button{
+.view_comment a{
     border: 0;
     color: #3897f0;
     display: inline;

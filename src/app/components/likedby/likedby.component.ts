@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, UrlSegment, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
-import { take, map, finalize, flatMap, switchMap, mergeMap } from 'rxjs/operators';
 import { User } from 'src/app/Models/User';
 import { AuthService } from 'src/app/services/auth.service';
 import { PostsService } from 'src/app/services/posts.service';
+import { Subscription } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-likedby',
@@ -14,10 +15,10 @@ import { PostsService } from 'src/app/services/posts.service';
 export class LikedbyComponent implements OnInit {
 
   postID: string ="";
-  followers: User[] = [];
-  followerLoading: boolean = true;
-  folllowloading: boolean = false;
-  folllowReq: boolean = false;
+  likes= [];
+  user;
+  loading: any;
+  userSubsciption: Subscription;
 
   constructor(private route: ActivatedRoute,
      private _userService: UserService,
@@ -26,52 +27,29 @@ export class LikedbyComponent implements OnInit {
      private _postService: PostsService) { }
 
   ngOnInit() {
-    // this.route.parent.url.pipe(
-    //   mergeMap(
-    //     (urlPath: UrlSegment[]) => {
-    //       this.postID = urlPath[1].path;
-    //       console.log(this.postID)
-    //       return this._postService.getThisPostLikes(this.postID);
-    //     }
-    //   )).subscribe(
-    //   (user) => {
-    //     user.map(
-    //       (us) => {
-    //         this.followerLoading = false;
-    //         if(us.user.uid === this._authService.authState.uid){
-    //           us.mineuid = true;
-    //         }else{
-    //           this._userService.doFolllowStatus(us.user.uid).subscribe(
-    //             (status) => {
-    //               if( typeof status === 'undefined'){
-    //                 us.follow = false;
-    //                 us.mineuid = false;
-    //               }
-    //               else{
-    //                 us.follow = true;
-    //                 us.mineuid = false;
-    //               }
-    //             }
-    //           )
-    //         }
-    //         if(this.followers.length !== 0){
-    //           this.followers.forEach( follower => {
-    //             if( (follower.uid !== us.user.uid) && (us.user.uid !== "wzdk1nz25hT3OlvWew7k16gtzgM2")){
-    //               this.followers.push(us)
-    //             }
-    //           } )
-    //         }
-    //         else{
-    //           if( (us.user.uid !== "wzdk1nz25hT3OlvWew7k16gtzgM2")){
-    //             this.followers.push(us)
-    //           }
-    //         }
-    //       }
-    //     )
-    //     console.log(this.followers);
-    //   }
-    // )
+    this.loading = true;
+    this.userSubsciption = this.route.parent.url.pipe(switchMap( (urlPath)=> {
+      this.postID = urlPath[1].path;
+      console.log(this.postID)
+      return this._userService.user;
+    } )).subscribe(async (user: any ) => {
+      this.user = user;
+      await this.getLikesByPostId();
+    })
 
+  }
+  async getLikesByPostId(){
+    try {
+      this.likes = await this._postService.getLikesByPostId(this.postID, this.user.id);
+      this.loading = false;
+      console.log(this.likes);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.userSubsciption.unsubscribe();
   }
 
   closePostDetail(){
@@ -80,39 +58,26 @@ export class LikedbyComponent implements OnInit {
     this.router.navigate(routerLink);
   }
 
-  follow(follower){
-    // this.folllowloading = true;
-    // if(follower.user.privateProfile){
-    //   this._userService.requestFollow(this._authService.authState.uid, follower.user.uid)
-    //   .then(
-    //     () => {
-    //       this.folllowloading = false;
-    //       this.folllowReq = true;
-    //     }
-    //   )
-    //   .catch(
-    //     (err) => {
-    //       console.log(err);
-    //       this.folllowloading = false;
-    //       follower.user.follow = false;
-    //     }
-    //   )
-    // }
-    // else{
-    //   this._userService.doFollow(follower.user.uid).then(
-    //     () => {
-    //       follower.user.follow = true;
-    //        this.folllowloading = false;
-    //        console.log("Followed " + follower.user.uid);
-    //     }
-    //   ).catch(
-    //    (err) => {
-    //      this.folllowloading = false;
-    //      follower.user.follow  = false;
-    //      console.log("Failed to follow" + follower.user.uid +" =>"+ err);
-    //    } 
-    //   );
-    // }
+  async follow(follower: any){
+    try {
+      let data = {
+        userId: this.user.id,
+        aliasId: follower.id
+      }
+      let follow = await this._userService.followUser(data);
+      if(follow){
+         if(follower.user.privateProfile){
+          follower.user.status = {
+            followRequested: 1
+          }
+         }else{
+          follower.user.status = {
+            followRequested: 0
+          }
+         }
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
-
-}
+  }

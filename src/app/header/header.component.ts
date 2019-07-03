@@ -82,7 +82,7 @@ export class HeaderComponent implements OnInit {
 
   async getOtherNotis(){
     this.notiLoading = true;
-    this.otherNotis  = await this._userService.getOtherNotifications('8d4fdc8f-d393-498b-a078-08fc304c6c9c');
+    this.otherNotis  = await this._userService.getOtherNotifications(this.user.id);
     this.notiLoading = false;
     this.otherNotis.map(
       (otherNoti: any) => {
@@ -97,7 +97,7 @@ export class HeaderComponent implements OnInit {
 
   async getFollowNotis(){
     this.notiLoading = true;
-    this.followRequests  = await this._userService.getFollowNotifications('7fb55c72-ff40-4492-974b-33e3309de25d');
+    this.followRequests  = await this._userService.getFollowNotifications(this.user.id);
     this.notiLoading = false;
     this.noFollowRequests = this.followRequests.length;
     this.followRequests.map(

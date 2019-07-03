@@ -27,6 +27,7 @@ import { FollowersComponent } from './components/followers/followers.component';
 import { FollowingComponent } from './components/following/following.component';
 import { LikedbyComponent } from './components/likedby/likedby.component';
 import { ExploredetailComponent } from './components/exploredetail/exploredetail.component';
+import { SinglepostdetailComponent } from './singlepostdetail/singlepostdetail.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent, pathMatch: 'full', canActivate: [AuthGuard]},
@@ -79,11 +80,14 @@ const routes: Routes = [
     {path: 'contact_history', component: ContactsComponent},
     {path: 'privacy_and_security', component: PrivacysecurityComponent},
    ], canActivate: [AuthGuard]},
+   {path: 'post/:id', component: SinglepostdetailComponent, canActivate: [AuthGuard], children: [
+    {path: 'likes', component: LikedbyComponent},
+  ]},
    { path: '**', redirectTo:'', pathMatch: 'full' }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+exports: [RouterModule]
 })
 export class AppRoutingModule { }

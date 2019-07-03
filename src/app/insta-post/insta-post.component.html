@@ -118,7 +118,7 @@ infiniteScroll
         <p><a href="#"><strong>{{ post.user.username }}</strong></a>{{ post.caption }}.</p>
     </div>
     <div *ngIf="post.commentsNo > 0" class="view_comment">
-        <button type="button">View all {{post.commentsNo}} comments</button>
+        <a [routerLink]="['/post', post.id]">View all {{post.commentsNo}} comments</a>
     </div>
     <p class="timeStamp">{{ post.createdAt | moment: 'MMMM Do YYYY, h:mm:ss a' }}</p>
   </div>

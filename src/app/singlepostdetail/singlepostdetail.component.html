@@ -1,0 +1,101 @@
+<!-- Post Detail Modal -->
+<app-header></app-header>
+<div class="insta-loading" *ngIf="loading">
+    <img src="assets/insta-loading.gif" alt="Loading">
+</div>
+<div *ngIf="currentPost" class="container single-post">
+   
+  <div class="row post-detail-content">
+    <div class="col-md-6">
+        <div class="post-detail-img">
+            <img src="{{ _postService.postImageApi+currentPost.postImage }}" alt="">
+          </div>
+    </div>
+    <div class="col-md-6">
+        <div class="post-detail-details">
+            <div class="post-details-header clearfix">
+              <div class="user-post-profile-pic">
+                  <a *ngIf="currentPost.user.id === user.id" [routerLink]="['/myprofile/', currentPost.user.username]">
+                    <img src="{{ _userService.profileImageApi+currentPost.user.userImage }}" alt="{{currentPost.user.username}}">
+                  </a>
+                  <a *ngIf="currentPost.user.id !== user.id" [routerLink]="['/profile/', currentPost.user.username]">
+                    <img src="{{ _userService.profileImageApi+currentPost.user.userImage }}" alt="{{currentPost.user.username}}">
+                  </a>
+              </div>
+              <div class="post-header-desc">
+                <a *ngIf="currentPost.user.id === user.id" [routerLink]="['/myprofile/', currentPost.user.username]">{{ currentPost.user.username }}</a>
+                <a *ngIf="currentPost.user.id !== user.id" [routerLink]="['/profile/', currentPost.user.username]">{{ currentPost.user.username }}</a>
+              </div>
+            </div>
+            <!-- body -->
+            <div class="post-details-body">
+                <div class="body-scroll">
+                  <div class="post-caption clearfix">
+                      <div class="user-post-profile-pic">
+                          <a *ngIf="currentPost.user.id === user.id" [routerLink]="['/myprofile/', currentPost.user.username]">
+                            <img src="{{ _userService.profileImageApi+currentPost.user.userImage }}" alt="{{currentPost.user.username}}">
+                          </a>
+                          <a *ngIf="currentPost.user.id !== user.id" [routerLink]="['/profile/', currentPost.user.username]">
+                            <img src="{{ _userService.profileImageApi+currentPost.user.userImage }}" alt="{{currentPost.user.username}}">
+                          </a>
+                      </div>
+                      <div class="caption-desc">
+                        <p *ngIf="currentPost.user.id === user.id"><a [routerLink]="['/myprofile/', currentPost.user.username]"><strong>{{ currentPost.user.username }}</strong></a>{{ currentPost.caption }}</p>
+                        <p *ngIf="currentPost.user.id !== user.id"><a [routerLink]="['/profile/', currentPost.user.username]"><strong>{{ currentPost.user.username }}</strong></a>{{ currentPost.caption }}</p>
+                      </div>
+                  </div>
+                  <div class="post-comments">
+                    <ul>
+                      <li *ngFor="let comment of currentPost.comments" class="clearfix">
+                          <div class="user-post-profile-pic">
+                              <a *ngIf="comment.user.id === user.id" [routerLink]="['/myprofile/', comment.user.username]">
+                                <img src="{{ _userService.profileImageApi+comment.user.userImage }}" alt="{{comment.user.username}}">
+                              </a>
+                              <a *ngIf="comment.user.id !== user.id" [routerLink]="['/profile/', comment.user.username]">
+                                <img src="{{ _userService.profileImageApi+comment.user.userImage }}" alt="{{comment.user.username}}">
+                              </a>
+                          </div>
+                          <div class="post-header-desc">
+                            <p *ngIf="comment.user.id === user.id"><a [routerLink]="['/myprofile/', comment.user.username]">{{ comment.user.username }}</a> {{ comment.commentText }}
+                            <small>{{ comment.createdAt | moment }}</small></p>
+                            <p *ngIf="comment.user.id !== user.id"><a [routerLink]="['/profile/', comment.user.username]">{{ comment.user.username }}</a> {{ comment.commentText }}
+                            <small>{{ comment.createdAt | moment }}</small></p>
+                          </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="post-buttons">
+                  <div class="left-buttons">
+                    <button id="like_btn" *ngIf="!currentPost.liked" (click)="likePost(currentPost)"><i class="far fa-heart"></i></button>
+                    <button id="like_btn" *ngIf="currentPost.liked" (click)="unLikePost(currentPost)"><i class="fas fa-heart" style="color: red"></i></button>              <!-- <button id="comment_btn"><i class="far fa-comment"></i></button> -->
+                  </div>
+                  <div class="right-buttons">
+                    <!-- display delete button on myprofile and bookmark button on other's profile -->
+                    <!-- <button id="save_btn"><i class="far fa-bookmark"></i></button> -->
+                    <!-- <button id="save_btn" *ngIf="currentPost.authorUID === _authService.authState.uid" [disabled]="submitted" (click)="deletePost(currentPost.postID)"><i class="far fa-trash-alt"></i></button>
+                    <button id="save_btn" *ngIf="parentPath === 'mysaved'" [disabled]="submitted" (click)="deleteSavedPost(currentPost.postID)"><i class="fas fa-bookmark"></i></button> -->
+                  </div>
+                </div>
+                <div class="post-status">
+                  <a *ngIf="currentPost.likesNo > 0" [routerLink]="['likes']"><strong>{{ currentPost.likesNo }} likes</strong></a>
+                  <a *ngIf="currentPost.likes === 0"><strong>{{ currentPost.likesNo }} likes</strong></a>
+                  <small>{{ currentPost.createdAt | moment }}</small>
+                </div>
+            </div>
+            <!-- comment -->
+            <div class="post-commment">
+              <form (ngSubmit)="postComment(f)" #f="ngForm">
+                <div class="form-group clearfix">
+                  <textarea name="commentText" #commentText="ngModel" placeholder="Add a comment..." ngModel required></textarea>
+                  <button type="submit" [disabled]="!f.valid">Post</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+  </div>
+  <app-footer></app-footer>
+</div>
+
+<router-outlet></router-outlet>

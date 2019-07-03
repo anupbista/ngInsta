@@ -56,6 +56,7 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { LikedbyComponent } from './components/likedby/likedby.component';
 import { ExploredetailComponent } from './components/exploredetail/exploredetail.component';
 import { LikesComponent } from './components/likes/likes.component';
+import { SinglepostdetailComponent } from './singlepostdetail/singlepostdetail.component';
 
 @NgModule({
   declarations: [
@@ -93,7 +94,8 @@ import { LikesComponent } from './components/likes/likes.component';
     MomentPipe,
     LikedbyComponent,
     ExploredetailComponent,
-    LikesComponent  
+    LikesComponent,
+    SinglepostdetailComponent  
   ],
   imports: [
     BrowserModule,

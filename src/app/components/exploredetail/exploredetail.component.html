@@ -6,32 +6,59 @@
       </div>
       <div class="post-detail-content">
         <div class="post-detail-img">
-          <img src="{{ currentPost.src }}" alt="">
+          <img src="{{ _postService.postImageApi+currentPost.postImage }}" alt="">
         </div>
         <div class="post-detail-details">
           <div class="post-details-header clearfix">
             <div class="user-post-profile-pic">
-              <a *ngIf="currentPost.user.uid === _authService.authState.uid" [routerLink]="['/myprofile/', currentPost.user.username]">
-                <img src="{{ currentPost.user.profilePicture }}" alt="Discover Nepal">
-              </a>
-              <a *ngIf="currentPost.user.uid !== _authService.authState.uid" [routerLink]="['/profile/', currentPost.user.username]">
-                <img src="{{ currentPost.user.profilePicture }}" alt="Discover Nepal">
-              </a>
+                <a *ngIf="currentPost.user.id === user.id" [routerLink]="['/myprofile/', currentPost.user.username]">
+                  <img src="{{ _userService.profileImageApi+currentPost.user.userImage }}" alt="{{currentPost.user.username}}">
+                </a>
+                <a *ngIf="currentPost.user.id !== user.id" [routerLink]="['/profile/', currentPost.user.username]">
+                  <img src="{{ _userService.profileImageApi+currentPost.user.userImage }}" alt="{{currentPost.user.username}}">
+                </a>
             </div>
             <div class="post-header-desc">
-                <a *ngIf="currentPost.user.uid === _authService.authState.uid" [routerLink]="['/myprofile/', currentPost.user.username]">{{ currentPost.user.username }}</a>
-                <a *ngIf="currentPost.user.uid !== _authService.authState.uid" [routerLink]="['/profile/', currentPost.user.username]">{{ currentPost.user.username }}</a>
+              <a *ngIf="currentPost.user.id === user.id" [routerLink]="['/myprofile/', currentPost.user.username]">{{ currentPost.user.username }}</a>
+              <a *ngIf="currentPost.user.id !== user.id" [routerLink]="['/profile/', currentPost.user.username]">{{ currentPost.user.username }}</a>
             </div>
           </div>
           <!-- body -->
           <div class="post-details-body">
               <div class="body-scroll">
-                <div class="post-caption">
-                    <p *ngIf="currentPost.user.uid === _authService.authState.uid"><a [routerLink]="['/myprofile/', currentPost.user.username]"><strong>{{ currentPost.user.username }}</strong></a>{{ currentPost.postCaption }}</p>
-                    <p *ngIf="currentPost.user.uid !== _authService.authState.uid"><a [routerLink]="['/profile/', currentPost.user.username]"><strong>{{ currentPost.user.username }}</strong></a>{{ currentPost.postCaption }}</p>
+                <div class="post-caption clearfix">
+                    <div class="user-post-profile-pic">
+                        <a *ngIf="currentPost.user.id === user.id" [routerLink]="['/myprofile/', currentPost.user.username]">
+                          <img src="{{ _userService.profileImageApi+currentPost.user.userImage }}" alt="{{currentPost.user.username}}">
+                        </a>
+                        <a *ngIf="currentPost.user.id !== user.id" [routerLink]="['/profile/', currentPost.user.username]">
+                          <img src="{{ _userService.profileImageApi+currentPost.user.userImage }}" alt="{{currentPost.user.username}}">
+                        </a>
+                    </div>
+                    <div class="caption-desc">
+                      <p *ngIf="currentPost.user.id === user.id"><a [routerLink]="['/myprofile/', currentPost.user.username]"><strong>{{ currentPost.user.username }}</strong></a>{{ currentPost.caption }}</p>
+                      <p *ngIf="currentPost.user.id !== user.id"><a [routerLink]="['/profile/', currentPost.user.username]"><strong>{{ currentPost.user.username }}</strong></a>{{ currentPost.caption }}</p>
+                    </div>
                 </div>
                 <div class="post-comments">
-    
+                  <ul>
+                    <li *ngFor="let comment of currentPost.comments" class="clearfix">
+                        <div class="user-post-profile-pic">
+                            <a *ngIf="comment.user.id === user.id" [routerLink]="['/myprofile/', comment.user.username]">
+                              <img src="{{ _userService.profileImageApi+comment.user.userImage }}" alt="{{comment.user.username}}">
+                            </a>
+                            <a *ngIf="comment.user.id !== user.id" [routerLink]="['/profile/', comment.user.username]">
+                              <img src="{{ _userService.profileImageApi+comment.user.userImage }}" alt="{{comment.user.username}}">
+                            </a>
+                        </div>
+                        <div class="post-header-desc">
+                          <p *ngIf="comment.user.id === user.id"><a [routerLink]="['/myprofile/', comment.user.username]">{{ comment.user.username }}</a> {{ comment.commentText }}
+                          <small>{{ comment.createdAt | moment }}</small></p>
+                          <p *ngIf="comment.user.id !== user.id"><a [routerLink]="['/profile/', comment.user.username]">{{ comment.user.username }}</a> {{ comment.commentText }}
+                          <small>{{ comment.createdAt | moment }}</small></p>
+                        </div>
+                    </li>
+                  </ul>
                 </div>
               </div>
               <div class="post-buttons">
@@ -42,17 +69,31 @@
                 <div class="right-buttons">
                   <!-- display delete button on myprofile and bookmark button on other's profile -->
                   <!-- <button id="save_btn"><i class="far fa-bookmark"></i></button> -->
-                  <button id="save_btn" *ngIf="!currentPost.saved"type="button" (click)="savePost(currentPost)"><i class="far fa-bookmark"></i></button>
-                  <button id="save_btn" *ngIf="currentPost.saved"type="button" (click)="deleteSavedPost(currentPost.postID)"><i class="fas fa-bookmark"></i></button>                </div>
+                  <!-- <button id="save_btn" *ngIf="currentPost.authorUID === _authService.authState.uid" [disabled]="submitted" (click)="deletePost(currentPost.postID)"><i class="far fa-trash-alt"></i></button>
+                  <button id="save_btn" *ngIf="parentPath === 'mysaved'" [disabled]="submitted" (click)="deleteSavedPost(currentPost.postID)"><i class="fas fa-bookmark"></i></button> -->
+                </div>
               </div>
               <div class="post-status">
-                <a *ngIf="currentPost.likes > 0" [routerLink]="['likes']"><strong>{{ currentPost.likes }} likes</strong></a>
-                <a *ngIf="currentPost.likes === 0"><strong>{{ currentPost.likes }} likes</strong></a>
-                <small>{{ currentPost.createdAt.toDate() | moment }}</small>
+                <a *ngIf="currentPost.likesNo > 0" [routerLink]="['likes']"><strong>{{ currentPost.likesNo }} likes</strong></a>
+                <a *ngIf="currentPost.likes === 0"><strong>{{ currentPost.likesNo }} likes</strong></a>
+                <small>{{ currentPost.createdAt | moment }}</small>
               </div>
+          </div>
+          <!-- comment -->
+          <div class="post-commment">
+            <form (ngSubmit)="postComment(f)" #f="ngForm">
+              <div class="form-group clearfix">
+                <textarea name="commentText" #commentText="ngModel" placeholder="Add a comment..." ngModel required></textarea>
+                <button type="submit" [disabled]="!f.valid">Post</button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
+    </div>
+    <div class="postDetail-modal-nav">
+      <button *ngIf="!firstPost" class="postDetail-modal-nav-prev" (click)="navPrevPost()"><i class="fas fa-chevron-left"></i></button>
+      <button *ngIf="!lastPost" class="postDetail-modal-nav-next" (click)="navNextPost()"><i class="fas fa-chevron-right"></i></button>
     </div>
     <button class="postDetail-close" (click)="closePostDetail()"><i class="fas fa-times"></i></button>
     <div class="modal-backdrop show"></div>

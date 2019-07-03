@@ -5,21 +5,21 @@
       <button type="button" (click)="closePostDetail()"><i class="fas fa-times"></i></button>
     </div>
     <div class="fcontent">
-      <app-insta-loading *ngIf="followerLoading"></app-insta-loading>
-      <ul *ngIf="followers">
-        <li *ngFor="let follower of followers">
+      <app-insta-loading *ngIf="loading"></app-insta-loading>
+      <ul *ngIf="likes">
+        <li *ngFor="let like of likes">
           <div class="user-image">
-            <a [routerLink]="['/profile', follower.user.username]">
-              <img [src]="follower.user.profilePicture" alt="">
+            <a [routerLink]="['/profile', like.username]">
+              <img [src]="_userService.profileImageApi+like.userImage" alt="">
             </a>
           </div>
           <div class="user-info">
-            <strong><a [routerLink]="['/profile', follower.user.username]">{{ follower.user.username }}</a></strong>
-            <small>{{ follower.user.displayName }}</small>
+            <strong><a [routerLink]="['/profile', like.username]">{{ like.username }}</a></strong>
+            <small>{{ like.displayName }}</small>
           </div>
-          <button type="button" *ngIf="!follower.follow && !follower.mineuid" (click)="follow(follower)" class="followBtn">Follow</button>
+          <!-- <button type="button" *ngIf="!follower.follow && !follower.mineuid" (click)="follow(like)" class="followBtn">Follow</button>
           <button type="button" *ngIf="follower.follow && !follower.mineuid" class="followingBtn">Following</button>
-          <button *ngIf="folllowReq &&!follower" class="followingBtn" [disabled]="folllowloading">Requested</button>
+          <button *ngIf="folllowReq &&!follower" class="followingBtn" [disabled]="folllowloading">Requested</button> -->
         </li>
       </ul>
     </div>
