@@ -84,7 +84,7 @@ export class PostDetailComponent implements OnInit, OnDestroy {
         switchMap( (params: Params) => {
           this.currentPostId = params['id'];
           this.currentPostIndex = +params['ids'];
-          return this._userService.user;
+          return this._userService.getCurrentUser();
         } )
       ).subscribe(async (user: any ) => {
         this.user = user;

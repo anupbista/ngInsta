@@ -15,29 +15,51 @@ export class AuthService {
   }
 
   doRegister(form){
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'X-Skip-Interceptor': '',
+    });
+    let options = { headers: headers };
     let data = {
       email: form.email,
       password: form.password,
       username: form.username,
-      userImage: null,
+      userImage: 'uploads/profile/default-user.png',
       displayName: form.displayName
     }
-    return this.httpClient.post(environment.api+"auth/signup", data).toPromise()
+    return this.httpClient.post(environment.api+"auth/signup", data, options).toPromise()
   }
 
   doLogin(form): Promise<any>{
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'X-Skip-Interceptor': '',
+    });
+    let options = { headers: headers };
+
     let data = {
       email: form.value.email,
       password: form.value.password
     }
-    return this.httpClient.post(environment.api+"auth/signin", data).toPromise()
+    return this.httpClient.post(environment.api+"auth/signin", data, options).toPromise()
   }
 
-  setSession(authResult) {
-    const expiresAt = moment().add(authResult.expiresIn,'second');
-    localStorage.setItem('token', authResult.token);
-    localStorage.setItem("expiresIn", JSON.stringify(expiresAt.valueOf()) );
-    // localStorage.setItem('userId', authResult.userId);
+  setSession(authResult) : Promise<any>{
+    return new Promise( (resolve, reject) => {
+      try {
+        const expiresAt = moment().add(authResult.expiresIn,'second');
+        localStorage.setItem('token', authResult.token);
+        localStorage.setItem("expiresIn", JSON.stringify(expiresAt.valueOf()) );
+        // localStorage.setItem('userId', authResult.userId);
+        if(localStorage.token){
+          resolve(localStorage.token);
+        }else{
+          reject("No token")
+        }
+      } catch (error) {
+        reject(error)
+      }
+    } );
   }          
 
   public isAuthenticated() {

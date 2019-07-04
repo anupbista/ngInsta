@@ -21,7 +21,7 @@ export class SuggestionsComponent implements OnInit {
   constructor(private _userService: UserService, private _authService: AuthService) { }
 
   ngOnInit() {
-    this.userSubscription = this._userService.user.subscribe(
+    this.userSubscription = this._userService.getCurrentUser().subscribe(
       (user) => {
         this.user = user;
         this.getUserSuggestions();

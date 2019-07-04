@@ -32,7 +32,7 @@ export class InstaPostComponent implements OnInit, OnDestroy {
     private _userService: UserService) { }
 
   ngOnInit() {
-    this.userSubscription = this._userService.user.subscribe(
+    this.userSubscription = this._userService.getCurrentUser().subscribe(
       (user) => {
         this.user = user;
         this._postsService.getPosts(user.id, this.page)
@@ -92,7 +92,6 @@ export class InstaPostComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(){
-    console.log("post component Desrroyed");
     this.userSubscription.unsubscribe();
   }
 

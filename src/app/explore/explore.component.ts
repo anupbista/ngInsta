@@ -24,7 +24,7 @@ export class ExploreComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.userSubscription = this._userService.user.subscribe(
+    this.userSubscription = this._userService.getCurrentUser().subscribe(
       (user) => {
         this.user = user;
         this._postsService.getExplorePosts(user.id, this.page)

@@ -17,21 +17,17 @@ export class UserService {
   currentUser: User;
   localUser: User;
 
+  token: any;
+
   constructor( private router: Router, private _authService: AuthService, private _apiserviceService: ApiserviceService){
     this.profileImageApi = environment.profileImageApi;
-    this.setCurrentUser();
-  }
-
-  updateRegisterProfile(formValue){
-
-  }
-
-  addUser(formData){
-    
-  }
+    // this.setCurrentUser();
+    console.log("User Service")
+  } 
   
   getCurrentUser(): Observable<User>{
-    return this._apiserviceService.ngInstaGetObservable("user/"+localStorage.token, localStorage.token);
+    this.token = localStorage.getItem('token');
+    return this._apiserviceService.ngInstaGetObservable("user/"+this.token, this.token);
   }
 
   async setCurrentUser(){
@@ -101,6 +97,10 @@ export class UserService {
 
   getUserSuggestions(userId): Promise<any>{
     return this._apiserviceService.ngInstaGet("user/suggestions/"+userId, localStorage.token);
+  }
+
+  updateNotification(data){
+    return this._apiserviceService.ngInstaPut(data, "user/notification", localStorage.token);    
   }
 
 }

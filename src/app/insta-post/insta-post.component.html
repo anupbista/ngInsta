@@ -38,7 +38,7 @@ infiniteScroll
       <a [routerLink]="['/post', post.id]"><strong>{{ post.likesNo }} likes</strong></a>
     </div>
     <div class="post-caption">
-        <p><a href="#"><strong>{{ post.user.username }}</strong></a>{{ post.caption }}.</p>
+        <p><a [routerLink]="['/profile', post.user.username]"><strong>{{ post.user.username }}</strong></a>{{ post.caption }}</p>
     </div>
     <div *ngIf="post.commentsNo > 0" class="view_comment">
         <a [routerLink]="['/post', post.id]">View all {{post.commentsNo}} comments</a>

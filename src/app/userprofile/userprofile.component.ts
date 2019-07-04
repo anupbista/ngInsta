@@ -34,7 +34,7 @@ export class UserprofileComponent implements OnInit {
   }
   
   ngOnInit() {
-    this.userSubsciption = this._userService.user.pipe(flatMap( user => {
+    this.userSubsciption = this._userService.getCurrentUser().pipe(flatMap( user => {
       this.user = user;
       return this.route.url;
     })).subscribe(

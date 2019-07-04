@@ -54,7 +54,7 @@ export class EditComponent implements OnInit {
   }
 
   async getUserDetails(){
-    this.userSubscription = this._userService.user.subscribe(
+    this.userSubscription = this._userService.getCurrentUser().subscribe(
       async (user) => {
         this.user = await this._userService.getUser(user.id);
         console.log(this.user);

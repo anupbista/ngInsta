@@ -41,7 +41,7 @@ export class FollowingComponent implements OnInit {
         }
       }
     )
-    this.userSubscription = this._userService.user.subscribe( user => { this.accountUser = user }, error => { console.log(error) })
+    this.userSubscription = this._userService.getCurrentUser().subscribe( user => { this.accountUser = user }, error => { console.log(error) })
   }
 
   ngOnDestroy(): void {

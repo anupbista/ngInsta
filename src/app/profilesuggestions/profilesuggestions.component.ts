@@ -19,7 +19,7 @@ export class ProfilesuggestionsComponent implements OnInit {
   constructor(private _userService: UserService) { }
 
   ngOnInit() {
-    this.userSubscription = this._userService.user.subscribe(
+    this.userSubscription = this._userService.getCurrentUser().subscribe(
       (user) => {
         this.user = user;
         this.getUserSuggestions();

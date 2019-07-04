@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from "@angular/common/http";
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { AngularStickyThingsModule } from '@w11k/angular-sticky-things';
 import { FormsModule } from "@angular/forms";
 import { ReactiveFormsModule } from '@angular/forms';
@@ -56,6 +56,7 @@ import { LikedbyComponent } from './components/likedby/likedby.component';
 import { ExploredetailComponent } from './components/exploredetail/exploredetail.component';
 import { LikesComponent } from './components/likes/likes.component';
 import { SinglepostdetailComponent } from './singlepostdetail/singlepostdetail.component';
+import { HTTPInterceptor } from './services/httpInterceptor';
 
 @NgModule({
   declarations: [
@@ -107,11 +108,17 @@ import { SinglepostdetailComponent } from './singlepostdetail/singlepostdetail.c
     InfiniteScrollModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot({
+      preventDuplicates: true,
+    }),
     QRCodeModule,
     ScrollingModule
   ],
-  providers: [ApiserviceService, AuthService, AuthGuard, PostsService, AuthenticateGuard],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: HTTPInterceptor,
+    multi: true
+  }, ApiserviceService, AuthService, AuthGuard, PostsService, AuthenticateGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

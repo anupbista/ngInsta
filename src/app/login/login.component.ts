@@ -29,10 +29,9 @@ export class LoginComponent implements OnInit {
     this.submitted = true;
     this.loginError = "";
     this._authService.doLogin(value)
-    .then(res => {
+    .then(async (res) => {
       this.submitted = false;
-      console.log(res);
-      this._authService.setSession(res);
+      await this._authService.setSession(res);
       this.router.navigate(['']);
     }, err => {
       this.submitted = false;

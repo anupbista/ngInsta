@@ -22,7 +22,7 @@ export class MySavedpostsComponent implements OnInit {
   constructor(private _postsService:PostsService, private _userService: UserService, private route: ActivatedRoute) { }
   
   ngOnInit() {
-    this.userSubsciption= this._userService.user.subscribe(
+    this.userSubsciption= this._userService.getCurrentUser().subscribe(
       (user) => {
         this.user = user;
         this.getSavedPosts();

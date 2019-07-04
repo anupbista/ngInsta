@@ -15,7 +15,7 @@ export class HomeComponent implements OnInit {
   date = new Date();
 
   constructor(private titleService: Title, private authService: AuthService, private _userService: UserService) {
-    
+    this._userService.setCurrentUser();
    }
 
   public setTitle( newTitle: string) {
@@ -24,7 +24,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.setTitle("Instagram");
-    this._userService.user.subscribe(
+    this._userService.getCurrentUser().subscribe(
       (user) => {
         this.user = user;
       },

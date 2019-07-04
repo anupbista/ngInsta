@@ -63,7 +63,7 @@ export class SinglepostdetailComponent implements OnInit {
   getPost(){
     this.userSubsciption = this.route.params.pipe(switchMap( (params)=> {
         this.currentPostId = params['id'];
-        return this._userService.user;
+        return this._userService.getCurrentUser();
       } )).subscribe(async (user: any ) => {
         this.user = user;
         await this.getPostByPostId();

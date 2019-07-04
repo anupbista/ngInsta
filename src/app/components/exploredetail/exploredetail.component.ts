@@ -85,7 +85,7 @@ export class ExploredetailComponent implements OnInit {
         switchMap( (params: Params) => {
           this.currentPostId = params['id'];
           this.currentPostIndex = +params['ids'];
-          return this._userService.user;
+          return this._userService.getCurrentUser();
         } )
       ).subscribe(async (user: any ) => {
         this.user = user;

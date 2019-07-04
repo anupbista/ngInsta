@@ -13,7 +13,7 @@
             </div>
             <div class="form-group post-header-desc">
               <h4>{{ user.username }}</h4>
-              <p><input type="text" placeholder="Location here..." readonly formControlName="postLocation" ></p>
+              <p><input type="text" placeholder="{{placeHolder}}" readonly formControlName="postLocation" ></p>
             </div>
             <div class="form-group post-header-locations">
               <i class="fas fa-location-arrow" [ngClass]="(location)?'locationOK':'locationNOK'"></i>

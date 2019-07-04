@@ -31,7 +31,7 @@ export class LikesComponent implements OnInit {
     this.userSubsciption = this.route.parent.url.pipe(switchMap( (urlPath)=> {
       this.postID = urlPath[1].path;
       console.log(this.postID)
-      return this._userService.user;
+      return this._userService.getCurrentUser();
     } )).subscribe(async (user: any ) => {
       this.user = user;
       await this.getLikesByPostId();

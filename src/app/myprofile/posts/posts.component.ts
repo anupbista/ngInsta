@@ -23,6 +23,7 @@ export class MyPostsComponent implements OnInit {
   }
 
   async getProfilePosts(){
+    await this._userService.setCurrentUser();
     this.profilePosts = await this._postsService.getPostByUserId(this._userService.currentUser.id, 1, true);
     this.loading = false;
     if(this.profilePosts.length > 0){

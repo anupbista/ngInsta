@@ -42,7 +42,7 @@ export class FollowersComponent implements OnInit {
        
       }
     )
-    this.userSubscription = this._userService.user.subscribe( user => { 
+    this.userSubscription = this._userService.getCurrentUser().subscribe( user => { 
       this.accountUser = user;
       // console.log(this.accountUser) 
     }, error => { console.log(error) })

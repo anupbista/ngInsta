@@ -51,7 +51,7 @@ export class HeaderComponent implements OnInit {
     }
   }
   ngOnInit() {
-    this.userSubscription = this._userService.user.subscribe(
+    this.userSubscription = this._userService.getCurrentUser().subscribe(
       (user) => {
         this.user = user;
         this.getOtherNotis();
@@ -118,10 +118,24 @@ export class HeaderComponent implements OnInit {
     this.getOtherNotis();
   }
 
-  dosetSeen(){
+  async dosetSeen(){
+    let data = {
+      ids: []
+    }
+    this.followRequests.forEach( (element:any) => {
+      if(!element.status){
+        data.ids.push(element.id)
+      }
+    });
+    this.otherNotis.forEach( (element:any) => {
+      if(!element.status){
+        data.ids.push(element.id)
+      }
+    });
+    await this._userService.updateNotification(data);
     setTimeout( () => {
       this.showNotiDot = false;
-    }, 5000)
+    }, 1000)
   }
   
   toAnimatePlaceholder(){

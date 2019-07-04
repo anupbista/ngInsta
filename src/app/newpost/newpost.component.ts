@@ -26,6 +26,8 @@ export class NewpostComponent implements OnInit {
   @ViewChild('search')
   public searchElementRef: ElementRef;
   geolocationPosition: Position;
+
+  placeHolder: string = "Location here..."
   
   constructor(private _location: Location, 
     private formBuilder: FormBuilder,
@@ -35,7 +37,7 @@ export class NewpostComponent implements OnInit {
     private ngZone: NgZone,) { }
 
   ngOnInit() {
-    this.userSubscription = this._userService.user.subscribe(
+    this.userSubscription = this._userService.getCurrentUser().subscribe(
       (user) => {
         this.user = user;
       },
@@ -53,6 +55,7 @@ export class NewpostComponent implements OnInit {
     if (window.navigator && window.navigator.geolocation) {
       window.navigator.geolocation.getCurrentPosition(
           async (position) => {
+              this.placeHolder = "Getting location..."
               this.geolocationPosition = position;
               const location = await this._userService.getLocation("https://api.opencagedata.com/geocode/v1/json?q="+this.geolocationPosition.coords.latitude+"+"+this.geolocationPosition.coords.longitude+"&key=261759df88dc49aba373f90c6ce66808");
               this.newPostForm.patchValue({
@@ -64,12 +67,15 @@ export class NewpostComponent implements OnInit {
               switch (error.code) {
                   case 1:
                       console.log('Permission Denied');
+                      this.placeHolder = "Permission Denied"
                       break;
                   case 2:
                       console.log('Position Unavailable');
+                      this.placeHolder = "Position Unavailable"
                       break;
                   case 3:
                       console.log('Timeout');
+                      this.placeHolder = "Timeout"
                       break;
               }
           }
