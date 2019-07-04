@@ -7,7 +7,6 @@ import { AuthService } from '../services/auth.service';
 import { Observable, Subscription } from 'rxjs';
 import { User } from '../Models/User';
 import { UserService } from '../services/user.service';
-import { MapsAPILoader, MouseEvent } from '@agm/core';
 
 @Component({
   selector: 'app-newpost',
@@ -21,19 +20,19 @@ export class NewpostComponent implements OnInit {
   url: any;
   file: File;
   user: User;
-
+  location: boolean = false;
   userSubscription: Subscription;
 
   @ViewChild('search')
   public searchElementRef: ElementRef;
+  geolocationPosition: Position;
   
   constructor(private _location: Location, 
     private formBuilder: FormBuilder,
     private _postsService: PostsService,
     private _authService: AuthService,
     private _userService: UserService,
-    private ngZone: NgZone,
-    private mapsAPILoader: MapsAPILoader,) { }
+    private ngZone: NgZone,) { }
 
   ngOnInit() {
     this.userSubscription = this._userService.user.subscribe(
@@ -54,10 +53,12 @@ export class NewpostComponent implements OnInit {
     if (window.navigator && window.navigator.geolocation) {
       window.navigator.geolocation.getCurrentPosition(
           async (position) => {
-              // this.geolocationPosition = position,
-                  console.log(position);
-                  // const location = await this._userService.getLocation('https://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&key=AIzaSyB4G9Cko5NxGfaCa3i3l2lvRvBPa9KA2fA');
-                  // console.log(location)
+              this.geolocationPosition = position;
+              const location = await this._userService.getLocation("https://api.opencagedata.com/geocode/v1/json?q="+this.geolocationPosition.coords.latitude+"+"+this.geolocationPosition.coords.longitude+"&key=261759df88dc49aba373f90c6ce66808");
+              this.newPostForm.patchValue({
+                postLocation: location.results[0].components.city
+              });
+              this.location = true;
           },
           error => {
               switch (error.code) {
@@ -74,28 +75,6 @@ export class NewpostComponent implements OnInit {
           }
       );
   };
-
-  // autocomplete
-  this.mapsAPILoader.load().then(() => {
-    // this.setCurrentLocation();
-    // this.geoCoder = new google.maps.Geocoder;
-
-    let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
-      types: ["address"]
-    });
-    autocomplete.addListener("place_changed", () => {
-      this.ngZone.run(() => {
-        //get the place result
-        let place: google.maps.places.PlaceResult = autocomplete.getPlace();
-
-        //verify result
-        if (place.geometry === undefined || place.geometry === null) {
-          return;
-        }
-        console.log(place)
-      });
-    });
-  });
 
   }
 
@@ -125,42 +104,43 @@ export class NewpostComponent implements OnInit {
   }
 
   async onSubmit(){
-    // let postId = null;
-    // try {
-    //   this.submitted = true;
-    //   if(this.newPostForm.invalid){
-    //     this.removeAlert = false;
-    //     setTimeout(()=> {
-    //       this.removeAlert = true;
-    //     }, 4000);
-    //     return;
-    //   }
-    //   const postData = {
-    //     latitude: this.f.postLocation.value,
-    //     longitute: this.f.postLocation.value,
-    //     caption: this.f.postCaption.value,
-    //     userId: this.user.id,
-    //     postImage: ""
-    //   }
-    //   postId = await this._postsService.addNewPost(postData);
-    //   let formData = new FormData();
-    //   formData.append('postImage', this.file);
-    //   // console.log(formData)
-    //   // formData.forEach(
-    //   //   (val ,key) => console.log(val) 
-    //   // )
-    //   if(postId){
-    //     await this._postsService.addPostImage(formData, postId);
-    //   }
-    //   this._location.back();
-    // } catch (error) {
-    //   console.log(error);
-    //   if(postId){
-    //     // delete the post
-    //     await this._postsService.deletePost(postId);
-    //     this._location.back();
-    //   }
-    // }
+    let postId = null;
+    try {
+      this.submitted = true;
+      if(this.newPostForm.invalid){
+        this.removeAlert = false;
+        setTimeout(()=> {
+          this.removeAlert = true;
+        }, 4000);
+        return;
+      }
+      const postData = {
+        latitude: this.geolocationPosition.coords.latitude,
+        longitute: this.geolocationPosition.coords.longitude,
+        caption: this.f.postCaption.value,
+        userId: this.user.id,
+        location: this.f.postLocation.value,
+        postImage: ""
+      }
+      postId = await this._postsService.addNewPost(postData);
+      let formData = new FormData();
+      formData.append('postImage', this.file);
+      // console.log(formData)
+      // formData.forEach(
+      //   (val ,key) => console.log(val) 
+      // )
+      if(postId){
+        await this._postsService.addPostImage(formData, postId);
+      }
+      this._location.back();
+    } catch (error) {
+      console.log(error);
+      if(postId){
+        // delete the post
+        await this._postsService.deletePost(postId);
+        this._location.back();
+      }
+    }
     
   }
 

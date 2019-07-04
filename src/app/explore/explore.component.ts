@@ -49,7 +49,6 @@ export class ExploreComponent implements OnInit, OnDestroy {
     this.page = this.page + 1;
     let posts = await this._postsService.getPosts(this.user.id, this.page);
     this.explorePosts = [...this.explorePosts, ...posts];
-    console.log(this.explorePosts)
   }
 
 }

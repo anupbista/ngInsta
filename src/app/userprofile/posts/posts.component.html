@@ -22,6 +22,14 @@
           </div>
         </div>
       </div>
+      <div
+      infiniteScroll
+      [fromRoot]="false"
+      [infiniteScrollDistance]="2"
+      [infiniteScrollThrottle]="50"
+      (scrolled)="loadInfinitePosts()"
+      >
+      </div>
 </div>
 <!-- End of gallery -->
 <router-outlet></router-outlet>

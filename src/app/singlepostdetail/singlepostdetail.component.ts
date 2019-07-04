@@ -52,6 +52,11 @@ export class SinglepostdetailComponent implements OnInit {
     }else{
       this.currentPost.liked = false;
     }
+    if(this.currentPost.saveposts.find(o => o.userId === this.user.id)){
+      this.currentPost.saved = true;
+    }else{
+      this.currentPost.saved = false;
+    }
     this.loading = false;
   }
 
@@ -128,5 +133,32 @@ export class SinglepostdetailComponent implements OnInit {
     console.log(error);
   }
   }
+
+  async savePost(post){
+    try {
+      await this._postService.savePost({
+        userId : this.user.id,
+        postId : post.id,
+      });
+      post.saved = true;
+    } catch (error) {
+      post.saved = false;
+      console.log(error)      
+    }
+  }
+
+  async deleteSavePost(post){
+    try {
+      await this._postService.unSavePost({
+        userId : this.user.id,
+        postId : post.id,
+      });
+      post.saved = false;
+    } catch (error) {
+      post.saved = true;
+      console.log(error);
+    } 
+  }
+
 
 }

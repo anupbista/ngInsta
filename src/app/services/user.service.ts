@@ -43,8 +43,8 @@ export class UserService {
     return this._apiserviceService.ngInstaGet("user/profile/"+userId, localStorage.token);
   }
 
-  getLocation(googMapApi): Promise<any>{
-    return this._apiserviceService.ngInstaGet(googMapApi, localStorage.token);
+  getLocation(geoLocationAPI): Promise<any>{
+    return this._apiserviceService.otherAPIGet(geoLocationAPI);
   }
 
   getUserByUsername(username): Promise<any>{
@@ -91,8 +91,8 @@ export class UserService {
     return this._apiserviceService.ngInstaPutImage(image, "user/profile/"+id+"/profileimage", localStorage.token);    
   }
 
-  getOtherNotifications(userId): Promise<any>{
-    return this._apiserviceService.ngInstaGet("user/othernotifications/"+userId, localStorage.token);
+  getOtherNotifications(userId, page): Promise<any>{
+    return this._apiserviceService.ngInstaGet("user/othernotifications/"+userId+"/"+page, localStorage.token);
   }
 
   getFollowNotifications(userId): Promise<any>{

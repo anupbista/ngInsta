@@ -63,11 +63,15 @@ export class PostDetailComponent implements OnInit, OnDestroy {
 
   async getPostByPostId(){
     this.currentPost = await this._postService.getPostByPostId(this.currentPostId);
-    console.log(this.currentPost);
     if(this.currentPost.likes.find(o => o.userId === this.user.id)){
       this.currentPost.liked = true;
     }else{
       this.currentPost.liked = false;
+    }
+    if(this.currentPost.saveposts.find(o => o.userId === this.user.id)){
+      this.currentPost.saved = true;
+    }else{
+      this.currentPost.saved = false;
     }
     this.loading = false;
   }
@@ -170,23 +174,20 @@ export class PostDetailComponent implements OnInit, OnDestroy {
     // }
   }
 
-  deletePost(currentPostID: string){
-    // if(confirm('Are you sure?')){
-    //   this.submitted = true;
-    //   this._postService.deletePost(currentPostID).then(
-    //     (res) => {
-    //       console.log("Deleted");
-    //       this.submitted = false;
-    //       this.closePostDetail();
-    //     },
-    //     (err) => {
-    //       this.submitted = false;
-    //       console.log("Error. Try Again");
-    //     }
-    //   );
-    // }else{
-    //   console.log("Delete Cancelled")
-    // }
+  async deletePost(postId: string){
+    if(confirm('Are you sure?')){
+      try {
+        this.submitted = true;
+        await this._postService.deletePost(postId);
+        this.submitted = false;
+        this.closePostDetail();
+      } catch (error) {
+        this.submitted = false;
+        console.log(error); 
+      }
+    }else{
+      console.log("Delete Cancelled")
+    }
 
   }
 
@@ -222,17 +223,36 @@ export class PostDetailComponent implements OnInit, OnDestroy {
   }
   }
 
-  deleteSavedPost(postID: string){
-    // this._postService.doDeleteSavePost(postID).then(
-    //   () => {
-    //     console.log("Saved Post deleted");
-    //     this.closePostDetail();
-    //   }
-    // ).catch(
-    //   (err) => {
-    //     console.log("Cannot delete saved post! "+ err);
-    //   }
-    // );
+  async savePost(post){
+    try {
+      await this._postService.savePost({
+        userId : this.user.id,
+        postId : post.id,
+      });
+      post.saved = true;
+    } catch (error) {
+      post.saved = false;
+      console.log(error)      
+    }
+  }
+
+  async deleteSavePost(post){
+    try {
+      await this._postService.unSavePost({
+        userId : this.user.id,
+        postId : post.id,
+      });
+      post.saved = false;
+      if(this.parentPath === "mysaved"){
+        let routerLink:any = this.route.parent.snapshot.pathFromRoot
+        .map(s => s.url).reduce((a, e) => a.concat(e)).map(s => s.path);
+        this.router.navigate([routerLink[0]+"/"+routerLink[1]+"/"+routerLink[2]]);
+      }
+      
+    } catch (error) {
+      post.saved = true;
+      console.log(error);
+    } 
   }
 
 }

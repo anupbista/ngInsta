@@ -22,6 +22,7 @@
       <div
           infiniteScroll
           [infiniteScrollDistance]="2"
+          [fromRoot]="false"
           [infiniteScrollThrottle]="50"
           (scrolled)="loadInfinitePosts()"
           ></div>

@@ -38,14 +38,24 @@ export class InstaPostComponent implements OnInit, OnDestroy {
         this._postsService.getPosts(user.id, this.page)
         .then( (posts: Post[]) => {
           this.posts = posts;
-          this.posts.forEach(element => {
-            if(element.likes.find(o => o.userId === user.id)){
-              element.liked = true;
-            }else{
-              element.liked = false;
-            }
-          });
-          this.loading = false;
+          if(this.posts.length > 0){
+            this.posts.forEach(element => {
+              if(element.likes.find(o => o.userId === user.id)){
+                element.liked = true;
+              }else{
+                element.liked = false;
+              }
+              if(element.saveposts.find(o => o.userId === user.id)){
+                element.saved = true;
+              }else{
+                element.saved = false;
+              }
+            });
+            this.loading = false;
+          }
+          else{
+            this.loading = false;
+          }
         } )
         .catch( error => console.log(error) )
           },
@@ -57,17 +67,28 @@ export class InstaPostComponent implements OnInit, OnDestroy {
   }
   
   async loadInfinitePosts(){
+    this.loading = true;
     this.page = this.page + 1;
     let posts = await this._postsService.getPosts(this.user.id, this.page);
-    posts.forEach(element => {
-      if(element.likes.find(o => o.userId === this.user.id)){
-        element.liked = true;
-      }else{
-        element.liked = false;
-      }
-    });
+    if(this.posts.length > 0){
+      this.posts.forEach(element => {
+        if(element.likes.find(o => o.userId === this.user.id)){
+          element.liked = true;
+        }else{
+          element.liked = false;
+        }
+        if(element.saveposts.find(o => o.userId === this.user.id)){
+          element.saved = true;
+        }else{
+          element.saved = false;
+        }
+      });
+      this.loading = false;
+    }
+    else{
+      this.loading = false;
+    }
     this.posts = [...this.posts, ...posts];
-    console.log(this.posts)
   }
 
   ngOnDestroy(){
@@ -123,37 +144,30 @@ export class InstaPostComponent implements OnInit, OnDestroy {
   }
   }
 
-  savePost(post: Post){
-  //   this._postsService.doSavePost({
-  //     authorUID : post.authorUID,
-  //     location : post.location,
-  //     createdAt : post.createdAt,
-  //     likes : post.likes,
-  //     postCaption : post.postCaption,
-  //     src : post.src,
-  //   }, post.postID).then(
-  //     () => {
-  //       post.saved = true;
-  //       console.log("Post saved");
-  //     }
-  //   ).catch(
-  //     (err) => {
-  //       console.log("Cannot save post! "+ err);
-  //     }
-  //   );
-  // }
+  async savePost(post){
+    try {
+      await this._postsService.savePost({
+        userId : this.user.id,
+        postId : post.id,
+      });
+      post.saved = true;
+    } catch (error) {
+      post.saved = false;
+      console.log(error)      
+    }
+  }
 
-  // deleteSavePost(post: InstaPost){
-  //   this._postsService.doDeleteSavePost(post.postID).then(
-  //     () => {
-  //       post.saved = false;
-  //       console.log("Saved Post deleted");
-  //     }
-  //   ).catch(
-  //     (err) => {
-  //       console.log("Cannot delete saved post! "+ err);
-  //     }
-  //   );
+  async deleteSavePost(post){
+    try {
+      await this._postsService.unSavePost({
+        userId : this.user.id,
+        postId : post.id,
+      });
+      post.saved = false;
+    } catch (error) {
+      post.saved = true;
+      console.log(error);
+    }
   }
 
 }

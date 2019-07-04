@@ -71,10 +71,10 @@
                     <button id="like_btn" *ngIf="currentPost.liked" (click)="unLikePost(currentPost)"><i class="fas fa-heart" style="color: red"></i></button>              <!-- <button id="comment_btn"><i class="far fa-comment"></i></button> -->
                   </div>
                   <div class="right-buttons">
-                    <!-- display delete button on myprofile and bookmark button on other's profile -->
-                    <!-- <button id="save_btn"><i class="far fa-bookmark"></i></button> -->
-                    <!-- <button id="save_btn" *ngIf="currentPost.authorUID === _authService.authState.uid" [disabled]="submitted" (click)="deletePost(currentPost.postID)"><i class="far fa-trash-alt"></i></button>
-                    <button id="save_btn" *ngIf="parentPath === 'mysaved'" [disabled]="submitted" (click)="deleteSavedPost(currentPost.postID)"><i class="fas fa-bookmark"></i></button> -->
+                    <ng-container *ngIf="currentPost.user.id != user.id">
+                      <button id="save_btn" *ngIf="!currentPost.saved" (click)="savePost(currentPost)"><i class="far fa-bookmark"></i></button>
+                      <button id="save_btn" *ngIf="currentPost.saved" [disabled]="submitted" (click)="deleteSavePost(currentPost)"><i class="fas fa-bookmark"></i></button>
+                    </ng-container>
                   </div>
                 </div>
                 <div class="post-status">

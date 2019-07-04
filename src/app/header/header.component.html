@@ -58,8 +58,7 @@
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <span></span>
-          <app-insta-loading *ngIf="notiLoading"></app-insta-loading>
-          <div class="noti-contents" *ngIf="!notiLoading">
+          <div class="noti-contents">
               <div class="follow-req" *ngIf="showNotis" (click)="showFollowRequets($event)">
                 <div class="follow-req-no">{{ noFollowRequests > 10 ? noFollowRequests + "+": noFollowRequests }}</div>
                 <div class="follow-req-desc">
@@ -75,6 +74,7 @@
                   Follow Requests
                 </div>
                 <div *ngIf="followRequests">
+                  <app-insta-loading *ngIf="FollowNotiLoading"></app-insta-loading>
                   <div class="follow-r" *ngFor="let followRequest of followRequests">
                     <div class="follow-r-pic">
                         <img [src]="_userService.profileImageApi+followRequest.user.userImage" alt="{{followRequest.user.username}}">
@@ -115,6 +115,15 @@
                     <img  [routerLink]="['/post', otherNoti.post.id]" [src]="_postService.postImageApi+otherNoti.post.postImage" alt="">
                 </div>
               </div>
+              <app-insta-loading *ngIf="OtherNotiLoading"></app-insta-loading>
+              <div
+                    infiniteScroll
+                    [infiniteScrollDistance]="2"
+                    [infiniteScrollThrottle]="50"
+                    (scrolled)="loadInfiniteOtherNotis()"
+                    [scrollWindow]="false"
+                    >
+                    </div>
               </div>
           </div>
         </div>

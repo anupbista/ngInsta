@@ -30,11 +30,14 @@ export class HeaderComponent implements OnInit {
 
   followRequests: any[] = [];
   noFollowRequests: number = 0;
-  otherNotis: [];
-  notiLoading:boolean = false;
+  otherNotis: any[];
+  FollowNotiLoading:boolean = false;
+  OtherNotiLoading:boolean = false;
   showNotiDot: boolean = false;
 
   userSubscription: Subscription;
+
+  otherNotiPage: number = 1;
 
   constructor(zone: NgZone, private _userService: UserService, private _authService: AuthService, private _postService: PostsService) {
     window.onscroll = () => {
@@ -81,9 +84,9 @@ export class HeaderComponent implements OnInit {
   }
 
   async getOtherNotis(){
-    this.notiLoading = true;
-    this.otherNotis  = await this._userService.getOtherNotifications(this.user.id);
-    this.notiLoading = false;
+    this.OtherNotiLoading = true;
+    this.otherNotis  = await this._userService.getOtherNotifications(this.user.id, 1);
+    this.OtherNotiLoading = false;
     this.otherNotis.map(
       (otherNoti: any) => {
         if(otherNoti.status === false){
@@ -92,13 +95,12 @@ export class HeaderComponent implements OnInit {
         return otherNoti;
       }
     );
-    console.log(this.otherNotis);
   }
 
   async getFollowNotis(){
-    this.notiLoading = true;
+    this.FollowNotiLoading = true;
     this.followRequests  = await this._userService.getFollowNotifications(this.user.id);
-    this.notiLoading = false;
+    this.FollowNotiLoading = false;
     this.noFollowRequests = this.followRequests.length;
     this.followRequests.map(
       (followNoti: any) => {
@@ -108,7 +110,6 @@ export class HeaderComponent implements OnInit {
         return followNoti;
       }
     );
-    console.log(this.followRequests);
   }
 
 
@@ -179,4 +180,20 @@ export class HeaderComponent implements OnInit {
     this.userSubscription.unsubscribe();
   }
   
+  async loadInfiniteOtherNotis(){
+    this.OtherNotiLoading = true;
+    this.otherNotiPage = this.otherNotiPage + 1;
+    let otherNotis  = await this._userService.getOtherNotifications(this.user.id, this.otherNotiPage);
+    this.OtherNotiLoading = false;
+    otherNotis.map(
+      (otherNoti: any) => {
+        if(otherNoti.status === false){
+          this.showNotiDot = true;
+        }
+        return otherNoti;
+      }
+    );
+    this.otherNotis = [...this.otherNotis, ...otherNotis];
+  }
+
 }

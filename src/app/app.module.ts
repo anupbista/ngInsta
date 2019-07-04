@@ -10,7 +10,7 @@ import { AuthService } from './services/auth.service';
 import { AuthGuard } from './services/auth.guard';
 import { ToastrModule } from 'ngx-toastr';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { AgmCoreModule } from '@agm/core';
+import { ContentLoaderModule } from '@netbasal/ngx-content-loader';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -24,7 +24,6 @@ import { UserprofileComponent } from './userprofile/userprofile.component';
 import { HomeComponent } from './home/home.component';
 import { ProfilesuggestionsComponent } from './profilesuggestions/profilesuggestions.component';
 import { OwlModule } from 'ngx-owl-carousel';
-import { NgxContentLoadingModule } from 'ngx-content-loading';
 import { TaggedComponent } from './userprofile/tagged/tagged.component';
 import { PostsComponent } from './userprofile/posts/posts.component';
 import { LoginComponent } from './login/login.component';
@@ -104,14 +103,10 @@ import { SinglepostdetailComponent } from './singlepostdetail/singlepostdetail.c
     HttpClientModule,
     AngularStickyThingsModule,
     OwlModule,
+    ContentLoaderModule,
     InfiniteScrollModule,
-    NgxContentLoadingModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyASFJfTaIKWNkqZRfrCoEycghr-M6d8OfI',
-      libraries: ['places']
-    }),
     ToastrModule.forRoot(),
     QRCodeModule,
     ScrollingModule

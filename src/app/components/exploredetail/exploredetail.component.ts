@@ -64,11 +64,15 @@ export class ExploredetailComponent implements OnInit {
 
   async getPostByPostId(){
     this.currentPost = await this._postService.getPostByPostId(this.currentPostId);
-    console.log(this.currentPost);
     if(this.currentPost.likes.find(o => o.userId === this.user.id)){
       this.currentPost.liked = true;
     }else{
       this.currentPost.liked = false;
+    }
+    if(this.currentPost.saveposts.find(o => o.userId === this.user.id)){
+      this.currentPost.saved = true;
+    }else{
+      this.currentPost.saved = false;
     }
     this.loading = false;
   }
@@ -116,9 +120,7 @@ export class ExploredetailComponent implements OnInit {
   }
 
   closePostDetail(){
-    let routerLink:any = this.route.parent.snapshot.pathFromRoot
-    .map(s => s.url).reduce((a, e) => a.concat(e)).map(s => s.path);
-    this.router.navigate([routerLink[0]+"/"+routerLink[1]+"/"+routerLink[2]]);
+    this._location.back();
   }
 
   async postComment(form){
@@ -140,6 +142,33 @@ export class ExploredetailComponent implements OnInit {
       console.log(error);
     }
   }
+
+  async savePost(post){
+    try {
+      await this._postService.savePost({
+        userId : this.user.id,
+        postId : post.id,
+      });
+      post.saved = true;
+    } catch (error) {
+      post.saved = false;
+      console.log(error)      
+    }
+  }
+
+  async deleteSavePost(post){
+    try {
+      await this._postService.unSavePost({
+        userId : this.user.id,
+        postId : post.id,
+      });
+      post.saved = false;
+    } catch (error) {
+      post.saved = true;
+      console.log(error);
+    } 
+  }
+
 
   navNextPost(){
     // if(this.parentPath === "myposts"){
@@ -169,26 +198,6 @@ export class ExploredetailComponent implements OnInit {
     // else{
     //   this.router.navigate(['/profile/'+this.urlUsername+'/posts/p/',this.prevPost.postID,this.currentPostIndex-1]);
     // }
-  }
-
-  deletePost(currentPostID: string){
-    // if(confirm('Are you sure?')){
-    //   this.submitted = true;
-    //   this._postService.deletePost(currentPostID).then(
-    //     (res) => {
-    //       console.log("Deleted");
-    //       this.submitted = false;
-    //       this.closePostDetail();
-    //     },
-    //     (err) => {
-    //       this.submitted = false;
-    //       console.log("Error. Try Again");
-    //     }
-    //   );
-    // }else{
-    //   console.log("Delete Cancelled")
-    // }
-
   }
 
   async likePost(post){
@@ -221,19 +230,6 @@ export class ExploredetailComponent implements OnInit {
     post.liked = true;
     console.log(error);
   }
-  }
-
-  deleteSavedPost(postID: string){
-    // this._postService.doDeleteSavePost(postID).then(
-    //   () => {
-    //     console.log("Saved Post deleted");
-    //     this.closePostDetail();
-    //   }
-    // ).catch(
-    //   (err) => {
-    //     console.log("Cannot delete saved post! "+ err);
-    //   }
-    // );
   }
 
 }

@@ -18,6 +18,10 @@ export class ApiserviceService {
     return await this.http.get(environment.api+api, options).toPromise();
   }
 
+  async otherAPIGet(api): Promise<any>{
+    return await this.http.get(api).toPromise();
+  }
+
   ngInstaGetObservable(api, key): Observable<any>{
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',

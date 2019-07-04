@@ -64,13 +64,13 @@
               <div class="post-buttons">
                 <div class="left-buttons">
                   <button id="like_btn" *ngIf="!currentPost.liked" (click)="likePost(currentPost)"><i class="far fa-heart"></i></button>
-                  <button id="like_btn" *ngIf="currentPost.liked" (click)="unLikePost(currentPost)"><i class="fas fa-heart" style="color: red"></i></button>              <!-- <button id="comment_btn"><i class="far fa-comment"></i></button> -->
+                  <button id="like_btn" *ngIf="currentPost.liked" (click)="unLikePost(currentPost)"><i class="fas fa-heart" style="color: red"></i></button>
                 </div>
                 <div class="right-buttons">
-                  <!-- display delete button on myprofile and bookmark button on other's profile -->
-                  <!-- <button id="save_btn"><i class="far fa-bookmark"></i></button> -->
-                  <!-- <button id="save_btn" *ngIf="currentPost.authorUID === _authService.authState.uid" [disabled]="submitted" (click)="deletePost(currentPost.postID)"><i class="far fa-trash-alt"></i></button>
-                  <button id="save_btn" *ngIf="parentPath === 'mysaved'" [disabled]="submitted" (click)="deleteSavedPost(currentPost.postID)"><i class="fas fa-bookmark"></i></button> -->
+                  <ng-container *ngIf="currentPost.user.id != user.id">
+                    <button id="save_btn" *ngIf="!currentPost.saved" (click)="savePost(currentPost)"><i class="far fa-bookmark"></i></button>
+                    <button id="save_btn" *ngIf="currentPost.saved" [disabled]="submitted" (click)="deleteSavePost(currentPost)"><i class="fas fa-bookmark"></i></button>
+                  </ng-container>
                 </div>
               </div>
               <div class="post-status">
@@ -91,10 +91,10 @@
         </div>
       </div>
     </div>
-    <div class="postDetail-modal-nav">
+    <!-- <div class="postDetail-modal-nav">
       <button *ngIf="!firstPost" class="postDetail-modal-nav-prev" (click)="navPrevPost()"><i class="fas fa-chevron-left"></i></button>
       <button *ngIf="!lastPost" class="postDetail-modal-nav-next" (click)="navNextPost()"><i class="fas fa-chevron-right"></i></button>
-    </div>
+    </div> -->
     <button class="postDetail-close" (click)="closePostDetail()"><i class="fas fa-times"></i></button>
     <div class="modal-backdrop show"></div>
     </div>

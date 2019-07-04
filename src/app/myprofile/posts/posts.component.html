@@ -16,6 +16,7 @@
 </div>
   
   <div class="gallery" *ngIf="!noData || profilePosts">
+
     <div class="gallery-item" *ngFor="let profilePost of profilePosts; let i = index">
         <div [routerLink]="['p/',profilePost.id,i]" routerLinkActive="router-link-active" >
           <img src="{{ _postsService.postImageApi+profilePost.postImage }}" class="gallery-image" alt="">
@@ -28,6 +29,14 @@
     
           </div>
         </div>
+      </div>
+      <div
+      infiniteScroll
+      [fromRoot]="false"
+      [infiniteScrollDistance]="2"
+      [infiniteScrollThrottle]="50"
+      (scrolled)="loadInfinitePosts()"
+      >
       </div>
 </div>
 

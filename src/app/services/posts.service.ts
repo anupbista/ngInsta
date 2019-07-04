@@ -62,4 +62,16 @@ export class PostsService {
     return await this._apiService.ngInstaGet("posts/explore/"+userId+"/"+page, localStorage.token);
   }
 
+  async getSavedPostByUserId(userId, page){
+    return await this._apiService.ngInstaGet("posts/saved/"+userId+"/"+page, localStorage.token);
+  }
+
+  async savePost(data): Promise<any>{
+    return await this._apiService.ngInstaPost(data, "posts/saved", localStorage.token);
+  }
+
+  async unSavePost(data): Promise<any>{
+    return await this._apiService.ngInstaPost(data, "posts/unsave", localStorage.token);
+  }
+
 }

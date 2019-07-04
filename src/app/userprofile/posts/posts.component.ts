@@ -15,6 +15,8 @@ export class PostsComponent implements OnInit {
   profilePosts: Post[] = [];
   loading:boolean= true;
   noData: boolean = true;
+  page: number = 1;
+
   constructor(private _postsService:PostsService,
     private _userService: UserService,
     private _authService: AuthService) { }
@@ -27,10 +29,17 @@ export class PostsComponent implements OnInit {
   async getProfilePosts(){
     this.profilePosts = await this._postsService.getPostByUserId(this._userService.localUser.id, 1, false);
     this.loading = false;
-    console.log(this.profilePosts)
     if(this.profilePosts.length > 0){
       this.noData = false;
     }
+  }
+
+  async loadInfinitePosts(){
+    this.loading = true;
+    this.page = this.page + 1;
+    let profilePosts = await this._postsService.getPostByUserId(this._userService.localUser.id, this.page, false);
+    this.loading = false;
+    this.profilePosts = [...this.profilePosts, ...profilePosts];
   }
   
 }

@@ -17,18 +17,26 @@
     
     <div class="gallery" *ngIf="!noData || profilesavedPosts">
   <div class="gallery-item" *ngFor="let profilesavedPost of profilesavedPosts; let i = index">
-      <div [routerLink]="['p/',profilesavedPost.postID,i]" routerLinkActive="router-link-active" >
-        <img src="{{ profilesavedPost.src }}" class="gallery-image" alt="">
+      <div [routerLink]="['p/',profilesavedPost.post.id,i]" routerLinkActive="router-link-active" >
+        <img src="{{ _postsService.postImageApi+profilesavedPost.post.postImage }}" class="gallery-image" alt="">
   
         <div class="gallery-item-info">
           <ul>
-            <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span> <i class="fas fa-heart" aria-hidden="true"></i> {{ profilesavedPost.likes }}</li>
-            <!-- <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span> <i class="fas fa-comment" aria-hidden="true"></i> {{ profilesavedPost.likes }}</li> -->
+            <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span> <i class="fas fa-heart" aria-hidden="true"></i> {{ profilesavedPost.post.likesNo }}</li>
+            <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span> <i class="fas fa-comment" aria-hidden="true"></i> {{ profilesavedPost.post.commentsNo }}</li>
           </ul>
   
         </div>
       </div>
     </div>
+    <div
+      infiniteScroll
+      [fromRoot]="false"
+      [infiniteScrollDistance]="2"
+      [infiniteScrollThrottle]="50"
+      (scrolled)="loadInfinitePosts()"
+      >
+      </div>
 </div>
 <!-- End of gallery -->
 <router-outlet></router-outlet>

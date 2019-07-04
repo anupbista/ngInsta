@@ -13,14 +13,10 @@
             </div>
             <div class="form-group post-header-desc">
               <h4>{{ user.username }}</h4>
-              <p><input type="text" placeholder="Location here..."  formControlName="postLocation" ></p>
+              <p><input type="text" placeholder="Location here..." readonly formControlName="postLocation" ></p>
             </div>
             <div class="form-group post-header-locations">
-              <button><i class="far fa-location-arrow"></i></button>
-            </div>
-            <div class="form-group">
-              <label>Enter address</label>
-              <input type="text" class="form-control" (keydown.enter)="$event.preventDefault()" placeholder="Search Nearest Location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search>
+              <i class="fas fa-location-arrow" [ngClass]="(location)?'locationOK':'locationNOK'"></i>
             </div>
           </div>
           <div class="form-group post-image">
