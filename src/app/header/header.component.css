@@ -81,6 +81,9 @@ header .navbar-brand + span{
     opacity: 0;
     visibility: hidden;
 }
+.navbar-nav{
+    flex-direction: row;
+}
 .searchPlaceholder{
     position: absolute;
     left: 0;

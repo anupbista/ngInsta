@@ -57,6 +57,8 @@ import { ExploredetailComponent } from './components/exploredetail/exploredetail
 import { LikesComponent } from './components/likes/likes.component';
 import { SinglepostdetailComponent } from './singlepostdetail/singlepostdetail.component';
 import { HTTPInterceptor } from './services/httpInterceptor';
+import { LoaderComponent } from './components/loader/loader.component';
+import { LoaderService } from './services/loader.service';
 
 @NgModule({
   declarations: [
@@ -95,7 +97,8 @@ import { HTTPInterceptor } from './services/httpInterceptor';
     LikedbyComponent,
     ExploredetailComponent,
     LikesComponent,
-    SinglepostdetailComponent  
+    SinglepostdetailComponent,
+    LoaderComponent 
   ],
   imports: [
     BrowserModule,
@@ -118,7 +121,7 @@ import { HTTPInterceptor } from './services/httpInterceptor';
     provide: HTTP_INTERCEPTORS,
     useClass: HTTPInterceptor,
     multi: true
-  }, ApiserviceService, AuthService, AuthGuard, PostsService, AuthenticateGuard],
+  }, ApiserviceService, AuthService, AuthGuard, PostsService, AuthenticateGuard, LoaderService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

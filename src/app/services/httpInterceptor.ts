@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { tap, map, catchError } from "rxjs/operators";
+import { tap, map, catchError, finalize } from "rxjs/operators";
 import {
   HttpRequest,
   HttpHandler,
@@ -11,17 +11,21 @@ import {
 import { Observable, throwError } from "rxjs";
 import { ToastrService } from 'ngx-toastr';
 import { Router } from "@angular/router";
+import { LoaderService } from "./loader.service";
+
 export const InterceptorSkipHeader = 'X-Skip-Interceptor';
 
 @Injectable()
 export class HTTPInterceptor implements HttpInterceptor {
-  constructor(private toast: ToastrService, private router: Router) { }
+  constructor(private toast: ToastrService, private router: Router, public loaderService: LoaderService) { }
 
   intercept(
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
 
+    this.loaderService.show();
+    
     if (request.headers.has(InterceptorSkipHeader)) {
         const headers = request.headers.delete(InterceptorSkipHeader);
         return next.handle(request.clone({ headers }));
@@ -55,7 +59,9 @@ export class HTTPInterceptor implements HttpInterceptor {
             }
             
             return throwError(data);
-        }));
+        }),
+        finalize(() => this.loaderService.hide())
+        );
 
   }
 }

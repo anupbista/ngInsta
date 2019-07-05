@@ -4,6 +4,7 @@
 .login-page main{
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     justify-content: center;
     margin-bottom: 44px;
 }
@@ -30,6 +31,7 @@
 }
 .login-form-right{
     display:flex;
+    flex-wrap: wrap;
     flex-direction: column;
     max-width: 350px;
     width: 100%;

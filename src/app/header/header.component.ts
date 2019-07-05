@@ -132,10 +132,12 @@ export class HeaderComponent implements OnInit {
         data.ids.push(element.id)
       }
     });
-    await this._userService.updateNotification(data);
-    setTimeout( () => {
-      this.showNotiDot = false;
-    }, 1000)
+    if(data.ids.length > 0){
+      await this._userService.updateNotification(data);
+      setTimeout( () => {
+        this.showNotiDot = false;
+      }, 1000)
+    }
   }
   
   toAnimatePlaceholder(){

@@ -65,3 +65,8 @@ main{
     font-weight: 400;
     text-transform: uppercase;
 }
+@media only screen and (max-width: 768px) {
+    .fixed-rt-col{
+        display: none;
+    }
+  }
