@@ -56,7 +56,11 @@
             <i class="far fa-heart"></i>
             <input type="text" (blur)="dosetSeen()" style="position: absolute;height: 37px;width: 36px;left: 0;top: 6px;opacity:0;cursor: pointer;">
         </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown" infiniteScroll
+        [infiniteScrollDistance]="2"
+        [infiniteScrollThrottle]="50"
+        (scrolled)="loadInfiniteOtherNotis()"
+        [scrollWindow]="false">
           <span></span>
           <div class="noti-contents">
               <div class="follow-req" *ngIf="showNotis" (click)="showFollowRequets($event)">
@@ -116,14 +120,6 @@
                 </div>
               </div>
               <app-insta-loading *ngIf="OtherNotiLoading"></app-insta-loading>
-              <div
-                    infiniteScroll
-                    [infiniteScrollDistance]="2"
-                    [infiniteScrollThrottle]="50"
-                    (scrolled)="loadInfiniteOtherNotis()"
-                    [scrollWindow]="false"
-                    >
-                    </div>
               </div>
           </div>
         </div>

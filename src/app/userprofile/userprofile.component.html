@@ -9,7 +9,7 @@
 				<img [src]="_userService.profileImageApi+userProfile.userImage" alt="{{userProfile.username}}">
 
 			</div>
-
+		<div>
 			<div class="profile-user-settings">
 
 				<h1 class="profile-user-name">{{ userProfile.username }}</h1>
@@ -20,10 +20,10 @@
 					<button *ngIf="userProfile.status.followRequested === 1" class="btn profile-edit-btn" [disabled]="folllowloading" data-target="#unfollowsettings" data-toggle="modal">Requested</button>
 					<button *ngIf="userProfile.status.followRequested === 0" class="btn profile-settings-btn" (click)="toggleSuggestions()" aria-label="profile settings"><i class="fas fa-caret-down"></i></button>
 				</ng-container>
-				<button class="report-btn" data-target="#reportsettings" data-toggle="modal"><i class="fas fa-ellipsis-h"></i></button>
+				<button class="settings-btn" data-target="#reportsettings" data-toggle="modal"><i class="fas fa-ellipsis-h"></i></button>
 
 			</div>
-
+<div class="stats-detail">
 			<div class="profile-stats">
 				<ul>
 					<li><span class="profile-stat-count">{{ userProfile.noOfPosts }}</span> posts</li>
@@ -36,11 +36,11 @@
 
 			<div class="profile-bio">
 				<h1 class="profile-real-name">{{ userProfile.displayName }}</h1>
-				<br>
-				<p>{{ userProfile.website }}</p>
-				<p>{{ userProfile.bio }}</p>
+				<p *ngIf="user.website">{{ userProfile.website }}</p>
+				<p *ngIf="user.bio">{{ userProfile.bio }}</p>
 			</div>
-
+</div>
+</div>
 		</div>
 		<!-- End of profile section -->
 		

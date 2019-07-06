@@ -38,9 +38,9 @@ export class SinglepostdetailComponent implements OnInit {
     this.router.navigate([''])
   });
   
-    if(this.postDetailActive){
-      document.getElementsByTagName("body")[0].style.overflow = "hidden";
-    }
+    // if(this.postDetailActive){
+    //   document.getElementsByTagName("body")[0].style.overflow = "hidden";
+    // }
     this.getPost();
   }
 

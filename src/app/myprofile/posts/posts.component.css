@@ -4,6 +4,7 @@
     display: flex;
     flex-wrap: wrap;
     padding-bottom: 30px;
+    justify-content: flex-start;
 }
 
 .gallery-item {
@@ -71,23 +72,6 @@
     clip: rect(1px, 1px, 1px, 1px);
 }
 
-
-
-/* @supports (display: grid) {
-    .gallery {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        grid-gap: 20px;
-    }
-    .gallery-item,
-    .gallery {
-        width: auto;
-        margin: 0;
-    }
-
-} */
-
-
 /* nodata */
 .no-data{
     display: flex;
@@ -126,4 +110,10 @@
 .get-app a img{
     height: 40px;
     width: 136px;
+}
+
+@media screen and (max-width: 800px) {
+    .gallery{
+        justify-content: center;
+    }
 }

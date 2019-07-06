@@ -246,9 +246,39 @@
 .post-caption .caption-desc{
     margin-top: 4px;
 }
-@media (min-width: 576px){
-.modal-dialog.postDetail-modal{    
-    max-width: 815px;
-    margin: 1.75rem auto;
+
+@media screen and (max-width: 850px) {
+    .postDetail-modal{
+        max-width: 100%;
+    }
 }
+
+@media (min-width: 576px){
+    .modal-dialog.postDetail-modal{    
+        max-width: 815px;
+        margin: 1.75rem auto;
+    }
+}
+
+@media (max-width: 576px){
+    .post-detail-content{
+        flex-direction: column;
+    }
+    .postDetail-modal{
+        top: 53%;
+    }
+    .post-detail-img{
+        justify-content: center;
+        width: 100%;
+        max-height: 300px;
+    }
+    .post-detail-img img{
+        width: auto !important;        
+    }
+    .postDetail-close{
+        top: 2px;
+    }
+    .body-scroll{
+        height: 100px;
+    }
 }

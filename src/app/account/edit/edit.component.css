@@ -237,3 +237,21 @@
   .slider.round:before {
     border-radius: 50%;
   }
+  
+@media (max-width: 576px){
+    main{
+        padding-top: 0 !important;
+    }
+    .edit .profile-image{
+        margin-left: 18%;
+    }
+    .edit .form-group label, .edit .profile-image{
+        justify-content: flex-start;
+        flex-basis: auto;
+        padding-right: 0;
+        text-align: left;
+    }
+    .post-image img{
+        height: auto;
+    }
+}

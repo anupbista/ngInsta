@@ -23,7 +23,14 @@
     margin: 14px;
     cursor: pointer;
 }
-.gallery-item a{display: block;text-decoration: none;color: #000;height: 293px;}
+.gallery-item a{
+    display: block;
+    text-decoration: none;
+    color: #000;    
+    height: 273px;
+    width: 273px;
+    max-width: 100%
+}
 .gallery-item:hover .gallery-item-info,
 .gallery-item:focus .gallery-item-info {
     display: flex;

@@ -178,3 +178,15 @@ input:focus{outline: none;box-shadow: none;}
 .locationNOK{
     color: #cf2a2a;
 }
+
+@media (max-width: 576px){
+    .newpost{
+        flex: 1;
+        max-width: 100%;
+    }
+    .post-image{
+        min-height: 250px;
+        max-height: 380px;
+        height: auto;
+    }
+}

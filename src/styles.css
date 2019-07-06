@@ -306,7 +306,7 @@ button:focus{
       display: none !important;
     }
     main{
-      padding-top: 95px !important;
+      padding-top: 95px;
     }
     
   }

@@ -3,13 +3,12 @@
 <div class="container" *ngIf="user">
 
 	<div class="profile">
-
 		<div class="profile-image">
 
 			<img [src]="_userService.profileImageApi+user.userImage" alt="">
 
 		</div>
-
+	<div>
 		<div class="profile-user-settings">
 
 			<h1 class="profile-user-name">{{ user.username }}</h1>
@@ -19,7 +18,7 @@
 			<button class="settings-btn" data-toggle="modal" data-target="#settings"><i class="fas fa-cog"></i></button>
 
 		</div>
-
+	<div class="stats-detail">
 		<div class="profile-stats">
 
 			<ul>
@@ -34,11 +33,12 @@
 
 		<div class="profile-bio">
 			<h1 class="profile-real-name">{{ user.displayName }}</h1>
-			<p>{{ user.website }}</p>
-			<p>{{ user.bio }}</p>
+			<p *ngIf="user.website">{{ user.website }}</p>
+			<p *ngIf="user.bio">{{ user.bio }}</p>
 
 		</div>
-
+	</div>
+	</div>
 	</div>
 	<!-- End of profile section -->
 

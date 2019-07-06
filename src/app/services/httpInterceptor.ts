@@ -54,6 +54,13 @@ export class HTTPInterceptor implements HttpInterceptor {
                 localStorage.removeItem("expiresIn");
                 localStorage.removeItem("userId");
                 this.router.navigate(['/login']);
+            }
+            else if(error.status === 0){
+                this.toast.error("Unauthorized");
+                localStorage.removeItem("token");
+                localStorage.removeItem("expiresIn");
+                localStorage.removeItem("userId");
+                this.router.navigate(['/login']);
             }else{
                 this.toast.error("Something is wrong. Please try again.");
             }
