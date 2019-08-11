@@ -4,9 +4,9 @@
 
 export const environment = {
   production: false,
-  api: "http://192.168.0.16:3000/",
-  postImageApi: "http://192.168.0.16:3000/posts/image/",
-  profileImageApi: "http://192.168.0.16:3000/user/image/",
+  api: "http://192.168.0.25:8080/",
+  postImageApi: "http://192.168.0.25:8080/posts/image/",
+  profileImageApi: "http://192.168.0.25:8080/user/image/",
 };
 
 /*
