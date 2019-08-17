@@ -66,18 +66,18 @@ export class FollowingComponent implements OnInit {
   async follow(follower: any){
     try {
       let data = {
-        userId: this.user.id,
+        userId: this.accountUser.id,
         aliasId: follower.id
       }
       let follow = await this._userService.followUser(data);
       if(follow){
          if(follower.privateProfile){
           follower.status = {
-            followRequested: 1
+            followRequested: true
           }
          }else{
           follower.status = {
-            followRequested: 0
+            followRequested: false
           }
          }
       }

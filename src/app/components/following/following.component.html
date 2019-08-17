@@ -23,8 +23,8 @@
             <ng-container *ngIf="user.id != accountUser.id">
                 <button type="button" *ngIf="!user.status" (click)="follow(follower)" class="followBtn">Follow</button>
                 <ng-container *ngIf="user.status">
-                  <button type="button" *ngIf="user.status.followRequested === 0" class="followingBtn">Following</button>
-                  <button *ngIf="user.status.followRequested === 1" class="followingBtn" disabled>Requested</button>
+                  <button type="button" *ngIf="user.status.followRequested == false" class="followingBtn">Following</button>
+                  <button *ngIf="user.status.followRequested == true" class="followingBtn" disabled>Requested</button>
                 </ng-container>
             </ng-container>
       </ul>

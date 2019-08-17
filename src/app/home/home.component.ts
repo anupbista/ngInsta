@@ -34,12 +34,14 @@ export class HomeComponent implements OnInit {
         this.user = user;
 
         if (this.swPush.isEnabled) {
-            // request user to enable notifications
-            this.swPush.requestSubscription({
-              serverPublicKey: this.VAPID_PUBLIC_KEY
-            })
-            .then(sub => this._notificationService.addPushSubscriber(this.user.id, sub).subscribe( ))
-            .catch(err => console.error("Could not subscribe to notifications", err));
+            if(!this.swPush.subscription){
+              // request user to enable notifications
+              this.swPush.requestSubscription({
+                serverPublicKey: this.VAPID_PUBLIC_KEY
+              })
+              .then(sub => this._notificationService.addPushSubscriber(this.user.id, sub).subscribe( ))
+              .catch(err => console.error("Could not subscribe to notifications", err));
+            }
             // handle click action
             this.swPush.notificationClicks.subscribe((result) => {
                 if(result.action === "notification"){
