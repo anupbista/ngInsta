@@ -44,17 +44,17 @@
 		</div>
 		<!-- End of profile section -->
 		
-		<div class="private" *ngIf="userProfile.privateProfile && (userProfile?.status?.followRequested != 0) ">
+		<div class="private" *ngIf="userProfile.privateProfile && (userProfile?.status?.followRequested != false)">
 			<h2>This Account is Private</h2>
 			<p>Follow to see their photos and videos.</p>
 		</div>
 
 		<ng-container *ngIf="userProfile.status">
-			<div *ngIf="userProfile.status.followRequested === false">
+			<div *ngIf="userProfile.status.followRequested == false">
 				<app-profilesuggestions *ngIf="showProfileSuggestions"></app-profilesuggestions>
 			</div>
 		</ng-container>
-		<div class="user-profile-tab">
+		<div class="user-profile-tab" *ngIf="userProfile.privateProfile && (userProfile?.status?.followRequested == false)">
 			<a [routerLink]="['posts']" routerLinkActive="active-user-profile-tab" ><i class="fas fa-th"></i>Posts</a>
 			<!-- <a [routerLink]="['tagged']" routerLinkActive="active-user-profile-tab" ><i class="fas fa-tags"></i> Tagged</a> -->
 		</div>

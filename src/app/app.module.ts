@@ -59,6 +59,8 @@ import { SinglepostdetailComponent } from './singlepostdetail/singlepostdetail.c
 import { HTTPInterceptor } from './services/httpInterceptor';
 import { LoaderComponent } from './components/loader/loader.component';
 import { LoaderService } from './services/loader.service';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { NotificationService } from './services/notification.service';
 
 @NgModule({
   declarations: [
@@ -115,13 +117,14 @@ import { LoaderService } from './services/loader.service';
       preventDuplicates: true,
     }),
     QRCodeModule,
-    ScrollingModule
+    ScrollingModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
     useClass: HTTPInterceptor,
     multi: true
-  }, ApiserviceService, AuthService, AuthGuard, PostsService, AuthenticateGuard, LoaderService],
+  }, ApiserviceService, AuthService, AuthGuard, PostsService, AuthenticateGuard, LoaderService, NotificationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

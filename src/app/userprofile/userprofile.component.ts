@@ -82,11 +82,11 @@ export class UserprofileComponent implements OnInit {
       if(follow){
          if(user.privateProfile){
           user.status = {
-            followRequested: 1
+            followRequested: true
           }
          }else{
           user.status = {
-            followRequested: 0
+            followRequested: false
           }
          }
       }
