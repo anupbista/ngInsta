@@ -29,7 +29,7 @@
 					<li><span class="profile-stat-count">{{ userProfile.noOfPosts }}</span> posts</li>
 					<li *ngIf="userProfile.followers === 0" ><span class="profile-stat-count">{{ userProfile.followers }}</span> followers</li>
 					<li *ngIf="userProfile.followers > 0" [routerLink]="['followers']"><span class="profile-stat-count">{{ userProfile.followers }}</span> followers</li>
-					<li *ngIf="userProfile.following === 0" ><span class="profile-stat-count">{{ userProfile.following }}</span> following</li>
+					<li *ngIf="userProfile.following === 0"><span class="profile-stat-count">{{ userProfile.following }}</span> following</li>
 					<li *ngIf="userProfile.following > 0" [routerLink]="['following']"><span class="profile-stat-count">{{ userProfile.following }}</span> following</li>
 				</ul>
 			</div>
@@ -46,7 +46,7 @@
 		
 		<div class="private" *ngIf="userProfile.privateProfile && (userProfile?.status?.followRequested != false)">
 			<h2>This Account is Private</h2>
-			<p>Follow to see their photos and videos.</p>
+			<p>Follow to see their photos.</p>
 		</div>
 
 		<ng-container *ngIf="userProfile.status">
@@ -58,8 +58,10 @@
 			<a [routerLink]="['posts']" routerLinkActive="active-user-profile-tab" ><i class="fas fa-th"></i>Posts</a>
 			<!-- <a [routerLink]="['tagged']" routerLinkActive="active-user-profile-tab" ><i class="fas fa-tags"></i> Tagged</a> -->
 		</div>
-		<router-outlet></router-outlet>
-			
+		<ng-container *ngIf="(userProfile?.status?.followRequested == false)">
+			<router-outlet></router-outlet>
+		</ng-container>
+					
 		<app-footer></app-footer>
 	</div>
 	<!-- End of container -->
