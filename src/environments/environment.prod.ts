@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  api: "http://192.168.0.25:8080/",
-  postImageApi: "http://192.168.0.25:8080/posts/image/",
-  profileImageApi: "http://192.168.0.25:8080/user/image/",
+  api: "https://nginsta.herokuapp.com/",
+  postImageApi: "https://nginsta.herokuapp.com/posts/image/",
+  profileImageApi: "https://nginsta.herokuapp.com/user/image/",
 };
