@@ -16,9 +16,9 @@
 
 				<button *ngIf="!userProfile.status" class="btn profile-edit-btn" (click)="follow(userProfile)" [disabled]="folllowloading">Follow</button>
 				<ng-container *ngIf="userProfile.status">
-					<button *ngIf="userProfile.status.followRequested === 0" class="btn profile-edit-btn" data-target="#followsettings" data-toggle="modal" [disabled]="folllowloading">Following</button>
-					<button *ngIf="userProfile.status.followRequested === 1" class="btn profile-edit-btn" [disabled]="folllowloading" data-target="#unfollowsettings" data-toggle="modal">Requested</button>
-					<button *ngIf="userProfile.status.followRequested === 0" class="btn profile-settings-btn" (click)="toggleSuggestions()" aria-label="profile settings"><i class="fas fa-caret-down"></i></button>
+					<button *ngIf="userProfile.status.followRequested === false" class="btn profile-edit-btn" data-target="#followsettings" data-toggle="modal" [disabled]="folllowloading">Following</button>
+					<button *ngIf="userProfile.status.followRequested === true" class="btn profile-edit-btn" [disabled]="folllowloading" data-target="#unfollowsettings" data-toggle="modal">Requested</button>
+					<button *ngIf="userProfile.status.followRequested === false" class="btn profile-settings-btn" (click)="toggleSuggestions()" aria-label="profile settings"><i class="fas fa-caret-down"></i></button>
 				</ng-container>
 				<button class="settings-btn" data-target="#reportsettings" data-toggle="modal"><i class="fas fa-ellipsis-h"></i></button>
 
@@ -50,7 +50,7 @@
 		</div>
 
 		<ng-container *ngIf="userProfile.status">
-			<div *ngIf="userProfile.status.followRequested === 0">
+			<div *ngIf="userProfile.status.followRequested === false">
 				<app-profilesuggestions *ngIf="showProfileSuggestions"></app-profilesuggestions>
 			</div>
 		</ng-container>
