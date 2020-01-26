@@ -4,7 +4,7 @@ import { AuthService } from './auth.service';
 import { User } from '../Models/User';
 import { environment } from 'src/environments/environment';
 import { ApiserviceService } from 'src/app/services/apiservice.service';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,27 +12,19 @@ import { Observable } from 'rxjs';
 export class UserService {
 
   profileImageApi: string;
-  user: Observable<User>;
-
-  currentUser: User;
-  localUser: User;
-
+  user: User;
+  aliasuser: User;
+  userSubscription: Subscription;
   token: any;
 
   constructor( private router: Router, private _authService: AuthService, private _apiserviceService: ApiserviceService){
     this.profileImageApi = environment.profileImageApi;
-    // this.setCurrentUser();
-    console.log("User Service")
   } 
   
-  getCurrentUser(): Observable<User>{
+  async getCurrentUser(){
     this.token = localStorage.getItem('token');
-    return this._apiserviceService.ngInstaGetObservable("user/"+this.token, this.token);
-  }
-
-  async setCurrentUser(){
-    this.user = this.getCurrentUser();
-    this.getCurrentUser().subscribe(user=> this.currentUser = user)
+    this.user = await this._apiserviceService.ngInstaGet("user/"+this.token, this.token);
+    console.log(this.user)
   }
 
   getUser(userId): Promise<any>{

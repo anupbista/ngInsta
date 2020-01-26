@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { UserService } from './services/user.service';
+import { CommonService } from './services/common.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -9,8 +11,12 @@ import { UserService } from './services/user.service';
 export class AppComponent {
   title = 'ngInsta';
 
-  constructor(private _userService: UserService){
-    
+  constructor(private _commonService: CommonService, public _userService: UserService, private _authService: AuthService){
+    this._commonService.setSocketConnection();
+    if(!this._userService.user && this._authService.isAuthenticated()) this._userService.getCurrentUser();
+  }
+
+  ngOnDestroy(): void {
   }
 
 }

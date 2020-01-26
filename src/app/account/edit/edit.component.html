@@ -1,13 +1,13 @@
 <div class="edit">
-  <form *ngIf="user" [formGroup]="editForm" (ngSubmit)="onSubmit()">
+  <form *ngIf="_userService.user" [formGroup]="editForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
           <!-- Profile Image -->
           <div class="profile-image">
-            <img class="card-img-top" [src]="_userService.profileImageApi+user.userImage" alt="Image">
+            <img class="card-img-top" [src]="_userService.profileImageApi+_userService.user.userImage" alt="Image">
           </div>
           <!-- / Profile Image -->
           <div class="profile-detail">
-            <h1>{{ user.username }}</h1>
+            <h1>{{ _userService.user.username }}</h1>
             <button type="button" [disabled]="progress" *ngIf="!progress"><input type='file' accept="image/*" class="imageUpload" (change)="changeProfilePicture($event)"/>Change Profile Photo</button>
           </div>
       </div>

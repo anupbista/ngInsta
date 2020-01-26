@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { UserService } from '../services/user.service';
 import { User } from '../Models/User';
 import { Observable, Subscription } from 'rxjs';
+import { CommonService } from '../services/common.service';
 
 @Component({
   selector: 'app-myprofile',
@@ -13,33 +14,28 @@ import { Observable, Subscription } from 'rxjs';
   styleUrls: ['./userprofile.component.css']
 })
 export class MyprofileComponent implements OnInit {
-
-  user: User;
-  userSubsciption: Subscription
   
-  constructor(private titleService: Title, private _authService: AuthService, private router: Router, private _userService: UserService) { }
+  constructor(private titleService: Title, private _authService: AuthService, private router: Router, public _userService: UserService, private _commonService: CommonService) { }
 
  setTitle( newTitle: string) {
     this.titleService.setTitle( newTitle );
   }
+
+  async getInit(){
+    if(!this._userService.user) await this._userService.getCurrentUser();
+    this.setTitle(this._userService.user.displayName+" (@"+this._userService.user.username+")")
+  }
   
   
   ngOnInit() {
-    this.userSubsciption= this._userService.getCurrentUser().subscribe(
-      (user) => {
-        this.user = user;
-        // console.log(this.user)
-        this.setTitle(this.user.displayName+" (@"+this.user.username+")")
-        },
-      (error) => {
-        console.log(error);
-      }
-    );
+    this.getInit();
   }
   
   async logout(){
     try {
       await this._authService.doLogout(localStorage.token);
+      this._commonService.userDisconnect(localStorage.userId);
+      if (this._userService.userSubscription) this._userService.userSubscription.unsubscribe();
       localStorage.removeItem("token");
       localStorage.removeItem("expiresIn");
       localStorage.removeItem("userId");
@@ -47,10 +43,6 @@ export class MyprofileComponent implements OnInit {
     } catch (error) {
      console.log(error) 
     }
-  }
-
-  ngOnDestroy(): void {
-    this.userSubsciption.unsubscribe();
   }
 
 }

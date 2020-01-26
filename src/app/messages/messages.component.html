@@ -1,0 +1,61 @@
+<app-header></app-header>
+
+<div class="container">
+
+  <!-- message UI -->
+  <div id="sidepanel">
+		<div id="search">
+			<label for=""><i class="fa fa-search" aria-hidden="true"></i></label>
+			<input [disabled]="!contacts.length > 0" type="text" placeholder="Search contacts..." />
+		</div>
+		<div id="contacts">
+			<ul>
+				<li class="contact" [class.active]="contact.id === user.id" *ngFor="let user of contacts" (click)="selectContact(user)">
+					<div class="wrap">
+						<span class="contact-status online"></span>
+						<img [src]="_userService.profileImageApi+user.userImage" alt="" />
+						<div class="meta">
+							<p class="name">{{ user.username }}</p>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="content">
+		<ng-container *ngIf="!contacts.length > 0">
+			<img src="assets/empty-list.png" alt="Empty list" />
+		</ng-container>
+		<ng-container *ngIf="contacts.length > 0">
+			<div class="contact-profile">
+				<img [src]="_userService.profileImageApi+contact.userImage" alt="" />
+				<p>{{ contact.username }}</p>
+			</div>
+			<div class="messages">
+				<ul id="messageContainer">
+			<ng-container *ngFor="let message of messages">
+			  <li class="replies" *ngIf="message.user && message.user.id != _userService.user.id">
+				<img *ngIf="message.user" [src]="_userService.profileImageApi+message.user.userImage" alt="{{ message.user.displayName }}" />
+						<p>{{ message.message }}</p>
+			  </li>
+			  <li class="sent" *ngIf="message.user && message.user.id === _userService.user.id">
+				<img *ngIf="message.user" [src]="_userService.profileImageApi+_userService.user.userImage" alt="{{ message.user.displayName }}" />
+				<p>{{ message.message }}</p>
+			  </li>
+			</ng-container>
+				</ul>
+			</div>
+			<div class="message-input">
+				<form class="wrap" (ngSubmit)="onSubmit(f)" #f="ngForm" (keyup.enter)="onSubmit(f)">
+					<input type="text" [(ngModel)]="message" placeholder="Type your message..." name="message" required/>
+					<button type="submit" class="submit" [disabled]="f.invalid"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+				  </form>
+			</div>
+		</ng-container>
+	</div>
+  <!-- end of message UI -->
+</div>
+
+<!-- End of container -->
+
+

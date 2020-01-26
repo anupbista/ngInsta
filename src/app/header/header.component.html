@@ -42,13 +42,16 @@
     </div>
   </div>
 
-  <div class="navbar-right" id="navbarSupportedContent" *ngIf="user">
+  <div class="navbar-right" id="navbarSupportedContent" *ngIf="_userService.user">
     <ul class="navbar-nav">
       <li class="nav-item active">
-        <a class="nav-link" [routerLink]="'/myprofile/'+user.username+'/myposts/newpost'"><i class="far fa-plus-square"></i></a>
+        <a class="nav-link" [routerLink]="'/myprofile/'+_userService.user.username+'/myposts/newpost'"><i class="far fa-plus-square"></i></a>
       </li>
       <li class="nav-item active">
         <a class="nav-link" routerLink="/explore"><i class="far fa-compass"></i></a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" routerLink="/messages"><i class="far fa-comment"></i></a>
       </li>
       <li class="nav-item dropdown notifications">
         <i class="fas fa-circle notiDot" *ngIf="showNotiDot"></i>
@@ -125,7 +128,7 @@
         </div>
       </li>
       <li class="nav-item">
-          <a class="nav-link" *ngIf="user" [routerLink]="['/myprofile', user.username]"><i class="far fa-user"></i></a>
+          <a class="nav-link" *ngIf="_userService.user" [routerLink]="['/myprofile', _userService.user.username]"><i class="far fa-user"></i></a>
         </li>
     </ul>
   </div>

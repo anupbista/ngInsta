@@ -16,55 +16,46 @@ import { AuthService } from 'src/app/services/auth.service';
 export class UserprofileComponent implements OnInit {
 
   showProfileSuggestions:boolean = false;
-  user: User;
   userProfile: any;
   userId: string;
-  userSubsciption: Subscription;
   username: string;
   folllowloading: boolean = false;
 
   constructor(private titleService: Title, 
     private route: ActivatedRoute,
     private router: Router,
-    private _userService: UserService,
+    public _userService: UserService,
     private _authService: AuthService) { }
 
   setTitle( newTitle: string) {
     this.titleService.setTitle( newTitle );
   }
+
+  async getInit(){
+    if(!this._userService.user) await this._userService.getCurrentUser();
+    try {
+      this.username = this.router.url.split('/')[2];
+      this.userProfile = await this._userService.getUserByUsername(this.username);
+      this._userService.aliasuser = this.userProfile;
+      this.setTitle(this.userProfile.displayName+" (@"+this.userProfile.username+")");
+      this.userId = this.userProfile.id;
+      if(this.userId === this._userService.user.id){
+        this.router.navigate(['myprofile', this._userService.user.username]);
+      }
+      this.getUserProfile();
+    } catch (error) {
+      console.log(error)
+    }
+  }
   
   ngOnInit() {
-    this.userSubsciption = this._userService.getCurrentUser().pipe(flatMap( user => {
-      this.user = user;
-      return this.route.url;
-    })).subscribe(
-      async (urlPath: UrlSegment[]) => {
-        try {
-          this.username = urlPath[urlPath.length - 1].path;
-          this.userProfile = await this._userService.getUserByUsername(this.username);
-          this._userService.localUser = this.userProfile;
-          this.setTitle(this.userProfile.displayName+" (@"+this.userProfile.username+")");
-          this.userId = this.userProfile.id;
-          if(this.userId === this.user.id){
-            this.router.navigate(['myprofile', this.user.username]);
-          }
-          this.getUserProfile();
-        } catch (error) {
-          console.log(error)
-        }
-      }
-    );
+    this.getInit();
   }
 
   async getUserProfile(){
-    this.userProfile.status = await this._userService.getUserProfile(this.userId, this.user.id);
+    this.userProfile.status = await this._userService.getUserProfile(this.userId, this._userService.user.id);
     console.log(this.userProfile)
   }
-
-  ngOnDestroy(): void {
-    this.userSubsciption.unsubscribe();
-  }
-
 
   toggleSuggestions(){
     this.showProfileSuggestions = !this.showProfileSuggestions;
@@ -74,7 +65,7 @@ export class UserprofileComponent implements OnInit {
     this.folllowloading = true;
     try {
       let data = {
-        userId: this.user.id,
+        userId: this._userService.user.id,
         aliasId: user.id
       }
       let follow = await this._userService.followUser(data);
@@ -98,7 +89,7 @@ export class UserprofileComponent implements OnInit {
   async unFollow(follower: any){
     try {
       let data = {
-        userId: this.user.id,
+        userId: this._userService.user.id,
         aliasId: follower.id
       }
       let follow = await this._userService.unFolllowUser(data);

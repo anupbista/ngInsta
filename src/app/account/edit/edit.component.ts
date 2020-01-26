@@ -16,7 +16,7 @@ export class EditComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder, 
     private _authService: AuthService, 
-    private _userService: UserService,
+    public _userService: UserService,
     private toast: ToastrService) { }
 
   message: String= "";
@@ -25,7 +25,6 @@ export class EditComponent implements OnInit {
   progress: boolean = false;
 
   user: User;
-  userSubscription: Subscription;
 
   genders = [
     {name: 'Male', value: 'Male'},
@@ -33,8 +32,12 @@ export class EditComponent implements OnInit {
     {name: 'Not Specified', value: null},
   ];
 
-  ngOnInit() {
+  async getInit(){
+    if(!this._userService.user) await this._userService.getCurrentUser();
+    await this.getUserDetails();
+  }
 
+  ngOnInit() {
     this.editForm = this.formBuilder.group({
       displayName: ['', [Validators.required,Validators.maxLength(20)]],
       username: ['', Validators.required],
@@ -46,21 +49,13 @@ export class EditComponent implements OnInit {
       privateProfile: [false,Validators.required]
     });
     this.editForm.controls.gender.setValue("Not Specified");
-    this.getUserDetails();
-  }
-
-  ngOnDestroy(): void {
-    this.userSubscription.unsubscribe();
+    this.getInit();
   }
 
   async getUserDetails(){
-    this.userSubscription = this._userService.getCurrentUser().subscribe(
-      async (user) => {
-        this.user = await this._userService.getUser(user.id);
-        console.log(this.user);
-        this.editForm.patchValue(this.user);
-      }
-    );
+    this.user = await this._userService.getUser(this._userService.user.id);
+    console.log(this.user);
+    this.editForm.patchValue(this.user);
   }
 
   get f(){

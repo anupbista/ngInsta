@@ -7,15 +7,15 @@
                 <app-insta-post></app-insta-post>
             </div>
             <div class="col-md-4 fixed-rt-col" stickyThing [spacer]="instapost">
-                <div class="my-profile-link clearfix" *ngIf="user">
+                <div class="my-profile-link clearfix" *ngIf="_userService.user">
                     <div class="profile-img">
                         <a [routerLink]="['/myprofile']" >
-                            <img [src]="_userService.profileImageApi+user.userImage" alt="{{user.username}}">
+                            <img [src]="_userService.profileImageApi+_userService.user.userImage" alt="{{_userService.user.username}}">
                         </a>
                     </div>
                     <div class="profile-detail">
-                        <a [routerLink]="['/myprofile', user.username]">{{ user.username }}</a>
-                        <p>{{ user.displayName }}</p>
+                        <a [routerLink]="['/myprofile', _userService.user.username]">{{ _userService.user.username }}</a>
+                        <p>{{ _userService.user.displayName }}</p>
                     </div>
                 </div>
                 <!-- <app-stories></app-stories> -->

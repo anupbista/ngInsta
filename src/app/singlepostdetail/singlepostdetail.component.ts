@@ -20,16 +20,19 @@ export class SinglepostdetailComponent implements OnInit {
 
   posts:Post[];
   loading:boolean = true;
-  user;
   submitted: boolean = false;
-  userSubsciption: Subscription;
 
   constructor(private _location: Location, 
     private route: ActivatedRoute, 
     private router: Router, 
     private _postService: PostsService,
-    private _userService: UserService ) 
+    public _userService: UserService ) 
   {}
+
+  async getInit(){
+    if(!this._userService.user) await this._userService.getCurrentUser();
+    this.getPost();
+  }
 
   ngOnInit() {
     fromEvent(window, 'popstate')
@@ -41,18 +44,18 @@ export class SinglepostdetailComponent implements OnInit {
     // if(this.postDetailActive){
     //   document.getElementsByTagName("body")[0].style.overflow = "hidden";
     // }
-    this.getPost();
+   this.getInit();
   }
 
   async getPostByPostId(){
     this.currentPost = await this._postService.getPostByPostId(this.currentPostId);
     console.log(this.currentPost);
-    if(this.currentPost.likes.find(o => o.userId === this.user.id)){
+    if(this.currentPost.likes.find(o => o.userId === this._userService.user.id)){
       this.currentPost.liked = true;
     }else{
       this.currentPost.liked = false;
     }
-    if(this.currentPost.saveposts.find(o => o.userId === this.user.id)){
+    if(this.currentPost.saveposts.find(o => o.userId === this._userService.user.id)){
       this.currentPost.saved = true;
     }else{
       this.currentPost.saved = false;
@@ -61,17 +64,11 @@ export class SinglepostdetailComponent implements OnInit {
   }
 
   getPost(){
-    this.userSubsciption = this.route.params.pipe(switchMap( (params)=> {
-        this.currentPostId = params['id'];
-        return this._userService.getCurrentUser();
-      } )).subscribe(async (user: any ) => {
-        this.user = user;
-        await this.getPostByPostId();
-      })
+    this.currentPostId = this.route.snapshot.paramMap.get('id');
+    this.getPostByPostId();
   }
 
   ngOnDestroy(): void {
-    this.userSubsciption.unsubscribe();
     if(this.postDetailActive){
       document.getElementsByTagName("body")[0].style.overflow = "auto";
     }
@@ -86,14 +83,14 @@ export class SinglepostdetailComponent implements OnInit {
   async postComment(form){
     let pushComment = {
       commentText: form.value.commentText,
-      user: this.user,
+      user: this._userService.user,
       createdAt: new Date()
     }
     this.currentPost.comments.push(pushComment);
     try {
       let data = {
         commentText: form.value.commentText,
-        userId: this.user.id,
+        userId: this._userService.user.id,
         postId: this.currentPost.id
       };
       await this._postService.postComment(data);
@@ -106,7 +103,7 @@ export class SinglepostdetailComponent implements OnInit {
     try {
       if(!post.liked){
         await this._postService.likePost({
-          userId: this.user.id,
+          userId: this._userService.user.id,
           postId: post.id
         });
         post.liked = true;
@@ -122,7 +119,7 @@ export class SinglepostdetailComponent implements OnInit {
  async unLikePost(post){
   try {
     await this._postService.unLikePost({
-      userId: this.user.id,
+      userId: this._userService.user.id,
       postId: post.id
     });
     post.liked = false;
@@ -137,7 +134,7 @@ export class SinglepostdetailComponent implements OnInit {
   async savePost(post){
     try {
       await this._postService.savePost({
-        userId : this.user.id,
+        userId : this._userService.user.id,
         postId : post.id,
       });
       post.saved = true;
@@ -150,7 +147,7 @@ export class SinglepostdetailComponent implements OnInit {
   async deleteSavePost(post){
     try {
       await this._postService.unSavePost({
-        userId : this.user.id,
+        userId : this._userService.user.id,
         postId : post.id,
       });
       post.saved = false;

@@ -13,7 +13,7 @@ import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
   templateUrl: './insta-post.component.html',
   styleUrls: ['./insta-post.component.css']
 })
-export class InstaPostComponent implements OnInit, OnDestroy {
+export class InstaPostComponent implements OnInit {
 
   user;
 
@@ -23,29 +23,26 @@ export class InstaPostComponent implements OnInit, OnDestroy {
 
   page: number = 1;
 
-  userSubscription: Subscription;
   preventSimpleClick: boolean;
   timer;
 
   constructor(private _postsService:PostsService,
     private _authService: AuthService,
-    private _userService: UserService) { }
+    public _userService: UserService) { }
 
-  ngOnInit() {
-    this.userSubscription = this._userService.getCurrentUser().subscribe(
-      (user) => {
-        this.user = user;
-        this._postsService.getPosts(user.id, this.page)
+  async getInit(){
+    if(!this._userService.user) await this._userService.getCurrentUser();
+    this._postsService.getPosts(this._userService.user.id, this.page)
         .then( (posts: Post[]) => {
           this.posts = posts;
           if(this.posts.length > 0){
             this.posts.forEach(element => {
-              if(element.likes.find(o => o.userId === user.id)){
+              if(element.likes.find(o => o.userId === this._userService.user.id)){
                 element.liked = true;
               }else{
                 element.liked = false;
               }
-              if(element.saveposts.find(o => o.userId === user.id)){
+              if(element.saveposts.find(o => o.userId === this._userService.user.id)){
                 element.saved = true;
               }else{
                 element.saved = false;
@@ -58,12 +55,10 @@ export class InstaPostComponent implements OnInit, OnDestroy {
           }
         } )
         .catch( error => console.log(error) )
-          },
-      (error) => {
-        console.log(error);
-      }
-    );
+  }
 
+  ngOnInit() {
+    this.getInit();
   }
   
   async loadInfinitePosts(){
@@ -89,10 +84,6 @@ export class InstaPostComponent implements OnInit, OnDestroy {
       this.loading = false;
     }
     this.posts = [...this.posts, ...posts];
-  }
-
-  ngOnDestroy(){
-    this.userSubscription.unsubscribe();
   }
 
   simpleClickFunction(): void{

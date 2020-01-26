@@ -1,17 +1,17 @@
 <app-header></app-header>
 
-<div class="container" *ngIf="user">
+<div class="container" *ngIf="_userService.user">
 
 	<div class="profile">
 		<div class="profile-image">
 
-			<img [src]="_userService.profileImageApi+user.userImage" alt="">
+			<img [src]="_userService.profileImageApi+_userService.user.userImage" alt="">
 
 		</div>
 	<div>
 		<div class="profile-user-settings">
 
-			<h1 class="profile-user-name">{{ user.username }}</h1>
+			<h1 class="profile-user-name">{{ _userService.user.username }}</h1>
 
 			<button class="btn profile-edit-btn" [routerLink]="['/accounts']">Edit Profile</button>
 
@@ -22,19 +22,19 @@
 		<div class="profile-stats">
 
 			<ul>
-				<li><span class="profile-stat-count">{{ user.noOfPosts }}</span> posts</li>
-				<li *ngIf="user.followers === 0" ><span class="profile-stat-count">{{ user.followers }}</span> followers</li>
-				<li *ngIf="user.followers > 0" [routerLink]="['followers']"><span class="profile-stat-count">{{ user.followers }}</span> followers</li>
-				<li *ngIf="user.following === 0" ><span class="profile-stat-count">{{ user.following }}</span> following</li>
-				<li *ngIf="user.following > 0" [routerLink]="['following']"><span class="profile-stat-count">{{ user.following }}</span> following</li>
+				<li><span class="profile-stat-count">{{ _userService.user.noOfPosts }}</span> posts</li>
+				<li *ngIf="_userService.user.followers === 0" ><span class="profile-stat-count">{{ _userService.user.followers }}</span> followers</li>
+				<li *ngIf="_userService.user.followers > 0" [routerLink]="['followers']"><span class="profile-stat-count">{{ _userService.user.followers }}</span> followers</li>
+				<li *ngIf="_userService.user.following === 0" ><span class="profile-stat-count">{{ _userService.user.following }}</span> following</li>
+				<li *ngIf="_userService.user.following > 0" [routerLink]="['following']"><span class="profile-stat-count">{{ _userService.user.following }}</span> following</li>
 			</ul>
 
 		</div>
 
 		<div class="profile-bio">
-			<h1 class="profile-real-name">{{ user.displayName }}</h1>
-			<p *ngIf="user.website">{{ user.website }}</p>
-			<p *ngIf="user.bio">{{ user.bio }}</p>
+			<h1 class="profile-real-name">{{ _userService.user.displayName }}</h1>
+			<p *ngIf="_userService.user.website">{{ _userService.user.website }}</p>
+			<p *ngIf="_userService.user.bio">{{ _userService.user.bio }}</p>
 
 		</div>
 	</div>
@@ -69,11 +69,11 @@
 	</div>
 </div>
 
-<div class="modal" id="nametag" tabindex="-1" role="dialog" aria-hidden="true" *ngIf="user" >
+<div class="modal" id="nametag" tabindex="-1" role="dialog" aria-hidden="true" *ngIf="_userService.user" >
 	<div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content">
 			<p>Scan this nametag</p>
-			<qrcode [qrdata]="'https://nginsta.netlify.com/myprofile/'+user.username+'/myposts'" [size]="256" [level]="'M'"></qrcode>
+			<qrcode [qrdata]="'https://nginsta.netlify.com/myprofile/'+_userService.user.username+'/myposts'" [size]="256" [level]="'M'"></qrcode>
 			<button data-dismiss="modal">Cancel</button>
 		</div>
 	</div>

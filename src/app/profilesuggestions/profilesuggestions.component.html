@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-md-12">
       <h4>Suggested</h4>
-      <div class="profile-suggested-cards" *ngIf="user">
+      <div class="profile-suggested-cards" *ngIf="_userService.user">
           <!-- <owl-carousel [options]="profileSuggestionsCarouselOptions" [items]="profileUserSuggestions" [carouselClasses]="['owl-theme', 'row', 'sliding']" > -->
             <div class="profile-suggested-card item" *ngFor="let profileSuggestion of profileUserSuggestions;let i = index">
               <div class="profile-suggested-img" [routerLink]="['/profile',profileSuggestion.username]">

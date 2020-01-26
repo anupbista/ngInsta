@@ -15,28 +15,19 @@ import { switchMap } from 'rxjs/operators';
 export class SuggestionsComponent implements OnInit {
 
   homeSuggestions = [];
-  user;
-  userSubscription: Subscription;
 
-  constructor(private _userService: UserService, private _authService: AuthService) { }
+  constructor(public _userService: UserService, private _authService: AuthService) { }
 
-  ngOnInit() {
-    this.userSubscription = this._userService.getCurrentUser().subscribe(
-      (user) => {
-        this.user = user;
-        this.getUserSuggestions();
-          },
-      (error) => {
-        console.log(error);
-      }
-    );
+  async getInit(){
+    if(!this._userService.user) await this._userService.getCurrentUser();
+    this.getUserSuggestions();
   }
 
-  ngOnDestroy(): void {
-    this.userSubscription.unsubscribe();
+  ngOnInit() {
+    this.getInit();
   }
 
   async getUserSuggestions(){
-    this.homeSuggestions = await this._userService.getUserSuggestions(this.user.id);
+    this.homeSuggestions = await this._userService.getUserSuggestions(this._userService.user.id);
   }
 }

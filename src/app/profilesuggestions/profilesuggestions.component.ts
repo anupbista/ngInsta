@@ -11,31 +11,22 @@ export class ProfilesuggestionsComponent implements OnInit {
 
   profileSuggestionsCarouselOptions={slideBy:4, items: 4.6, dots: false, nav: true ,navText : ["",""],autoplay: false, loop: true,touchDrag: false,mouseDrag: false};
 
-  user;
   profileUserSuggestions = [];
-  userSubscription: Subscription;
   folllowloading: boolean = false;
 
-  constructor(private _userService: UserService) { }
+  constructor(public _userService: UserService) { }
 
-  ngOnInit() {
-    this.userSubscription = this._userService.getCurrentUser().subscribe(
-      (user) => {
-        this.user = user;
-        this.getUserSuggestions();
-          },
-      (error) => {
-        console.log(error);
-      }
-    );
+  async getInit(){
+    if(!this._userService.user) await this._userService.getCurrentUser();
+    this.getUserSuggestions();
   }
 
-  ngOnDestroy(): void {
-    this.userSubscription.unsubscribe();
+  ngOnInit() {
+    this.getInit();
   }
 
   async getUserSuggestions(){
-    this.profileUserSuggestions = await this._userService.getUserSuggestions(this.user.id);
+    this.profileUserSuggestions = await this._userService.getUserSuggestions(this._userService.user.id);
     console.log(this.profileUserSuggestions)
   }
 
@@ -43,7 +34,7 @@ export class ProfilesuggestionsComponent implements OnInit {
     this.folllowloading = true;
     try {
       let data = {
-        userId: this.user.id,
+        userId: this._userService.user.id,
         aliasId: user.id
       }
       let follow = await this._userService.followUser(data);

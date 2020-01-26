@@ -20,7 +20,7 @@
               <strong><a [routerLink]="['/profile', user.username]">{{ user.username }}</a></strong>
               <small>{{ user.displayName }}</small>
             </div>
-            <ng-container *ngIf="user.id != accountUser.id">
+            <ng-container *ngIf="user.id != _userService.user.id">
                 <button type="button" *ngIf="!user.status" (click)="follow(follower)" class="followBtn">Follow</button>
                 <ng-container *ngIf="user.status">
                   <button type="button" *ngIf="user.status.followRequested == false" class="followingBtn">Following</button>

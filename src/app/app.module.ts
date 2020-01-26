@@ -61,6 +61,10 @@ import { LoaderComponent } from './components/loader/loader.component';
 import { LoaderService } from './services/loader.service';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { NotificationService } from './services/notification.service';
+import { MessageService } from './services/message.service';
+import { MessagesComponent } from './messages/messages.component';
+import { UserService } from './services/user.service';
+import { CommonService } from './services/common.service';
 
 @NgModule({
   declarations: [
@@ -100,7 +104,8 @@ import { NotificationService } from './services/notification.service';
     ExploredetailComponent,
     LikesComponent,
     SinglepostdetailComponent,
-    LoaderComponent 
+    LoaderComponent,
+    MessagesComponent 
   ],
   imports: [
     BrowserModule,
@@ -124,7 +129,7 @@ import { NotificationService } from './services/notification.service';
     provide: HTTP_INTERCEPTORS,
     useClass: HTTPInterceptor,
     multi: true
-  }, ApiserviceService, AuthService, AuthGuard, PostsService, AuthenticateGuard, LoaderService, NotificationService],
+  }, ApiserviceService, AuthService, AuthGuard, PostsService, AuthenticateGuard, LoaderService, NotificationService, MessageService, UserService, CommonService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

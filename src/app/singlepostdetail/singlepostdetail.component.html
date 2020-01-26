@@ -15,16 +15,16 @@
         <div class="post-detail-details">
             <div class="post-details-header clearfix">
               <div class="user-post-profile-pic">
-                  <a *ngIf="currentPost.user.id === user.id" [routerLink]="['/myprofile/', currentPost.user.username]">
+                  <a *ngIf="currentPost.user.id === _userService.user.id" [routerLink]="['/myprofile/', currentPost.user.username]">
                     <img src="{{ _userService.profileImageApi+currentPost.user.userImage }}" alt="{{currentPost.user.username}}">
                   </a>
-                  <a *ngIf="currentPost.user.id !== user.id" [routerLink]="['/profile/', currentPost.user.username]">
+                  <a *ngIf="currentPost.user.id !== _userService.user.id" [routerLink]="['/profile/', currentPost.user.username]">
                     <img src="{{ _userService.profileImageApi+currentPost.user.userImage }}" alt="{{currentPost.user.username}}">
                   </a>
               </div>
               <div class="post-header-desc">
-                <a *ngIf="currentPost.user.id === user.id" [routerLink]="['/myprofile/', currentPost.user.username]">{{ currentPost.user.username }}</a>
-                <a *ngIf="currentPost.user.id !== user.id" [routerLink]="['/profile/', currentPost.user.username]">{{ currentPost.user.username }}</a>
+                <a *ngIf="currentPost.user.id === _userService.user.id" [routerLink]="['/myprofile/', currentPost.user.username]">{{ currentPost.user.username }}</a>
+                <a *ngIf="currentPost.user.id !== _userService.user.id" [routerLink]="['/profile/', currentPost.user.username]">{{ currentPost.user.username }}</a>
               </div>
             </div>
             <!-- body -->
@@ -32,33 +32,33 @@
                 <div class="body-scroll">
                   <div class="post-caption clearfix">
                       <div class="user-post-profile-pic">
-                          <a *ngIf="currentPost.user.id === user.id" [routerLink]="['/myprofile/', currentPost.user.username]">
+                          <a *ngIf="currentPost.user.id === _userService.user.id" [routerLink]="['/myprofile/', currentPost.user.username]">
                             <img src="{{ _userService.profileImageApi+currentPost.user.userImage }}" alt="{{currentPost.user.username}}">
                           </a>
-                          <a *ngIf="currentPost.user.id !== user.id" [routerLink]="['/profile/', currentPost.user.username]">
+                          <a *ngIf="currentPost.user.id !== _userService.user.id" [routerLink]="['/profile/', currentPost.user.username]">
                             <img src="{{ _userService.profileImageApi+currentPost.user.userImage }}" alt="{{currentPost.user.username}}">
                           </a>
                       </div>
                       <div class="caption-desc">
-                        <p *ngIf="currentPost.user.id === user.id"><a [routerLink]="['/myprofile/', currentPost.user.username]"><strong>{{ currentPost.user.username }}</strong></a>{{ currentPost.caption }}</p>
-                        <p *ngIf="currentPost.user.id !== user.id"><a [routerLink]="['/profile/', currentPost.user.username]"><strong>{{ currentPost.user.username }}</strong></a>{{ currentPost.caption }}</p>
+                        <p *ngIf="currentPost.user.id === _userService.user.id"><a [routerLink]="['/myprofile/', currentPost.user.username]"><strong>{{ currentPost.user.username }}</strong></a>{{ currentPost.caption }}</p>
+                        <p *ngIf="currentPost.user.id !== _userService.user.id"><a [routerLink]="['/profile/', currentPost.user.username]"><strong>{{ currentPost.user.username }}</strong></a>{{ currentPost.caption }}</p>
                       </div>
                   </div>
                   <div class="post-comments">
                     <ul>
                       <li *ngFor="let comment of currentPost.comments" class="clearfix">
                           <div class="user-post-profile-pic">
-                              <a *ngIf="comment.user.id === user.id" [routerLink]="['/myprofile/', comment.user.username]">
+                              <a *ngIf="comment.user.id === _userService.user.id" [routerLink]="['/myprofile/', comment.user.username]">
                                 <img src="{{ _userService.profileImageApi+comment.user.userImage }}" alt="{{comment.user.username}}">
                               </a>
-                              <a *ngIf="comment.user.id !== user.id" [routerLink]="['/profile/', comment.user.username]">
+                              <a *ngIf="comment.user.id !== _userService.user.id" [routerLink]="['/profile/', comment.user.username]">
                                 <img src="{{ _userService.profileImageApi+comment.user.userImage }}" alt="{{comment.user.username}}">
                               </a>
                           </div>
                           <div class="post-header-desc">
-                            <p *ngIf="comment.user.id === user.id"><a [routerLink]="['/myprofile/', comment.user.username]">{{ comment.user.username }}</a> {{ comment.commentText }}
+                            <p *ngIf="comment.user.id === _userService.user.id"><a [routerLink]="['/myprofile/', comment.user.username]">{{ comment.user.username }}</a> {{ comment.commentText }}
                             <small>{{ comment.createdAt | moment }}</small></p>
-                            <p *ngIf="comment.user.id !== user.id"><a [routerLink]="['/profile/', comment.user.username]">{{ comment.user.username }}</a> {{ comment.commentText }}
+                            <p *ngIf="comment.user.id !== _userService.user.id"><a [routerLink]="['/profile/', comment.user.username]">{{ comment.user.username }}</a> {{ comment.commentText }}
                             <small>{{ comment.createdAt | moment }}</small></p>
                           </div>
                       </li>
@@ -71,7 +71,7 @@
                     <button id="like_btn" *ngIf="currentPost.liked" (click)="unLikePost(currentPost)"><i class="fas fa-heart" style="color: red"></i></button>              <!-- <button id="comment_btn"><i class="far fa-comment"></i></button> -->
                   </div>
                   <div class="right-buttons">
-                    <ng-container *ngIf="currentPost.user.id != user.id">
+                    <ng-container *ngIf="currentPost.user.id != _userService.user.id">
                       <button id="save_btn" *ngIf="!currentPost.saved" (click)="savePost(currentPost)"><i class="far fa-bookmark"></i></button>
                       <button id="save_btn" *ngIf="currentPost.saved" [disabled]="submitted" (click)="deleteSavePost(currentPost)"><i class="fas fa-bookmark"></i></button>
                     </ng-container>

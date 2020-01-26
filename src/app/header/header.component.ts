@@ -17,7 +17,6 @@ export class HeaderComponent implements OnInit {
   isShrunk: boolean = false;
   animatePlaceholder: boolean = false;
   @ViewChild('headersearch') headersearch: ElementRef;
-  user: User;
   notis: any[] = [];
   searchloading: boolean = false;
   searchResults: User[] = [];
@@ -35,11 +34,9 @@ export class HeaderComponent implements OnInit {
   OtherNotiLoading:boolean = false;
   showNotiDot: boolean = false;
 
-  userSubscription: Subscription;
-
   otherNotiPage: number = 1;
 
-  constructor(zone: NgZone, private _userService: UserService, private _authService: AuthService, private _postService: PostsService) {
+  constructor(zone: NgZone, public _userService: UserService, private _authService: AuthService, private _postService: PostsService) {
     window.onscroll = () => {
       zone.run(() => {
         if(window.pageYOffset > 100) {
@@ -50,15 +47,11 @@ export class HeaderComponent implements OnInit {
       });
     }
   }
-  ngOnInit() {
-    this.userSubscription = this._userService.getCurrentUser().subscribe(
-      (user) => {
-        this.user = user;
-        this.getOtherNotis();
-        this.getFollowNotis();
-        // console.log(this.user)
-      }
-    );
+
+  async getInit(){
+    if(!this._userService.user) await this._userService.getCurrentUser();
+    this.getOtherNotis();
+    this.getFollowNotis();
     this.usersearch.valueChanges
     .pipe(debounceTime(200))
     .pipe(distinctUntilChanged())
@@ -80,12 +73,15 @@ export class HeaderComponent implements OnInit {
           this.searchResults = response;
         }
       })
-      
+  }
+
+  ngOnInit() {
+    this.getInit();
   }
 
   async getOtherNotis(){
     this.OtherNotiLoading = true;
-    this.otherNotis  = await this._userService.getOtherNotifications(this.user.id, 1);
+    this.otherNotis  = await this._userService.getOtherNotifications(this._userService.user.id, 1);
     this.OtherNotiLoading = false;
     this.otherNotis.map(
       (otherNoti: any) => {
@@ -99,7 +95,7 @@ export class HeaderComponent implements OnInit {
 
   async getFollowNotis(){
     this.FollowNotiLoading = true;
-    this.followRequests  = await this._userService.getFollowNotifications(this.user.id);
+    this.followRequests  = await this._userService.getFollowNotifications(this._userService.user.id);
     this.FollowNotiLoading = false;
     this.noFollowRequests = this.followRequests.length;
     this.followRequests.map(
@@ -191,15 +187,11 @@ export class HeaderComponent implements OnInit {
       return request.id != requestId;
     } )
   }
-
-  ngOnDestroy(): void {
-    this.userSubscription.unsubscribe();
-  }
   
   async loadInfiniteOtherNotis(){
     this.OtherNotiLoading = true;
     this.otherNotiPage = this.otherNotiPage + 1;
-    let otherNotis  = await this._userService.getOtherNotifications(this.user.id, this.otherNotiPage);
+    let otherNotis  = await this._userService.getOtherNotifications(this._userService.user.id, this.otherNotiPage);
     this.OtherNotiLoading = false;
     otherNotis.map(
       (otherNoti: any) => {

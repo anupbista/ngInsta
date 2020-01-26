@@ -1,0 +1,328 @@
+.container {
+    margin-top: 130px;
+    height: calc(100vh - 150px);
+  }
+  img{
+    max-width: 100%;
+  }
+  .container #sidepanel {
+    float: left;
+    min-width: 280px;
+    max-width: 340px;
+    width: 40%;
+    height: 100%;
+    background: #ffffff;
+    color: #6f7d8b;
+    overflow: hidden;
+  position: relative;
+  }
+  @media screen and (max-width: 735px) {
+    .container #sidepanel {
+      width: 58px;
+      min-width: 58px;
+    }
+  }
+  .container #sidepanel #search {
+    font-weight: 300;
+  }
+  @media screen and (max-width: 735px) {
+    .container #sidepanel #search {
+      display: none;
+    }
+  }
+  .container #sidepanel #search label {
+    position: absolute;
+    margin: 10px 0 0 20px;
+  }
+  .container #sidepanel #search input {
+    font-family: "proxima-nova",  "Source Sans Pro", sans-serif;
+    padding: 10px 10px 10px 46px;
+    width: 100% ;
+    border: none;
+    background: #e8e5e5;
+    color: #000000;
+  }
+  .container #sidepanel #search input:focus {
+    outline: none;
+    background: #c6c6c6;
+  }
+  .container #sidepanel #search input::-webkit-input-placeholder {
+    color: #6f7d8b;
+  }
+  .container #sidepanel #search input::-moz-placeholder {
+    color: #6f7d8b;
+  }
+  .container #sidepanel #search input:-ms-input-placeholder {
+    color: #6f7d8b;
+  }
+  .container #sidepanel #search input:-moz-placeholder {
+    color: #6f7d8b;
+  }
+  .container #sidepanel #contacts {
+    height:100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  @media screen and (max-width: 735px) {
+    .container #sidepanel #contacts {
+      height: calc(100% - 149px);
+      overflow-y: scroll;
+      overflow-x: hidden;
+    }
+    .container #sidepanel #contacts::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  .container #sidepanel #contacts.expanded {
+    height: calc(100% - 334px);
+  }
+  .container #sidepanel #contacts::-webkit-scrollbar {
+    width: 8px;
+    background: #ffffff;
+  }
+  .container #sidepanel #contacts::-webkit-scrollbar-thumb {
+    background-color: #243140;
+  }
+  .container #sidepanel #contacts ul li.contact {
+    position: relative;
+    padding: 10px 0 15px 0;
+    font-size: 0.9em;
+    cursor: pointer;
+  }
+  @media screen and (max-width: 735px) {
+    .container #sidepanel #contacts ul li.contact {
+      padding: 6px 0 46px 8px;
+    }
+  }
+  .container #sidepanel #contacts ul li.contact {
+    background: #cfcfcf;
+  }
+  .container #sidepanel #contacts ul li.contact:hover {
+    background: #cfcfcf;
+  }
+  .container #sidepanel #contacts ul li.contact.active {
+    background: #cfcfcf;
+  }
+  .container #sidepanel #contacts ul li.contact .wrap {
+    width: 88%;
+    margin: 0 auto;
+    position: relative;
+  }
+  @media screen and (max-width: 735px) {
+    .container #sidepanel #contacts ul li.contact .wrap {
+      width: 100%;
+    }
+  }
+  .container #sidepanel #contacts ul li.contact .wrap span {
+    position: absolute;
+    left: 0;
+    margin: -2px 0 0 -2px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #95a5a6;
+  }
+  .container #sidepanel #contacts ul li.contact .wrap span.online {
+    background: #2ecc71;
+  }
+  .container #sidepanel #contacts ul li.contact .wrap span.away {
+    background: #f1c40f;
+  }
+  .container #sidepanel #contacts ul li.contact .wrap span.busy {
+    background: #e74c3c;
+  }
+  .container #sidepanel #contacts ul li.contact .wrap img {
+    width: 40px;
+    border-radius: 50%;
+    float: left;
+    margin-right: 10px;
+  }
+  @media screen and (max-width: 735px) {
+    .container #sidepanel #contacts ul li.contact .wrap img {
+      margin-right: 0px;
+    }
+  }
+  .container #sidepanel #contacts ul li.contact .wrap .meta {
+    padding: 5px 0 0 0;
+  }
+  @media screen and (max-width: 735px) {
+    .container #sidepanel #contacts ul li.contact .wrap .meta {
+      display: none;
+    }
+  }
+  .container #sidepanel #contacts ul li.contact .wrap .meta .name {
+    font-weight: 600;
+    margin: 0;
+  }
+  .container #sidepanel #contacts ul li.contact .wrap .meta .preview {
+    margin: 5px 0 0 0;
+    padding: 0 0 1px;
+    font-weight: 400;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -moz-transition: 1s all ease;
+    -o-transition: 1s all ease;
+    -webkit-transition: 1s all ease;
+    transition: 1s all ease;
+  }
+  .container #sidepanel #contacts ul li.contact .wrap .meta .preview span {
+    position: initial;
+    border-radius: initial;
+    background: none;
+    border: none;
+    padding: 0 2px 0 0;
+    margin: 0 0 0 1px;
+    opacity: .5;
+  }
+  .container .content {
+    float: right;
+    width: 60%;
+    background: #fff;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+  }
+  @media screen and (max-width: 735px) {
+    .container .content {
+      width: calc(100% - 58px);
+      min-width: 300px !important;
+    }
+  }
+  @media screen and (min-width: 900px) {
+    .container .content {
+      width: calc(100% - 340px);
+    }
+  }
+  .container .content .contact-profile {
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+    background: #e8e5e5;
+  }
+  .container .content .contact-profile img {
+    width: 40px;
+    border-radius: 50%;
+    float: left;
+    margin: 9px 12px 0 9px;
+  }
+  .container .content .contact-profile p {
+    float: left;
+  }
+  .container .content .messages {
+    height: auto;
+    min-height: calc(100% - 93px);
+    max-height: calc(100% - 93px);
+    overflow-y: scroll;
+    width: 100%;
+    overflow-x: hidden;
+  }
+  @media screen and (max-width: 735px) {
+    .container .content .messages {
+      max-height: calc(100% - 105px);
+    }
+  }
+  .container .content .messages::-webkit-scrollbar {
+    width: 8px;
+    background: transparent;
+  }
+  .container .content .messages::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+  .container .content .messages ul li {
+    display: inline-block;
+    clear: both;
+    margin: 15px 15px 5px 15px;
+    width: calc(100% - 25px);
+    font-size: 0.9em;
+  }
+  .container .content .messages ul li:nth-last-child(1) {
+    margin-bottom: 20px;
+  }
+  .container .content .messages ul li.sent img {
+    margin: 6px 0 0 8px;
+    float: right;
+  }
+  .container .content .messages ul li.sent p {
+    background: #d5d5d5;
+    float: right;
+    color: #000000;
+  }
+  .container .content .messages ul li.replies img {
+    float: left;
+    margin: 6px 8px 0 0;
+  }
+  .container .content .messages ul li.replies p {
+    background: #f0f5fb;
+    float: left;
+    color: #000;
+  }
+  .container .content .messages ul li img {
+    width: 22px;
+    border-radius: 50%;
+    float: left;
+  }
+  .container .content .messages ul li p {
+    display: inline-block;
+    padding: 10px 15px;
+    border-radius: 20px;
+    max-width: 205px;
+    line-height: 130%;
+  }
+  @media screen and (min-width: 735px) {
+    .container .content .messages ul li p {
+      max-width: 300px;
+    }
+  }
+  .container .content .message-input {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    z-index: 99;
+  }
+  .container .content .message-input .wrap {
+    position: relative;
+  }
+  .container .content .message-input .wrap input {
+    font-family: "proxima-nova",  "Source Sans Pro", sans-serif;
+    float: left;
+    border: none;
+    width: calc(100% - 90px);
+    padding: 11px 32px 10px 8px;
+    font-size: 0.8em;
+    color: #cfcfcf;
+  }
+  @media screen and (max-width: 735px) {
+    .container .content .message-input .wrap input {
+      padding: 15px 32px 16px 8px;
+    }
+  }
+  .container .content .message-input .wrap input:focus {
+    outline: none;
+  }
+  .container .content .message-input .wrap button {
+    float: right;
+    border: none;
+    width: 50px;
+    padding: 12px 0;
+    cursor: pointer;
+    background: #cfcfcf;
+    color: #6f7d8b;
+  }
+  .container .content .message-input .wrap button:disabled{
+    opacity: .7;
+  }
+  .container .content .message-input .wrap button:disabled:hover{
+    background: #cfcfcf;
+  }
+  @media screen and (max-width: 735px) {
+    .container .content .message-input .wrap button {
+      padding: 16px 0;
+    }
+  }
+  .container .content .message-input .wrap button:hover {
+    background: #435f7a;
+  }
+  .container .content .message-input .wrap button:focus {
+    outline: none;
+  }

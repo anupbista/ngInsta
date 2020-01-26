@@ -15,41 +15,30 @@ import { Subscription } from 'rxjs';
 export class FollowersComponent implements OnInit {
 
   username: string ="";
+  user;
   followers: User[] = [];
   followerLoading: boolean = true;
   page: number = 1;
-  user;
-  accountUser;
-  userSubscription: Subscription;
 
   constructor(private route: ActivatedRoute,
-     private _userService: UserService,
+    public _userService: UserService,
      private router: Router,
      private _authService: AuthService) { }
 
-  ngOnInit() {
-    this.route.parent.url.subscribe(
-      async (urlPath: UrlSegment[]) => {
-        try {
-          this.username = urlPath[urlPath.length - 1].path;
-          this.user = await this._userService.getUserByUsername(this.username);
-          this.followers = await this._userService.getFollowers(this.user.id, 1);
-          // console.log(this.followers)
-          this.followerLoading = false;
-        } catch (error) {
-          console.log(error)
-        }
-       
-      }
-    )
-    this.userSubscription = this._userService.getCurrentUser().subscribe( user => { 
-      this.accountUser = user;
-      // console.log(this.accountUser) 
-    }, error => { console.log(error) })
+  async getInit(){
+    if(!this._userService.user) await this._userService.getCurrentUser();
+    this.username = this.router.url.split('/')[2];
+    this.getFollowers();
   }
 
-  ngOnDestroy(): void {
-    this.userSubscription.unsubscribe();
+  ngOnInit() {
+    this.getInit();
+  }
+
+  async getFollowers(){
+    this.user = await this._userService.getUserByUsername(this.username);
+    this.followers = await this._userService.getFollowers(this.user.id, 1);
+    this.followerLoading = false;
   }
 
   closePostDetail(){
@@ -70,7 +59,7 @@ export class FollowersComponent implements OnInit {
   async follow(follower: any){
     try {
       let data = {
-        userId: this.accountUser.id,
+        userId: this._userService.user.id,
         aliasId: follower.user.id
       }
       let follow = await this._userService.followUser(data);

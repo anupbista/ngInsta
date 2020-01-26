@@ -16,40 +16,33 @@ export class LikedbyComponent implements OnInit {
 
   postID: string ="";
   likes= [];
-  user;
   loading: any;
-  userSubsciption: Subscription;
 
   constructor(private route: ActivatedRoute,
-     private _userService: UserService,
+    public _userService: UserService,
      private router: Router,
      private _authService: AuthService,
      private _postService: PostsService) { }
 
-  ngOnInit() {
+  async getInit(){
+    if(!this._userService.user) await this._userService.getCurrentUser();
     this.loading = true;
-    this.userSubsciption = this.route.parent.url.pipe(switchMap( (urlPath)=> {
-      this.postID = urlPath[1].path;
-      console.log(this.postID)
-      return this._userService.getCurrentUser();
-    } )).subscribe(async (user: any ) => {
-      this.user = user;
-      await this.getLikesByPostId();
-    })
-
+    this.postID = this.router.url;
+    this.getLikesByPostId();
   }
+
+  ngOnInit() {
+    this.getInit();  
+  }
+
   async getLikesByPostId(){
     try {
-      this.likes = await this._postService.getLikesByPostId(this.postID, this.user.id);
+      this.likes = await this._postService.getLikesByPostId(this.postID, this._userService.user.id);
       this.loading = false;
       console.log(this.likes);
     } catch (error) {
       console.log(error)
     }
-  }
-
-  ngOnDestroy(): void {
-    this.userSubsciption.unsubscribe();
   }
 
   closePostDetail(){
@@ -61,7 +54,7 @@ export class LikedbyComponent implements OnInit {
   async follow(follower: any){
     try {
       let data = {
-        userId: this.user.id,
+        userId: this._userService.user.id,
         aliasId: follower.id
       }
       let follow = await this._userService.followUser(data);

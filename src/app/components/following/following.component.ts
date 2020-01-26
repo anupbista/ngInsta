@@ -14,38 +14,35 @@ import { Subscription } from 'rxjs';
 export class FollowingComponent implements OnInit {
 
   username: string ="";
+  user;
   following: User[] = [];
   followingLoading: boolean = true;
   page: number = 1;
-  user;
-  accountUser;
-  userSubscription: Subscription;
 
   constructor(private route: ActivatedRoute,
-     private _userService: UserService,
+    public _userService: UserService,
      private router: Router,
      private _authService: AuthService) { }
 
-  ngOnInit() {
-    console.log("Following")
-    this.route.parent.url.subscribe(
-      async (urlPath: UrlSegment[]) => {
-        try {
-          this.username = urlPath[urlPath.length - 1].path;
-          this.user = await this._userService.getUserByUsername(this.username);
-          // console.log(this.user);
-          this.following = await this._userService.getFollowing(this.user.id, 1);
-          this.followingLoading = false;
-        } catch (error) {
-          console.log(error)
-        }
-      }
-    )
-    this.userSubscription = this._userService.getCurrentUser().subscribe( user => { this.accountUser = user }, error => { console.log(error) })
+  async getInit(){
+    if(!this._userService.user) await this._userService.getCurrentUser();
+    this.username = this.router.url.split('/')[2];
+      this.getFollowing();
   }
 
-  ngOnDestroy(): void {
-    this.userSubscription.unsubscribe();
+  ngOnInit() {
+   this.getInit();
+  }
+
+  async getFollowing(){
+    try {
+      this.user = await this._userService.getUserByUsername(this.username);
+      // console.log(this.user);
+      this.following = await this._userService.getFollowing(this.user.id, 1);
+      this.followingLoading = false;
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   closePostDetail(){
@@ -66,7 +63,7 @@ export class FollowingComponent implements OnInit {
   async follow(follower: any){
     try {
       let data = {
-        userId: this.accountUser.id,
+        userId: this._userService.user.id,
         aliasId: follower.id
       }
       let follow = await this._userService.followUser(data);

@@ -16,15 +16,19 @@ export class MyPostsComponent implements OnInit {
   profilePosts: Post[];
   page: number = 1;
   noData: boolean = true;
-  constructor(private _postsService:PostsService, private _userService: UserService) { }
+  constructor(private _postsService:PostsService, public _userService: UserService) { }
 
-  ngOnInit() {
+  async getInit(){
+    if(!this._userService.user) await this._userService.getCurrentUser();
     this.getProfilePosts();
   }
 
+  ngOnInit() {
+    this.getInit();
+  }
+
   async getProfilePosts(){
-    await this._userService.setCurrentUser();
-    this.profilePosts = await this._postsService.getPostByUserId(this._userService.currentUser.id, 1, true);
+    this.profilePosts = await this._postsService.getPostByUserId(this._userService.user.id, 1, true);
     this.loading = false;
     if(this.profilePosts.length > 0){
       this.noData = false;
@@ -34,7 +38,7 @@ export class MyPostsComponent implements OnInit {
   async loadInfinitePosts(){
     this.loading = true;
     this.page = this.page + 1;
-    let profilePosts = await this._postsService.getPostByUserId(this._userService.currentUser.id, this.page, true);
+    let profilePosts = await this._postsService.getPostByUserId(this._userService.user.id, this.page, true);
     this.loading = false;
     this.profilePosts = [...this.profilePosts, ...profilePosts];
   }

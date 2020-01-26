@@ -10,44 +10,33 @@ import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
   templateUrl: './explore.component.html',
   styleUrls: ['./explore.component.css']
 })
-export class ExploreComponent implements OnInit, OnDestroy {
+export class ExploreComponent implements OnInit {
 
   loading:boolean = true;
   explorePosts = [];
   page: number = 1;
-  user;
-  userSubscription: Subscription;
 
-  constructor(private _postsService:PostsService, private _userService: UserService) {
+  constructor(private _postsService:PostsService, public _userService: UserService) {
     
   }
 
-  ngOnInit() {
-
-    this.userSubscription = this._userService.getCurrentUser().subscribe(
-      (user) => {
-        this.user = user;
-        this._postsService.getExplorePosts(user.id, this.page)
-        .then( (posts: Post[]) => {
-          this.explorePosts = posts;
-          this.loading = false;
-        } )
-        .catch( error => console.log(error) )
-          },
-      (error) => {
-        console.log(error);
-      }
-    );
-
+  async getInit(){
+    if(!this._userService.user) await this._userService.getCurrentUser();
+    this._postsService.getExplorePosts(this._userService.user.id, this.page)
+    .then( (posts: Post[]) => {
+      this.explorePosts = posts;
+      this.loading = false;
+    } )
+    .catch( error => console.log(error) )
   }
 
-  ngOnDestroy(): void {
-    this.userSubscription.unsubscribe();
+  ngOnInit() {
+    this.getInit();
   }
 
   async loadInfinitePosts(){
     this.page = this.page + 1;
-    let posts = await this._postsService.getPosts(this.user.id, this.page);
+    let posts = await this._postsService.getPosts(this._userService.user.id, this.page);
     this.explorePosts = [...this.explorePosts, ...posts];
   }
 

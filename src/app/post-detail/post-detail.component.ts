@@ -41,19 +41,18 @@ export class PostDetailComponent implements OnInit, OnDestroy {
   firstPost:boolean = false;
   loading:boolean = true;
   urlUsername: string = "";
-  user;
   parentPath: string = "";
   submitted: boolean = false;
-  userSubsciption: Subscription;
 
   constructor(private _location: Location, 
     private route: ActivatedRoute, 
     private router: Router, 
     private _postService: PostsService,
-    private _userService: UserService ) 
+    public _userService: UserService ) 
   {}
 
-  ngOnInit() {
+  async getInit(){
+    if(!this._userService.user) await this._userService.getCurrentUser();
     if(this.postDetailActive){
       document.getElementsByTagName("body")[0].style.overflow = "hidden";
     }
@@ -61,14 +60,18 @@ export class PostDetailComponent implements OnInit, OnDestroy {
     this.route.parent.parent.url.subscribe( (path) => this.urlUsername = path[path.length - 1].path );
   }
 
+  ngOnInit() {
+    this.getInit();
+  }
+
   async getPostByPostId(){
     this.currentPost = await this._postService.getPostByPostId(this.currentPostId);
-    if(this.currentPost.likes.find(o => o.userId === this.user.id)){
+    if(this.currentPost.likes.find(o => o.userId === this._userService.user.id)){
       this.currentPost.liked = true;
     }else{
       this.currentPost.liked = false;
     }
-    if(this.currentPost.saveposts.find(o => o.userId === this.user.id)){
+    if(this.currentPost.saveposts.find(o => o.userId === this._userService.user.id)){
       this.currentPost.saved = true;
     }else{
       this.currentPost.saved = false;
@@ -77,19 +80,10 @@ export class PostDetailComponent implements OnInit, OnDestroy {
   }
 
   getPost(){
-    this.userSubsciption = this.route.parent.url.pipe(take(1), switchMap( (urlPath)=> {
-        this.parentPath = urlPath[urlPath.length - 1].path;
-        return this.route.params;
-      } )).pipe(
-        switchMap( (params: Params) => {
-          this.currentPostId = params['id'];
-          this.currentPostIndex = +params['ids'];
-          return this._userService.getCurrentUser();
-        } )
-      ).subscribe(async (user: any ) => {
-        this.user = user;
-        await this.getPostByPostId();
-      })
+    this.parentPath = this.router.url;
+    this.currentPostId = this.route.snapshot.paramMap.get('id');
+    this.currentPostIndex = +this.route.snapshot.paramMap.get('ids');
+    this.getPostByPostId();
 
     //         this.nextPost = this.posts[this.currentPostIndex + 1];
     //         this.prevPost = this.posts[this.currentPostIndex - 1];
@@ -112,7 +106,6 @@ export class PostDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.userSubsciption.unsubscribe();
     if(this.postDetailActive){
       document.getElementsByTagName("body")[0].style.overflow = "auto";
     }
@@ -127,14 +120,14 @@ export class PostDetailComponent implements OnInit, OnDestroy {
   async postComment(form){
     let pushComment = {
       commentText: form.value.commentText,
-      user: this.user,
+      user: this._userService.user,
       createdAt: new Date()
     }
     this.currentPost.comments.push(pushComment);
     try {
       let data = {
         commentText: form.value.commentText,
-        userId: this.user.id,
+        userId: this._userService.user.id,
         postId: this.currentPost.id
       };
       await this._postService.postComment(data);
@@ -195,7 +188,7 @@ export class PostDetailComponent implements OnInit, OnDestroy {
     try {
       if(!post.liked){
         await this._postService.likePost({
-          userId: this.user.id,
+          userId: this._userService.user.id,
           postId: post.id
         });
         post.liked = true;
@@ -211,7 +204,7 @@ export class PostDetailComponent implements OnInit, OnDestroy {
  async unLikePost(post){
   try {
     await this._postService.unLikePost({
-      userId: this.user.id,
+      userId: this._userService.user.id,
       postId: post.id
     });
     post.liked = false;
@@ -226,7 +219,7 @@ export class PostDetailComponent implements OnInit, OnDestroy {
   async savePost(post){
     try {
       await this._postService.savePost({
-        userId : this.user.id,
+        userId : this._userService.user.id,
         postId : post.id,
       });
       post.saved = true;
@@ -239,7 +232,7 @@ export class PostDetailComponent implements OnInit, OnDestroy {
   async deleteSavePost(post){
     try {
       await this._postService.unSavePost({
-        userId : this.user.id,
+        userId : this._userService.user.id,
         postId : post.id,
       });
       post.saved = false;

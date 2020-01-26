@@ -19,9 +19,7 @@ export class NewpostComponent implements OnInit {
   removeAlert: Boolean = false;
   url: any;
   file: File;
-  user: User;
   location: boolean = false;
-  userSubscription: Subscription;
 
   @ViewChild('search')
   public searchElementRef: ElementRef;
@@ -33,25 +31,11 @@ export class NewpostComponent implements OnInit {
     private formBuilder: FormBuilder,
     private _postsService: PostsService,
     private _authService: AuthService,
-    private _userService: UserService,
+    public _userService: UserService,
     private ngZone: NgZone,) { }
 
-  ngOnInit() {
-    this.userSubscription = this._userService.getCurrentUser().subscribe(
-      (user) => {
-        this.user = user;
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-
-    this.newPostForm = this.formBuilder.group({
-      postLocation: ['', Validators.maxLength(20)],
-      postImage: ['', Validators.required],
-      postCaption: ['', Validators.maxLength(50)]
-    });
-
+  async getInit(){
+    if(!this._userService.user) await this._userService.getCurrentUser();
     if (window.navigator && window.navigator.geolocation) {
       window.navigator.geolocation.getCurrentPosition(
           async (position) => {
@@ -81,12 +65,17 @@ export class NewpostComponent implements OnInit {
           }
       );
   };
-
   }
 
-  ngOnDestroy(): void {
-    this.userSubscription.unsubscribe();
+  ngOnInit() {
+    this.newPostForm = this.formBuilder.group({
+      postLocation: ['', Validators.maxLength(20)],
+      postImage: ['', Validators.required],
+      postCaption: ['', Validators.maxLength(50)]
+    });
+    this.getInit();
   }
+
 
   get f(){
     return this.newPostForm.controls;
@@ -121,10 +110,10 @@ export class NewpostComponent implements OnInit {
         return;
       }
       const postData = {
-        latitude: this.geolocationPosition.coords.latitude,
-        longitute: this.geolocationPosition.coords.longitude,
+        latitude: this.geolocationPosition ? this.geolocationPosition.coords.latitude : null,
+        longitute: this.geolocationPosition ? this.geolocationPosition.coords.longitude : null,
         caption: this.f.postCaption.value,
-        userId: this.user.id,
+        userId: this._userService.user.id,
         location: this.f.postLocation.value,
         postImage: ""
       }

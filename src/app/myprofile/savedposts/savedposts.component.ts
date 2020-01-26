@@ -15,26 +15,21 @@ export class MySavedpostsComponent implements OnInit {
   loading:boolean = true;
   profilesavedPosts: Post[] = [];
   noData: boolean = true;
-  userSubsciption: Subscription;
-  user;
   page: number = 1;
 
-  constructor(private _postsService:PostsService, private _userService: UserService, private route: ActivatedRoute) { }
+  constructor(private _postsService:PostsService, public _userService: UserService, private route: ActivatedRoute) { }
   
+  async getInit(){
+    if(!this._userService.user) await this._userService.getCurrentUser();
+    this.getSavedPosts();
+  }
+
   ngOnInit() {
-    this.userSubsciption= this._userService.getCurrentUser().subscribe(
-      (user) => {
-        this.user = user;
-        this.getSavedPosts();
-        },
-      (error) => {
-        console.log(error);
-      }
-    );
+    this.getInit();
   }
 
   async getSavedPosts(){
-    this.profilesavedPosts = await this._postsService.getSavedPostByUserId(this.user.id,1);
+    this.profilesavedPosts = await this._postsService.getSavedPostByUserId(this._userService.user.id,1);
     if(this.profilesavedPosts.length > 0){this.noData = false;}
     this.loading = false;
   }
@@ -42,13 +37,9 @@ export class MySavedpostsComponent implements OnInit {
   async loadInfinitePosts(){
     this.loading = true;
     this.page = this.page + 1;
-    let profilesavedPosts = await this._postsService.getSavedPostByUserId(this.user.id, this.page);
+    let profilesavedPosts = await this._postsService.getSavedPostByUserId(this._userService.user.id, this.page);
     this.loading = false;
     this.profilesavedPosts = [...this.profilesavedPosts, ...profilesavedPosts];
-  }
-
-  ngOnDestroy(): void {
-    this.userSubsciption.unsubscribe();  
   }
 
 }

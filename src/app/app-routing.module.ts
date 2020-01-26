@@ -28,12 +28,14 @@ import { FollowingComponent } from './components/following/following.component';
 import { LikedbyComponent } from './components/likedby/likedby.component';
 import { ExploredetailComponent } from './components/exploredetail/exploredetail.component';
 import { SinglepostdetailComponent } from './singlepostdetail/singlepostdetail.component';
+import { MessagesComponent } from './messages/messages.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent, pathMatch: 'full', canActivate: [AuthGuard]},
   {path: 'login', component: LoginComponent, canActivate: [AuthenticateGuard]},
   {path: 'notverified', component: NotverifiedComponent},
   {path: 'signup', component: SignupComponent, canActivate: [AuthenticateGuard]},
+  {path: 'messages', component: MessagesComponent, canActivate: [AuthGuard]},
   {path: 'explore', component: ExploreComponent, canActivate: [AuthGuard], children: [
     {path: 'p/:id', component: ExploredetailComponent, children: [
       {path: 'likes', component: LikedbyComponent},

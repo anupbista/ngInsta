@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { NgForm } from '@angular/forms';
+import { CommonService } from '../services/common.service';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +17,7 @@ export class LoginComponent implements OnInit {
   loginError: String;
   submitted: boolean;
   
-  constructor(private router:Router, private _authService: AuthService){
+  constructor(private router:Router, private _authService: AuthService, private _commonService: CommonService, public _userService: UserService){
     if(this._authService.isAuthenticated()){
       this.router.navigate(['']);
     }
@@ -32,6 +34,9 @@ export class LoginComponent implements OnInit {
     .then(async (res) => {
       this.submitted = false;
       await this._authService.setSession(res);
+      this._userService.getCurrentUser();
+      // emit event of user-connect
+      this._commonService.userConnect(res.userId);
       this.router.navigate(['']);
     }, err => {
       this.submitted = false;

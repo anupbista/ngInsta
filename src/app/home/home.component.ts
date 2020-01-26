@@ -19,8 +19,7 @@ export class HomeComponent implements OnInit {
   user: User = null;
   date = new Date();
 
-  constructor(private titleService: Title, private authService: AuthService, private _userService: UserService, private swPush: SwPush,private _notificationService: NotificationService, private router: Router) {
-    this._userService.setCurrentUser();
+  constructor(private titleService: Title, private authService: AuthService, public _userService: UserService, private swPush: SwPush,private _notificationService: NotificationService, private router: Router) {
    }
 
   public setTitle( newTitle: string) {
@@ -29,31 +28,22 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.setTitle("Instagram");
-    this._userService.getCurrentUser().subscribe(
-      (user) => {
-        this.user = user;
-
-        if (this.swPush.isEnabled) {
-            if(!this.swPush.subscription){
-              // request user to enable notifications
-              this.swPush.requestSubscription({
-                serverPublicKey: this.VAPID_PUBLIC_KEY
-              })
-              .then(sub => this._notificationService.addPushSubscriber(this.user.id, sub).subscribe( ))
-              .catch(err => console.error("Could not subscribe to notifications", err));
-            }
-            // handle click action
-            this.swPush.notificationClicks.subscribe((result) => {
-                if(result.action === "notification"){
-                  window.open(result.notification.data.url, "_blank");
-                }
-            })
-        }
-      }
-      ,(error) => {
-        console.log(error);
-      }
-    );
+    // if (this.swPush.isEnabled) {
+        //     if(!this.swPush.subscription){
+        //       // request user to enable notifications
+        //       this.swPush.requestSubscription({
+        //         serverPublicKey: this.VAPID_PUBLIC_KEY
+        //       })
+        //       .then(sub => this._notificationService.addPushSubscriber(this.user.id, sub).subscribe( ))
+        //       .catch(err => console.error("Could not subscribe to notifications", err));
+        //     }
+        //     // handle click action
+        //     this.swPush.notificationClicks.subscribe((result) => {
+        //         if(result.action === "notification"){
+        //           window.open(result.notification.data.url, "_blank");
+        //         }
+        //     })
+        // }
   }
 
 }
