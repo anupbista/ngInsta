@@ -19,6 +19,7 @@ export class MessagesComponent implements OnInit {
   messages: any[] = [];
   contact: User;
   message: any = null;
+  searchText: string = null;;
 
   constructor(private _messageService: MessageService, public _userService: UserService, private _commonService: CommonService) { }
 
@@ -52,10 +53,5 @@ export class MessagesComponent implements OnInit {
   selectContact(user){  
     this.contact = user;
   }
-
-  ngAfterViewInit() {         
-    let container = document.getElementById("messageContainer");    
-    container.scrollTop = container.scrollHeight; 
-  } 
 
 }

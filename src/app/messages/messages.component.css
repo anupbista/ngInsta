@@ -32,11 +32,11 @@
   }
   .container #sidepanel #search label {
     position: absolute;
-    margin: 10px 0 0 20px;
+    margin: 20px 0 0 20px;
   }
   .container #sidepanel #search input {
     font-family: "proxima-nova",  "Source Sans Pro", sans-serif;
-    padding: 10px 10px 10px 46px;
+    padding: 18px 10px 17px 46px;
     width: 100% ;
     border: none;
     background: #e8e5e5;
@@ -85,7 +85,7 @@
   }
   .container #sidepanel #contacts ul li.contact {
     position: relative;
-    padding: 10px 0 15px 0;
+    padding: 15px 0 25px 0;
     font-size: 0.9em;
     cursor: pointer;
   }
@@ -95,7 +95,7 @@
     }
   }
   .container #sidepanel #contacts ul li.contact {
-    background: #cfcfcf;
+    background: #e8e5e5;
   }
   .container #sidepanel #contacts ul li.contact:hover {
     background: #cfcfcf;
@@ -115,9 +115,11 @@
   }
   .container #sidepanel #contacts ul li.contact .wrap span {
     position: absolute;
-    left: 0;
-    margin: -2px 0 0 -2px;
+    right: 0;
+    top: 50%;
+    margin: 0;
     width: 10px;
+    transform: translateY(-50%);
     height: 10px;
     border-radius: 50%;
     background: #95a5a6;
@@ -133,6 +135,7 @@
   }
   .container #sidepanel #contacts ul li.contact .wrap img {
     width: 40px;
+    height: 40px;
     border-radius: 50%;
     float: left;
     margin-right: 10px;
@@ -143,7 +146,7 @@
     }
   }
   .container #sidepanel #contacts ul li.contact .wrap .meta {
-    padding: 5px 0 0 0;
+    padding: 10px 0 0 0;
   }
   @media screen and (max-width: 735px) {
     .container #sidepanel #contacts ul li.contact .wrap .meta {
@@ -202,6 +205,7 @@
   }
   .container .content .contact-profile img {
     width: 40px;
+    height: 40px;
     border-radius: 50%;
     float: left;
     margin: 9px 12px 0 9px;
@@ -290,7 +294,7 @@
     width: calc(100% - 90px);
     padding: 11px 32px 10px 8px;
     font-size: 0.8em;
-    color: #cfcfcf;
+    color: #000000;
   }
   @media screen and (max-width: 735px) {
     .container .content .message-input .wrap input {

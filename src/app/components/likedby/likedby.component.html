@@ -17,7 +17,7 @@
               <strong><a [routerLink]="['/profile', like.user.username]">{{ like.user.username }}</a></strong>
               <small>{{ like.user.displayName }}</small>
             </div>
-            <ng-container *ngIf="like.user.id != this.user.id">
+            <ng-container *ngIf="like.user.id != this._userService.user.id">
                 <button type="button" *ngIf="!like.status" (click)="follow(like)" class="followBtn">Follow</button>
                 <ng-container *ngIf="like.status">
                   <button type="button" *ngIf="like.status.followRequested === 0" class="followingBtn">Following</button>

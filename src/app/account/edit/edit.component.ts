@@ -24,8 +24,6 @@ export class EditComponent implements OnInit {
   submitted: Boolean = false;
   progress: boolean = false;
 
-  user: User;
-
   genders = [
     {name: 'Male', value: 'Male'},
     {name: 'Female', value: 'Female'},
@@ -53,9 +51,9 @@ export class EditComponent implements OnInit {
   }
 
   async getUserDetails(){
-    this.user = await this._userService.getUser(this._userService.user.id);
-    console.log(this.user);
-    this.editForm.patchValue(this.user);
+    this._userService.user = await this._userService.getUser(this._userService.user.id);
+    console.log(this._userService.user);
+    this.editForm.patchValue(this._userService.user);
   }
 
   get f(){
@@ -68,7 +66,7 @@ export class EditComponent implements OnInit {
         console.log("Edit Form Submitted");
         this.submitted = true;
         console.log(this.editForm.value);
-        await this._userService.updateUser(this.user.id, this.editForm.value);
+        await this._userService.updateUser(this._userService.user.id, this.editForm.value);
         this.toast.show('Profile saved.');
         this.submitted = false;
       } catch (error) {
@@ -86,9 +84,9 @@ export class EditComponent implements OnInit {
       let formData = new FormData();
       formData.append('profileImage', file);
       this.progress = true;
-      await this._userService.updateUserImage(this.user.id, formData)
+      await this._userService.updateUserImage(this._userService.user.id, formData)
       this.toast.show('Profile image saved.');
-      this.user = await this._userService.getUser(this.user.id);
+      this._userService.user = await this._userService.getUser(this._userService.user.id);
       // this.editForm.setValue({ csc : this.user.userImage});
       this.progress = false;
     } catch (error) {

@@ -6,11 +6,11 @@
   <div id="sidepanel">
 		<div id="search">
 			<label for=""><i class="fa fa-search" aria-hidden="true"></i></label>
-			<input [disabled]="!contacts.length > 0" type="text" placeholder="Search contacts..." />
+			<input type="text" placeholder="Search contacts..." [(ngModel)]="searchText"/>
 		</div>
 		<div id="contacts">
 			<ul>
-				<li class="contact" [class.active]="contact.id === user.id" *ngFor="let user of contacts" (click)="selectContact(user)">
+				<li class="contact" [class.active]="contact.id === user.id" *ngFor="let user of contacts | filter :'username' : searchText : 'includes'" (click)="selectContact(user)">
 					<div class="wrap">
 						<span class="contact-status online"></span>
 						<img [src]="_userService.profileImageApi+user.userImage" alt="" />
@@ -23,7 +23,7 @@
 		</div>
 	</div>
 	<div class="content">
-		<ng-container *ngIf="!contacts.length > 0">
+		<ng-container *ngIf="!(contacts.length > 0)">
 			<img src="assets/empty-list.png" alt="Empty list" />
 		</ng-container>
 		<ng-container *ngIf="contacts.length > 0">
@@ -32,7 +32,7 @@
 				<p>{{ contact.username }}</p>
 			</div>
 			<div class="messages">
-				<ul id="messageContainer">
+				<ul>
 			<ng-container *ngFor="let message of messages">
 			  <li class="replies" *ngIf="message.user && message.user.id != _userService.user.id">
 				<img *ngIf="message.user" [src]="_userService.profileImageApi+message.user.userImage" alt="{{ message.user.displayName }}" />

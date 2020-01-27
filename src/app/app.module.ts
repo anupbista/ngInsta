@@ -65,6 +65,7 @@ import { MessageService } from './services/message.service';
 import { MessagesComponent } from './messages/messages.component';
 import { UserService } from './services/user.service';
 import { CommonService } from './services/common.service';
+import { FilterPipe } from './pipes/filter.pipe';
 
 @NgModule({
   declarations: [
@@ -105,7 +106,8 @@ import { CommonService } from './services/common.service';
     LikesComponent,
     SinglepostdetailComponent,
     LoaderComponent,
-    MessagesComponent 
+    MessagesComponent,
+    FilterPipe 
   ],
   imports: [
     BrowserModule,

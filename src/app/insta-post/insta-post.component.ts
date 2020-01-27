@@ -64,15 +64,15 @@ export class InstaPostComponent implements OnInit {
   async loadInfinitePosts(){
     this.loading = true;
     this.page = this.page + 1;
-    let posts = await this._postsService.getPosts(this.user.id, this.page);
+    let posts = await this._postsService.getPosts(this._userService.user.id, this.page);
     if(this.posts.length > 0){
       this.posts.forEach(element => {
-        if(element.likes.find(o => o.userId === this.user.id)){
+        if(element.likes.find(o => o.userId === this._userService.user.id)){
           element.liked = true;
         }else{
           element.liked = false;
         }
-        if(element.saveposts.find(o => o.userId === this.user.id)){
+        if(element.saveposts.find(o => o.userId === this._userService.user.id)){
           element.saved = true;
         }else{
           element.saved = false;
@@ -106,7 +106,7 @@ export class InstaPostComponent implements OnInit {
       clearTimeout(this.timer);
       if(!post.liked){
         await this._postsService.likePost({
-          userId: this.user.id,
+          userId: this._userService.user.id,
           postId: post.id
         });
         post.liked = true;
@@ -122,7 +122,7 @@ export class InstaPostComponent implements OnInit {
  async unLikePost(post){
   try {
     await this._postsService.unLikePost({
-      userId: this.user.id,
+      userId: this._userService.user.id,
       postId: post.id
     });
     post.liked = false;
@@ -137,7 +137,7 @@ export class InstaPostComponent implements OnInit {
   async savePost(post){
     try {
       await this._postsService.savePost({
-        userId : this.user.id,
+        userId : this._userService.user.id,
         postId : post.id,
       });
       post.saved = true;
@@ -150,7 +150,7 @@ export class InstaPostComponent implements OnInit {
   async deleteSavePost(post){
     try {
       await this._postsService.unSavePost({
-        userId : this.user.id,
+        userId : this._userService.user.id,
         postId : post.id,
       });
       post.saved = false;
