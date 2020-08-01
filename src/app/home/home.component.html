@@ -10,7 +10,7 @@
                 <div class="my-profile-link clearfix" *ngIf="_userService.user">
                     <div class="profile-img">
                         <a [routerLink]="['/myprofile']" >
-                            <img [src]="_userService.profileImageApi+_userService.user.userImage" alt="{{_userService.user.username}}">
+                            <img [src]="_userService.user.userImage" alt="{{_userService.user.username}}">
                         </a>
                     </div>
                     <div class="profile-detail">

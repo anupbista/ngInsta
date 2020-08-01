@@ -12,10 +12,8 @@ import { environment } from 'src/environments/environment';
 })
 export class PostsService {
 
-  postImageApi: string;
 
   constructor(private _apiService: ApiserviceService) {
-    this.postImageApi = environment.postImageApi;
   }
 
    async getPosts(userId, page): Promise<any>{

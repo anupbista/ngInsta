@@ -10,7 +10,7 @@
           <li *ngFor="let like of likes">
             <div class="user-image">
               <a [routerLink]="['/profile', like.user.username]">
-                <img [src]="_userService.profileImageApi+like.user.userImage" alt="">
+                <img [src]="like.user.userImage" alt="">
               </a>
             </div>
             <div class="user-info">

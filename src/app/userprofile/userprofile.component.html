@@ -6,7 +6,7 @@
 
 			<div class="profile-image">
 
-				<img [src]="_userService.profileImageApi+userProfile.userImage" alt="{{userProfile.username}}">
+				<img [src]="userProfile.userImage" alt="{{userProfile.username}}">
 
 			</div>
 		<div>
@@ -83,7 +83,7 @@
 	<div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content" *ngIf="userProfile">
 			<div class="user-profile-img">
-				<img [src]="_userService.profileImageApi+userProfile.userImage" alt="">
+				<img [src]="userProfile.userImage" alt="">
 			</div>
 			<p>Unfollow {{ userProfile.username }}</p>
 			<button data-dismiss="modal" style="color: #ed4956;font-weight: 700;" (click)="unFollow(userProfile)">Unfollow</button>
@@ -97,7 +97,7 @@
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content" *ngIf="userProfile">
 				<div class="user-profile-img">
-					<img [src]="_userService.profileImageApi+userProfile.userImage" alt="">
+					<img [src]="userProfile.userImage" alt="">
 				</div>
 				<p>Cancel follow request</p>
 				<button data-dismiss="modal" style="color: #ed4956;font-weight: 700;" (click)="unFollow(userProfile)">Cancel request</button>

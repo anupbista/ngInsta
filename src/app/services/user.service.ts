@@ -11,14 +11,12 @@ import { Observable, Subscription } from 'rxjs';
 })
 export class UserService {
 
-  profileImageApi: string;
   user: User;
   aliasuser: User;
   userSubscription: Subscription;
   token: any;
 
   constructor( private router: Router, private _authService: AuthService, private _apiserviceService: ApiserviceService){
-    this.profileImageApi = environment.profileImageApi;
   } 
   
   async getCurrentUser(){

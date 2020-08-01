@@ -11,7 +11,7 @@
 <div class="gallery" *ngIf="!noData">
     <div class="gallery-item" *ngFor="let profilePost of profilePosts; let i = index;">
         <div [routerLink]="['p/', profilePost.id, i]" routerLinkActive="router-link-active" >
-          <img src="{{ _postsService.postImageApi+profilePost.postImage }}" class="gallery-image" alt="">
+          <img src="{{ profilePost.postImage }}" class="gallery-image" alt="">
     
           <div class="gallery-item-info">
             <ul>

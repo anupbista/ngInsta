@@ -13,7 +13,7 @@
         <li *ngFor="let follower of followers">
           <div class="user-image">
             <a [routerLink]="['/profile', follower.user.username]">
-              <img [src]="_userService.profileImageApi+follower.user.userImage" alt="">
+              <img [src]="follower.user.userImage" alt="">
             </a>
           </div>
           <div class="user-info">

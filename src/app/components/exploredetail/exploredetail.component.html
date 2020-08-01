@@ -6,16 +6,16 @@
       </div>
       <div class="post-detail-content">
         <div class="post-detail-img">
-          <img src="{{ _postService.postImageApi+currentPost.postImage }}" alt="">
+          <img src="{{ currentPost.postImage }}" alt="">
         </div>
         <div class="post-detail-details">
           <div class="post-details-header clearfix">
             <div class="user-post-profile-pic">
                 <a *ngIf="currentPost.user.id === user.id" [routerLink]="['/myprofile/', currentPost.user.username]">
-                  <img src="{{ _userService.profileImageApi+currentPost.user.userImage }}" alt="{{currentPost.user.username}}">
+                  <img src="{{ currentPost.user.userImage }}" alt="{{currentPost.user.username}}">
                 </a>
                 <a *ngIf="currentPost.user.id !== user.id" [routerLink]="['/profile/', currentPost.user.username]">
-                  <img src="{{ _userService.profileImageApi+currentPost.user.userImage }}" alt="{{currentPost.user.username}}">
+                  <img src="{{ currentPost.user.userImage }}" alt="{{currentPost.user.username}}">
                 </a>
             </div>
             <div class="post-header-desc">
@@ -29,10 +29,10 @@
                 <div class="post-caption clearfix">
                     <div class="user-post-profile-pic">
                         <a *ngIf="currentPost.user.id === user.id" [routerLink]="['/myprofile/', currentPost.user.username]">
-                          <img src="{{ _userService.profileImageApi+currentPost.user.userImage }}" alt="{{currentPost.user.username}}">
+                          <img src="{{ currentPost.user.userImage }}" alt="{{currentPost.user.username}}">
                         </a>
                         <a *ngIf="currentPost.user.id !== user.id" [routerLink]="['/profile/', currentPost.user.username]">
-                          <img src="{{ _userService.profileImageApi+currentPost.user.userImage }}" alt="{{currentPost.user.username}}">
+                          <img src="{{ currentPost.user.userImage }}" alt="{{currentPost.user.username}}">
                         </a>
                     </div>
                     <div class="caption-desc">
@@ -45,10 +45,10 @@
                     <li *ngFor="let comment of currentPost.comments" class="clearfix">
                         <div class="user-post-profile-pic">
                             <a *ngIf="comment.user.id === user.id" [routerLink]="['/myprofile/', comment.user.username]">
-                              <img src="{{ _userService.profileImageApi+comment.user.userImage }}" alt="{{comment.user.username}}">
+                              <img src="{{ comment.user.userImage }}" alt="{{comment.user.username}}">
                             </a>
                             <a *ngIf="comment.user.id !== user.id" [routerLink]="['/profile/', comment.user.username]">
-                              <img src="{{ _userService.profileImageApi+comment.user.userImage }}" alt="{{comment.user.username}}">
+                              <img src="{{ comment.user.userImage }}" alt="{{comment.user.username}}">
                             </a>
                         </div>
                         <div class="post-header-desc">

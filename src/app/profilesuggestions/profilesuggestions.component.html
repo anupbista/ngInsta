@@ -6,7 +6,7 @@
           <!-- <owl-carousel [options]="profileSuggestionsCarouselOptions" [items]="profileUserSuggestions" [carouselClasses]="['owl-theme', 'row', 'sliding']" > -->
             <div class="profile-suggested-card item" *ngFor="let profileSuggestion of profileUserSuggestions;let i = index">
               <div class="profile-suggested-img" [routerLink]="['/profile',profileSuggestion.username]">
-                <img src="{{ _userService.profileImageApi+profileSuggestion.userImage }}" alt="{{profileSuggestion.username}}">
+                <img src="{{ profileSuggestion.userImage }}" alt="{{profileSuggestion.username}}">
               </div>
               <div [routerLink]="['/profile',profileSuggestion.username]" class="profile-suggested-name">{{ profileSuggestion.username }}</div>
               <small class="full_name">{{ profileSuggestion.displayName }}</small>

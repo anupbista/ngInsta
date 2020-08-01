@@ -7,7 +7,7 @@
       <div class="gallery">
           <div class="gallery-item" *ngFor="let explorePost of explorePosts">
               <a [routerLink]="['p/',explorePost.id]">
-                <img src="{{_postsService.postImageApi+explorePost.postImage }}" class="gallery-image" alt="">
+                <img src="{{explorePost.postImage }}" class="gallery-image" alt="">
           
                 <div class="gallery-item-info">
                   <ul>

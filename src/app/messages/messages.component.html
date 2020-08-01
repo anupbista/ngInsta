@@ -13,7 +13,7 @@
 				<li class="contact" [class.active]="contact.id === user.id" *ngFor="let user of contacts | filter :'username' : searchText : 'includes'" (click)="selectContact(user)">
 					<div class="wrap">
 						<span class="contact-status online"></span>
-						<img [src]="_userService.profileImageApi+user.userImage" alt="" />
+						<img [src]="user.userImage" alt="" />
 						<div class="meta">
 							<p class="name">{{ user.username }}</p>
 						</div>
@@ -28,18 +28,18 @@
 		</ng-container>
 		<ng-container *ngIf="contacts.length > 0">
 			<div class="contact-profile">
-				<img [src]="_userService.profileImageApi+contact.userImage" alt="" />
+				<img [src]="contact.userImage" alt="" />
 				<p>{{ contact.username }}</p>
 			</div>
 			<div class="messages">
 				<ul>
 			<ng-container *ngFor="let message of messages">
 			  <li class="replies" *ngIf="message.user && message.user.id != _userService.user.id">
-				<img *ngIf="message.user" [src]="_userService.profileImageApi+message.user.userImage" alt="{{ message.user.displayName }}" />
+				<img *ngIf="message.user" [src]="message.user.userImage" alt="{{ message.user.displayName }}" />
 						<p>{{ message.message }}</p>
 			  </li>
 			  <li class="sent" *ngIf="message.user && message.user.id === _userService.user.id">
-				<img *ngIf="message.user" [src]="_userService.profileImageApi+_userService.user.userImage" alt="{{ message.user.displayName }}" />
+				<img *ngIf="message.user" [src]="_userService.user.userImage" alt="{{ message.user.displayName }}" />
 				<p>{{ message.message }}</p>
 			  </li>
 			</ng-container>

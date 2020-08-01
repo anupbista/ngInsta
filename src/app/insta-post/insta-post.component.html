@@ -10,7 +10,7 @@ infiniteScroll
   <div class="post-header clearfix">
     <div class="user-post-profile-pic">
       <a [routerLink]="['/profile', post.user.username]">
-      <img src="{{  _userService.profileImageApi+post.user.userImage }}" alt="Discover Nepal">
+      <img src="{{  post.user.userImage }}" alt="Discover Nepal">
       </a>
     </div>
     <div class="post-header-desc">
@@ -19,7 +19,7 @@ infiniteScroll
     </div>
   </div>
   <div class="post-image">
-    <img class="card-img-top" src="{{ _postsService.postImageApi+post.postImage }}" alt="Card image cap">
+    <img class="card-img-top" src="{{ post.postImage }}" alt="Card image cap">
   </div>
   <div class="post-footer">
     <div class="post-buttons">

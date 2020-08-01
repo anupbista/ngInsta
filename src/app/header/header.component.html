@@ -30,7 +30,7 @@
         <div class="search-suggestions-list" *ngFor="let searchResult of searchResults">
             <div [routerLink]="['/profile',searchResult.username]">
                 <div class="search-suggestions-profile-pic">
-                    <img [src]="_userService.profileImageApi+searchResult.userImage" alt="">
+                    <img [src]="searchResult.userImage" alt="">
                 </div>
                 <div class="search-suggestions-time">
                     <a>{{ searchResult.username }}</a>
@@ -84,7 +84,7 @@
                   <app-insta-loading *ngIf="FollowNotiLoading"></app-insta-loading>
                   <div class="follow-r" *ngFor="let followRequest of followRequests">
                     <div class="follow-r-pic">
-                        <img [src]="_userService.profileImageApi+followRequest.user.userImage" alt="{{followRequest.user.username}}">
+                        <img [src]="followRequest.user.userImage" alt="{{followRequest.user.username}}">
                       </div>
                     <div class="follow-r-desc">
                         <a>{{ followRequest.user.username }}</a>
@@ -104,7 +104,7 @@
               <div class="notis" *ngIf="showNotis && otherNotis">
                 <div class="noti like-noti" *ngFor="let otherNoti of otherNotis">
                   <div class="noti-pro-pic">
-                    <img [src]="_userService.profileImageApi+otherNoti.user.userImage" alt="">
+                    <img [src]="otherNoti.user.userImage" alt="">
                   </div>
                   <div class="noti-desc" *ngIf="otherNoti.type === 'other-followaccepted'" style="padding-right:0;">
                       <p [routerLink]="['/profile', otherNoti.user.username]"><strong>{{ otherNoti.user.username }}</strong> accepted your follow request. <small>{{ otherNoti.createdAt | moment: 'MMMM Do YYYY, h:mm:ss a' }}</small></p>
@@ -119,7 +119,7 @@
                     <p [routerLink]="['/post', otherNoti.post.id]"><strong>{{ otherNoti.user.username }}</strong> commented on your post. <small>{{ otherNoti.createdAt | moment: 'MMMM Do YYYY, h:mm:ss a' }}</small></p>
                   </div>
                   <div class="noti-pic" *ngIf="otherNoti.type === 'other-like' || otherNoti.type === 'other-comment'">
-                    <img  [routerLink]="['/post', otherNoti.post.id]" [src]="_postService.postImageApi+otherNoti.post.postImage" alt="">
+                    <img  [routerLink]="['/post', otherNoti.post.id]" [src]="otherNoti.post.postImage" alt="">
                 </div>
               </div>
               <app-insta-loading *ngIf="OtherNotiLoading"></app-insta-loading>

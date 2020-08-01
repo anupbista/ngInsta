@@ -13,7 +13,7 @@
         <li *ngFor="let user of following">
           <div class="user-image">
             <a [routerLink]="['/profile', user.username]">
-              <img [src]="_userService.profileImageApi+user.userImage" alt="{{user.username}}">
+              <img [src]="user.userImage" alt="{{user.username}}">
             </a>
           </div>
           <div class="user-info">
