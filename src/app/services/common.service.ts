@@ -30,7 +30,7 @@ export class CommonService {
   }
 
   userDisconnect(userId){
-    this.socket.emit('user-disconnect', userId);
+   if(this.socket) this.socket.emit('user-disconnect', userId);
   }
 
   scroll(el: any) {

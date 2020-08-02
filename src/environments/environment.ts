@@ -3,10 +3,10 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  // production: false,
-  // api: "https://nginsta.herokuapp.com/",
   production: false,
-  api: "http://192.168.0.12:3002/",
+  api: "https://nginsta.herokuapp.com/",
+  // production: false,
+  // api: "http://192.168.0.12:3002/",
 };
 
 /*

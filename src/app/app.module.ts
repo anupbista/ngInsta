@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
-import { AngularStickyThingsModule } from '@w11k/angular-sticky-things';
+// import { AngularStickyThingsModule } from '@w11k/angular-sticky-things';
 import { FormsModule } from "@angular/forms";
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -114,7 +114,7 @@ import { FilterPipe } from './pipes/filter.pipe';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    AngularStickyThingsModule,
+    // AngularStickyThingsModule,
     OwlModule,
     ContentLoaderModule,
     InfiniteScrollModule,

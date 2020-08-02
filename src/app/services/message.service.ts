@@ -14,7 +14,7 @@ export class MessageService {
   }
 
   public sendMessage(message){
-    this._commonService.socket.emit('new-message', message);
+    if(this._commonService.socket) this._commonService.socket.emit('new-message', message);
   }
 
   public getMessage(){
