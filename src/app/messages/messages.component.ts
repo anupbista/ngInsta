@@ -45,9 +45,14 @@ private scrollToBottom(): void {
     this.getFollowingUsers();
     this.messageSubscription = this._messageService.getMessage().subscribe( (message) =>{
       // find user in contact list
+      
       let us__er = this.contacts.find( u => u.id == message.user.id);
+      let r__us__er = this.contacts.find( u => u.id == message.receiverid);
       if(us__er){
         us__er.messages.push(message);
+      }
+      if(r__us__er){
+        r__us__er.messages.push(message);
       }
       setTimeout(() => {
         this.scrollToBottom();
