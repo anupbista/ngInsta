@@ -43,8 +43,12 @@ private scrollToBottom(): void {
   async getInit(){
     if(!this._userService.user) await this._userService.getCurrentUser();
     this.getFollowingUsers();
-    this.messageSubscription = this._messageService.getMessage().subscribe( (message: string) =>{
-      this.contact.messages.push(message);
+    this.messageSubscription = this._messageService.getMessage().subscribe( (message) =>{
+      // find user in contact list
+      let us__er = this.contacts,find( u => u.id == message.user.id);
+      if(us__er){
+        us__er.messages.push(message);
+      }
       setTimeout(() => {
         this.scrollToBottom();
       }, 0);
