@@ -17,10 +17,22 @@ export class MessageService {
     if(this._commonService.socket) this._commonService.socket.emit('new-message', message);
   }
 
+  public requestUserStatus(userId){
+    if(this._commonService.socket) this._commonService.socket.emit('user-status-request', userId);
+  }
+
   public getMessage(){
     return Observable.create( (observer) => {
       this._commonService.socket.on('new-message', (message) => {
         observer.next(message);
+      })
+    } )
+  }
+
+  public getUserStatus(){
+    return Observable.create( (observer) => {
+      this._commonService.socket.on('user-status', (list) => {
+        observer.next(list);
       })
     } )
   }

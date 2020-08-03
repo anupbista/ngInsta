@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
-// import { AngularStickyThingsModule } from '@w11k/angular-sticky-things';
+import { AngularStickyThingsModule } from '@w11k/angular-sticky-things';
 import { FormsModule } from "@angular/forms";
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -11,6 +11,7 @@ import { AuthGuard } from './services/auth.guard';
 import { ToastrModule } from 'ngx-toastr';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { ContentLoaderModule } from '@netbasal/ngx-content-loader';
+import { PickerModule } from '@ctrl/ngx-emoji-mart';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -114,7 +115,7 @@ import { FilterPipe } from './pipes/filter.pipe';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    // AngularStickyThingsModule,
+    AngularStickyThingsModule,
     OwlModule,
     ContentLoaderModule,
     InfiniteScrollModule,
@@ -125,6 +126,7 @@ import { FilterPipe } from './pipes/filter.pipe';
     }),
     QRCodeModule,
     ScrollingModule,
+    PickerModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [{

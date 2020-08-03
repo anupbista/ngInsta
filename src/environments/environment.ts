@@ -4,9 +4,9 @@
 
 export const environment = {
   production: false,
-  api: "https://nginsta.herokuapp.com/",
+  // api: "https://nginsta.herokuapp.com/",
   // production: false,
-  // api: "http://192.168.0.12:3002/",
+  api: "http://192.168.10.118:3000/",
 };
 
 /*

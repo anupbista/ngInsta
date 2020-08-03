@@ -29,6 +29,7 @@ import { LikedbyComponent } from './components/likedby/likedby.component';
 import { ExploredetailComponent } from './components/exploredetail/exploredetail.component';
 import { SinglepostdetailComponent } from './singlepostdetail/singlepostdetail.component';
 import { MessagesComponent } from './messages/messages.component';
+import { LikesComponent } from './components/likes/likes.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent, pathMatch: 'full', canActivate: [AuthGuard]},
@@ -83,7 +84,7 @@ const routes: Routes = [
     {path: 'privacy_and_security', component: PrivacysecurityComponent},
    ], canActivate: [AuthGuard]},
    {path: 'post/:id', component: SinglepostdetailComponent, canActivate: [AuthGuard], children: [
-    {path: 'likes', component: LikedbyComponent},
+    {path: 'likes', component: LikesComponent},
   ]},
    { path: '**', redirectTo:'', pathMatch: 'full' }
 ];

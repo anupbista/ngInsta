@@ -1,3 +1,4 @@
+
 <div class="followersoverlay">
   <div class="followers">
     <div class="ftitle">
@@ -9,14 +10,21 @@
       <ul *ngIf="likes">
         <li *ngFor="let like of likes">
           <div class="user-image">
-            <a [routerLink]="['/profile', like.username]">
-              <img [src]="like.userImage" alt="">
+            <a [routerLink]="['/profile', like.user.username]">
+              <img [src]="like.user.userImage" alt="">
             </a>
           </div>
           <div class="user-info">
-            <strong><a [routerLink]="['/profile', like.username]">{{ like.username }}</a></strong>
-            <small>{{ like.displayName }}</small>
+            <strong><a [routerLink]="['/profile', like.user.username]">{{ like.user.username }}</a></strong>
+            <small>{{ like.user.displayName }}</small>
           </div>
+          <ng-container *ngIf="like.user.id != this._userService.user.id">
+              <button type="button" *ngIf="!like.status" (click)="follow(like)" class="followBtn">Follow</button>
+              <ng-container *ngIf="like.status">
+                <button type="button" *ngIf="like.status.followRequested === 0" class="followingBtn">Following</button>
+                <button *ngIf="like.status.followRequested === 1" class="followingBtn" disabled>Requested</button>
+              </ng-container>
+          </ng-container>
           <!-- <button type="button" *ngIf="!follower.follow && !follower.mineuid" (click)="follow(like)" class="followBtn">Follow</button>
           <button type="button" *ngIf="follower.follow && !follower.mineuid" class="followingBtn">Following</button>
           <button *ngIf="folllowReq &&!follower" class="followingBtn" [disabled]="folllowloading">Requested</button> -->

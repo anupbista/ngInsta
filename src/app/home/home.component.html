@@ -6,8 +6,8 @@
             <div class="col-md-8" #instapost>
                 <app-insta-post></app-insta-post>
             </div>
-            <!-- <div class="col-md-4 fixed-rt-col" stickyThing [spacer]="instapost"> -->
-                <div class="col-md-4 fixed-rt-col">
+            <div class="col-md-4 fixed-rt-col" stickyThing [spacer]="instapost">
+                <!-- <div class="col-md-4 fixed-rt-col"> -->
                 <div class="my-profile-link clearfix" *ngIf="_userService.user">
                     <div class="profile-img">
                         <a [routerLink]="['/myprofile']" >

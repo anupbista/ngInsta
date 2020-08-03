@@ -27,7 +27,7 @@ export class LikedbyComponent implements OnInit {
   async getInit(){
     if(!this._userService.user) await this._userService.getCurrentUser();
     this.loading = true;
-    this.postID = this.router.url.split('/')[2];
+    this.postID = this.router.url.split('/')[5];
     this.getLikesByPostId();
   }
 
